@@ -29,15 +29,15 @@ const HeroSection = () => (
         </div>
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-          L'excellence du tir.
+          Maintien des acquis.
           <br />
-          <span className="text-primary">Sans munition.</span>
+          <span className="text-primary">Montée en compétences.</span>
         </h1>
 
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-          DST-System développe des programmes d'entraînement au tir par
-          simulateur laser pour les forces armées, la police et les corps
-          institutionnels.
+          DST-System se déplace dans vos locaux avec une solution
+          d'entraînement au tir par simulateur laser — sans munitions, sans
+          infrastructure lourde, sans contrainte.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

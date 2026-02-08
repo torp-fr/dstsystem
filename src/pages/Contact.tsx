@@ -128,7 +128,7 @@ const Contact = () => {
                     </h3>
                     <div className="space-y-4">
                       <a
-                        href="mailto:contact@dst-system.com"
+                        href="mailto:DST-System@hotmail.com"
                         className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
                       >
                         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
@@ -136,11 +136,11 @@ const Contact = () => {
                         </div>
                         <div>
                           <p className="text-sm text-muted-foreground">Email</p>
-                          <p className="font-medium">contact@dst-system.com</p>
+                          <p className="font-medium">DST-System@hotmail.com</p>
                         </div>
                       </a>
                       <a
-                        href="tel:+33000000000"
+                        href="tel:+33665445226"
                         className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
                       >
                         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
@@ -150,7 +150,7 @@ const Contact = () => {
                           <p className="text-sm text-muted-foreground">
                             Téléphone
                           </p>
-                          <p className="font-medium">+33 (0)0 00 00 00 00</p>
+                          <p className="font-medium">+33 6 65 44 52 26</p>
                         </div>
                       </a>
                       <div className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border">

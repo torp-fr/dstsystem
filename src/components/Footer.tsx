@@ -44,16 +44,16 @@ const Footer = () => (
           </h4>
           <div className="flex flex-col gap-3">
             <a
-              href="mailto:contact@dst-system.com"
+              href="mailto:DST-System@hotmail.com"
               className="text-muted-foreground hover:text-primary transition-colors text-sm flex items-center gap-2"
             >
-              <Mail className="h-4 w-4" /> contact@dst-system.com
+              <Mail className="h-4 w-4" /> DST-System@hotmail.com
             </a>
             <a
-              href="tel:+33000000000"
+              href="tel:+33665445226"
               className="text-muted-foreground hover:text-primary transition-colors text-sm flex items-center gap-2"
             >
-              <Phone className="h-4 w-4" /> +33 (0)0 00 00 00 00
+              <Phone className="h-4 w-4" /> +33 6 65 44 52 26
             </a>
             <span className="text-muted-foreground text-sm flex items-center gap-2">
               <MapPin className="h-4 w-4" /> France

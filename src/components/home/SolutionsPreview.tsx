@@ -1,26 +1,26 @@
 import { Link } from "react-router-dom";
-import { Crosshair, Users, BookOpen, ArrowRight } from "lucide-react";
+import { Crosshair, Target, Users, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const solutions = [
   {
     icon: Crosshair,
-    title: "Stand de tir laser",
+    title: "Simulateur de tir laser",
     description:
-      "Entraînement de précision en conditions contrôlées avec retour instantané sur la performance du tireur.",
+      "Entraînement de précision en conditions contrôlées avec retour instantané sur la performance. Aucune munition réelle nécessaire.",
+  },
+  {
+    icon: Target,
+    title: "Stand de tir virtuel",
+    description:
+      "Cibles dynamiques, tir statique et dynamique, de jour comme de nuit. Progression mesurable à chaque session.",
   },
   {
     icon: Users,
-    title: "Mises en situation",
+    title: "Mises en situation tactiques",
     description:
-      "Scénarios tactiques immersifs reproduisant des situations réelles d'intervention sur le terrain.",
-  },
-  {
-    icon: BookOpen,
-    title: "Formation tactique",
-    description:
-      "Programmes complets adaptés aux besoins spécifiques de chaque unité et corps d'armée.",
+      "CQB, effraction froide, interpellations — des scénarios réalistes pour développer les réflexes et la prise de décision.",
   },
 ];
 
@@ -33,12 +33,12 @@ const SolutionsPreview = () => (
             Nos solutions
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4">
-            Des solutions d'entraînement de pointe
+            Une solution mobile d'entraînement de pointe
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            DST-System propose une gamme complète de solutions de simulation
-            laser pour répondre aux exigences des professionnels de la sécurité
-            et de la défense.
+            DST-System se déplace directement dans vos locaux. Il suffit d'une
+            salle pour organiser une séance complète — aucune infrastructure
+            lourde requise.
           </p>
         </div>
       </AnimatedSection>
