@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
-import { Shield, Star, Swords, Eye, Lock, ArrowRight } from "lucide-react";
+import { Shield, Star, Swords, Eye, Lock, Briefcase, PartyPopper, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const audiences = [
   { icon: Swords, label: "Armée" },
-  { icon: Shield, label: "Police nationale" },
+  { icon: Shield, label: "Police" },
   { icon: Star, label: "Gendarmerie" },
   { icon: Eye, label: "Forces spéciales" },
   { icon: Lock, label: "Sécurité privée" },
+  { icon: Briefcase, label: "Entreprises" },
+  { icon: PartyPopper, label: "Événements" },
 ];
 
 const AudiencesPreview = () => (
@@ -20,19 +22,19 @@ const AudiencesPreview = () => (
             Publics cibles
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4">
-            À qui s'adressent nos solutions ?
+            Une solution commune, des réponses sur mesure
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Nos programmes sont conçus pour répondre aux exigences
-            opérationnelles des différents corps de sécurité et de défense.
+            Des forces armées aux entreprises en passant par les événements,
+            notre technologie s'adapte à chaque besoin et chaque public.
           </p>
         </div>
       </AnimatedSection>
 
       <div className="flex flex-wrap justify-center gap-6">
         {audiences.map((aud, i) => (
-          <AnimatedSection key={aud.label} delay={i * 0.1}>
-            <div className="flex flex-col items-center gap-3 p-6 rounded-xl bg-background border border-border hover:border-primary/30 transition-all min-w-[160px]">
+          <AnimatedSection key={aud.label} delay={i * 0.08}>
+            <div className="flex flex-col items-center gap-3 p-6 rounded-xl bg-background border border-border hover:border-primary/30 transition-all min-w-[140px]">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
                 <aud.icon className="h-6 w-6 text-primary" />
               </div>

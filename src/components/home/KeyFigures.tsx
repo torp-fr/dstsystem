@@ -1,26 +1,26 @@
-import { Target, ShieldCheck, Shield, BarChart3 } from "lucide-react";
+import { Truck, ShieldCheck, Users, BarChart3 } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const figures = [
   {
-    icon: Target,
-    label: "Formation réaliste",
-    description: "Conditions d'entraînement fidèles au terrain",
+    icon: Truck,
+    label: "Solution mobile",
+    description: "On se déplace dans vos locaux",
   },
   {
     icon: ShieldCheck,
     label: "Zéro munition",
-    description: "Sécurité totale, aucun risque balistique",
+    description: "Sécurité totale, aucun risque",
   },
   {
-    icon: Shield,
-    label: "100% Sécurisé",
-    description: "Environnement maîtrisé de bout en bout",
+    icon: Users,
+    label: "20 tireurs/jour",
+    description: "Sessions matin et après-midi",
   },
   {
     icon: BarChart3,
-    label: "Analyse précise",
-    description: "Suivi de performance en temps réel",
+    label: "Suivi individuel",
+    description: "Progression mesurable dans le temps",
   },
 ];
 

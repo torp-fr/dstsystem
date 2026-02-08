@@ -1,39 +1,58 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
-import { Target, Shield, Zap, Users, Award, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Target,
+  Shield,
+  Zap,
+  Users,
+  Award,
+  Heart,
+  Truck,
+  TrendingUp,
+  ArrowRight,
+} from "lucide-react";
+import missionImg from "@/assets/about-mission.jpg";
+import mobileImg from "@/assets/about-mobile.jpg";
 
 const values = [
   {
     icon: Target,
     title: "Excellence",
-    description: "Nous visons l'excellence dans chaque aspect de nos solutions d'entraînement.",
+    description:
+      "Nous visons l'excellence dans chaque aspect de nos solutions d'entraînement, de la technologie au suivi pédagogique.",
   },
   {
     icon: Shield,
     title: "Sécurité",
-    description: "La sécurité est au cœur de notre approche — zéro compromis.",
+    description:
+      "Zéro compromis sur la sécurité — notre technologie laser élimine tout risque balistique tout en maintenant un réalisme maximal.",
   },
   {
     icon: Zap,
     title: "Innovation",
-    description: "Nous innovons constamment pour offrir les technologies les plus avancées.",
+    description:
+      "Nous innovons constamment pour offrir des scénarios toujours plus réalistes et des analyses de performance toujours plus précises.",
   },
   {
     icon: Users,
     title: "Adaptabilité",
-    description: "Nos solutions s'adaptent aux besoins uniques de chaque client.",
+    description:
+      "Chaque client est unique. Nous construisons des programmes sur mesure adaptés à vos besoins, vos protocoles et vos contraintes.",
   },
   {
     icon: Award,
     title: "Expertise",
-    description: "Une expertise opérationnelle reconnue par les professionnels du secteur.",
+    description:
+      "Une expertise opérationnelle au service de la formation — nous comprenons les enjeux du terrain.",
   },
   {
     icon: Heart,
     title: "Engagement",
     description:
-      "Un engagement total envers la formation et la préparation de ceux qui nous protègent.",
+      "Un engagement total envers la montée en compétences de ceux qui assurent notre sécurité au quotidien.",
   },
 ];
 
@@ -52,7 +71,9 @@ const About = () => (
                 DST-System
               </h1>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Drill & Skills Training
+                Drill & Skills Training — Parce que la compétence au tir est
+                périssable, nous apportons la solution pour la maintenir et la
+                développer.
               </p>
             </div>
           </AnimatedSection>
@@ -67,28 +88,86 @@ const About = () => (
               <div>
                 <h2 className="text-3xl font-bold mb-6">Notre mission</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  DST-System est né d'une conviction simple : l'entraînement au
-                  tir doit être accessible, sûr et efficace. Notre mission est
-                  de fournir aux forces de sécurité et de défense les outils les
-                  plus performants pour développer et maintenir leurs compétences
-                  de tir.
+                  DST-System est né d'un constat simple : les institutions
+                  (armée, police, gendarmerie) n'ont souvent pas les moyens
+                  logistiques, humains et le temps nécessaires pour entraîner
+                  suffisamment leurs personnels au tir. Or, le tir est une
+                  compétence périssable — sans pratique régulière, les acquis se
+                  dégradent, les réflexes s'émoussent.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  Grâce à notre technologie de simulation laser, nous rendons
-                  possible un entraînement réaliste et intensif sans les
-                  contraintes logistiques et sécuritaires liées à l'utilisation
-                  de munitions réelles.
+                  Notre mission est de combler ce manque en apportant une
+                  solution d'entraînement mobile, accessible et efficace.
+                  Grâce à notre simulateur laser, nous nous déplaçons
+                  directement chez nos clients pour dispenser des séances
+                  d'entraînement dans leurs locaux — il suffit d'une salle.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  Chaque solution que nous développons est pensée pour répondre
-                  aux exigences opérationnelles les plus élevées, tout en
-                  offrant une flexibilité totale dans la mise en œuvre.
+                  L'objectif : conserver les acquis, progresser dans le tir,
+                  mécaniser les gestes réflexes, améliorer la graduation de la
+                  réponse à la situation, et renforcer le professionnalisme et
+                  la confiance en soi des pratiquants.
                 </p>
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.2}>
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-card to-muted border border-border flex items-center justify-center">
-                <Target className="h-32 w-32 text-primary/20" />
+              <div className="aspect-square rounded-2xl overflow-hidden border border-border">
+                <img
+                  src={missionImg}
+                  alt="Centre de commandement DST-System"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
+      {/* Mobile solution */}
+      <section className="py-20 bg-card border-y border-border">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <AnimatedSection>
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-border lg:order-1">
+                <img
+                  src={mobileImg}
+                  alt="Solution mobile DST-System"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </AnimatedSection>
+            <AnimatedSection delay={0.2}>
+              <div>
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border border-primary/20 mb-6">
+                  <Truck className="h-8 w-8 text-primary" />
+                </div>
+                <h2 className="text-3xl font-bold mb-6">
+                  Une solution 100% mobile
+                </h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  Contrairement aux stands de tir traditionnels qui nécessitent
+                  des déplacements et une logistique importante, DST-System
+                  vient à vous. Notre équipe se déplace avec tout le matériel
+                  nécessaire et s'installe dans vos locaux en moins d'une heure.
+                </p>
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  Seule une salle est nécessaire — aucune infrastructure lourde,
+                  aucune munition réelle, aucun risque. C'est la solution idéale
+                  pour les collectivités et unités qui manquent d'accès aux
+                  infrastructures de tir.
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-background border border-border text-center">
+                    <TrendingUp className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <p className="text-sm font-medium">Jusqu'à 20 tireurs/jour</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-background border border-border text-center">
+                    <Truck className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <p className="text-sm font-medium">Installation en 1h</p>
+                  </div>
+                </div>
               </div>
             </AnimatedSection>
           </div>
@@ -96,7 +175,7 @@ const About = () => (
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-card border-y border-border">
+      <section className="py-20">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="text-center mb-16">
@@ -110,16 +189,42 @@ const About = () => (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {values.map((val, i) => (
               <AnimatedSection key={val.title} delay={i * 0.1}>
-                <div className="p-6 rounded-xl bg-background border border-border">
+                <div className="p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-all">
                   <val.icon className="h-8 w-8 text-primary mb-4" />
                   <h3 className="text-lg font-semibold mb-2">{val.title}</h3>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     {val.description}
                   </p>
                 </div>
               </AnimatedSection>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 bg-card border-t border-border">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold mb-4">
+                Prêt à découvrir DST-System ?
+              </h2>
+              <p className="text-muted-foreground mb-8">
+                Contactez-nous pour une présentation complète de notre solution
+                et discutons de vos besoins opérationnels.
+              </p>
+              <Button
+                asChild
+                size="lg"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                <Link to="/contact">
+                  Nous contacter <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
     </main>
