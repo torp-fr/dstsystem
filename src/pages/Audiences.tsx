@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Swords,
   Shield,
-  Star,
-  Eye,
   Lock,
   Briefcase,
   PartyPopper,
@@ -20,73 +18,50 @@ import {
 const coreAudiences = [
   {
     icon: Swords,
-    title: "Armée",
+    title: "Armées & Forces spéciales",
     description:
-      "Entraînement tactique de haut niveau pour les forces armées, adapté aux conditions de combat modernes et aux exigences opérationnelles.",
+      "Entraînement tactique de haut niveau pour les forces armées et unités d'élite, adapté aux conditions de combat modernes et aux exigences opérationnelles les plus strictes.",
     needs: [
       "Maintien de la capacité opérationnelle",
       "Entraînement en conditions réalistes",
       "Mécanisation des gestes réflexes",
       "Graduation de la réponse selon la menace",
+      "CQB et travail sur effraction froide",
+      "Coordination d'équipe en intervention",
     ],
     response:
-      "DST-System propose des simulations de combat adaptées aux scénarios d'engagement actuels. Notre solution mobile s'installe directement dans vos casernes — aucune logistique lourde requise.",
+      "DST-System propose des simulations de combat adaptées aux scénarios d'engagement actuels. Notre solution mobile s'installe directement dans vos unités — aucune logistique lourde requise. Des scénarios haute intensité reproduisent les conditions les plus exigeantes : CQB, effraction froide, protection de personnes, neutralisation en milieu confiné.",
   },
   {
     icon: Shield,
-    title: "Police nationale",
+    title: "Police nationale & Gendarmerie",
     description:
-      "Solutions de formation au tir adaptées aux missions de maintien de l'ordre et d'intervention en milieu urbain.",
+      "Solutions de formation au tir adaptées aux missions de maintien de l'ordre, d'intervention en milieu urbain et aux exigences de qualification des personnels.",
     needs: [
       "Tir de précision en milieu urbain",
       "Gestion du stress opérationnel",
       "Respect des règles d'engagement",
       "Proportionnalité de la réponse",
-    ],
-    response:
-      "Nos scénarios reproduisent des interventions policières réalistes : contrôles, interpellations, situations de crise. Les sessions régulières renforcent la confiance et le professionnalisme des agents.",
-  },
-  {
-    icon: Star,
-    title: "Gendarmerie",
-    description:
-      "Programmes d'entraînement couvrant l'ensemble des missions de la gendarmerie, du maintien de l'ordre aux interventions spécialisées.",
-    needs: [
       "Polyvalence des compétences de tir",
-      "Formation continue des personnels",
-      "Adaptabilité aux différents contextes",
       "Qualification et requalification régulière",
     ],
     response:
-      "Des programmes modulaires couvrant le tir défensif et les situations d'intervention. Possibilité de mutualiser entre brigades pour optimiser les coûts et compléter un programme.",
-  },
-  {
-    icon: Eye,
-    title: "Forces spéciales",
-    description:
-      "Entraînement de pointe pour les unités d'élite nécessitant des compétences de tir exceptionnelles et une réactivité maximale.",
-    needs: [
-      "Réflexes et précision extrêmes",
-      "Coordination d'équipe en intervention",
-      "CQB et travail sur effraction froide",
-      "Adaptation rapide aux menaces",
-    ],
-    response:
-      "Des scénarios haute intensité reproduisant les conditions les plus exigeantes : CQB, effraction froide, protection de personnes, neutralisation en milieu confiné.",
+      "Nos scénarios reproduisent des interventions réalistes : contrôles, interpellations, situations de crise. Les sessions régulières renforcent la confiance et le professionnalisme des agents. Possibilité de mutualiser entre brigades et commissariats pour optimiser les coûts et compléter un programme.",
   },
   {
     icon: Lock,
-    title: "Sécurité privée",
+    title: "Sécurité privée & Collectivités",
     description:
-      "Formation au tir pour les agents de sécurité privée, conforme aux réglementations et aux standards professionnels.",
+      "Formation au tir pour les agents de sécurité privée et les personnels des collectivités locales (police municipale, gardes champêtres, ASVP), conforme aux réglementations en vigueur.",
     needs: [
       "Conformité réglementaire et certification",
       "Qualification et requalification",
       "Gestion de situations critiques",
       "Professionnalisation des équipes",
+      "Accès facilité pour les petites structures",
     ],
     response:
-      "Des programmes de formation et de certification adaptés au cadre légal de la sécurité privée, avec suivi individualisé et rapports pour les responsables.",
+      "Des programmes de formation et de certification adaptés au cadre légal, avec suivi individualisé et rapports pour les responsables. Solution idéale pour les petites collectivités ne disposant pas d'infrastructures de tir — possibilité de mutualiser entre plusieurs communes voisines.",
   },
 ];
 
@@ -114,10 +89,10 @@ const additionalAudiences = [
   },
   {
     icon: Building2,
-    title: "Collectivités locales",
-    description: "Police municipale, gardes champêtres, ASVP",
+    title: "Initiations & Découverte",
+    description: "Découverte du tir, sensibilisation, interventions pédagogiques",
     details:
-      "Une solution accessible pour les petites collectivités qui ne disposent pas d'infrastructures de tir. Possibilité de mutualiser entre plusieurs communes voisines pour rentabiliser un programme annuel.",
+      "Séances d'initiation et de découverte du tir pour un public large. Interventions en milieu scolaire, associatif ou institutionnel pour sensibiliser et faire découvrir l'univers du tir dans un cadre 100% sécurisé.",
   },
 ];
 
@@ -222,8 +197,8 @@ const Audiences = () => (
                 Au-delà des forces de l'ordre
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Notre solution s'ouvre également aux entreprises, aux
-                événements et aux particuliers pour des expériences uniques.
+                Notre solution s'ouvre également aux entreprises, aux événements
+                et aux particuliers pour des expériences uniques.
               </p>
             </div>
           </AnimatedSection>
@@ -254,7 +229,8 @@ const Audiences = () => (
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
               >
                 <Link to="/contact">
-                  Discutons de votre projet <ArrowRight className="ml-2 h-4 w-4" />
+                  Discutons de votre projet{" "}
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
@@ -278,36 +254,50 @@ const Audiences = () => (
 
               <div className="p-8 md:p-12 rounded-2xl bg-background border border-border">
                 <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
-                  <strong className="text-foreground">Commandants d'unités, élus locaux, responsables régionaux</strong> — 
-                  vos agents ont besoin de s'entraîner régulièrement pour maintenir
-                  un niveau opérationnel conforme aux exigences de leur mission.
+                  <strong className="text-foreground">
+                    Commandants d'unités, élus locaux, responsables régionaux
+                  </strong>{" "}
+                  — vos agents ont besoin de s'entraîner régulièrement pour
+                  maintenir un niveau opérationnel conforme aux exigences de
+                  leur mission.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-6">
-                  Le tir est une compétence périssable. Sans entraînement régulier,
-                  les réflexes s'émoussent, la confiance diminue, et la capacité de
-                  réponse graduée se dégrade. Or, les contraintes logistiques,
-                  budgétaires et de temps limitent souvent l'accès aux stands de tir
-                  traditionnels.
+                  Le tir est une compétence périssable. Sans entraînement
+                  régulier, les réflexes s'émoussent, la confiance diminue, et
+                  la capacité de réponse graduée se dégrade. Or, les contraintes
+                  logistiques, budgétaires et de temps limitent souvent l'accès
+                  aux stands de tir traditionnels.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-8">
-                  <strong className="text-foreground">DST-System apporte une solution concrète</strong> : 
-                  une unité mobile qui se déplace dans vos locaux, un programme
-                  annuel structuré avec suivi individualisé, et des rapports
-                  d'avancement permettant de mesurer l'impact de l'investissement.
-                  Le tout avec un coût maîtrisé et zéro infrastructure à installer.
+                  <strong className="text-foreground">
+                    DST-System apporte une solution concrète
+                  </strong>{" "}
+                  : une unité mobile qui se déplace dans vos locaux, un
+                  programme annuel structuré avec suivi individualisé, et des
+                  rapports d'avancement permettant de mesurer l'impact de
+                  l'investissement. Le tout avec un coût maîtrisé et zéro
+                  infrastructure à installer.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                   <div className="text-center p-4 rounded-xl bg-card border border-border">
                     <p className="text-2xl font-bold text-primary mb-1">0</p>
-                    <p className="text-xs text-muted-foreground">infrastructure requise</p>
+                    <p className="text-xs text-muted-foreground">
+                      infrastructure requise
+                    </p>
                   </div>
                   <div className="text-center p-4 rounded-xl bg-card border border-border">
-                    <p className="text-2xl font-bold text-primary mb-1">100%</p>
-                    <p className="text-xs text-muted-foreground">solution mobile</p>
+                    <p className="text-2xl font-bold text-primary mb-1">
+                      100%
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      solution mobile
+                    </p>
                   </div>
                   <div className="text-center p-4 rounded-xl bg-card border border-border">
                     <p className="text-2xl font-bold text-primary mb-1">ROI</p>
-                    <p className="text-xs text-muted-foreground">mesurable et documenté</p>
+                    <p className="text-xs text-muted-foreground">
+                      mesurable et documenté
+                    </p>
                   </div>
                 </div>
                 <div className="text-center">
@@ -317,7 +307,8 @@ const Audiences = () => (
                     className="bg-primary hover:bg-primary/90 text-primary-foreground"
                   >
                     <Link to="/contact">
-                      Demander une présentation <ArrowRight className="ml-2 h-5 w-5" />
+                      Demander une présentation{" "}
+                      <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
                 </div>

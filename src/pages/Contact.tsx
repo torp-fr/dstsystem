@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import FranceMap from "@/components/contact/FranceMap";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -167,15 +168,8 @@ const Contact = () => {
                     </div>
                   </div>
 
-                  {/* Static map placeholder */}
-                  <div className="aspect-[4/3] rounded-2xl bg-card border border-border flex items-center justify-center">
-                    <div className="text-center">
-                      <MapPin className="h-12 w-12 text-primary/30 mx-auto mb-2" />
-                      <p className="text-muted-foreground text-sm">
-                        Carte de localisation
-                      </p>
-                    </div>
-                  </div>
+                  {/* France map */}
+                  <FranceMap />
                 </div>
               </AnimatedSection>
             </div>

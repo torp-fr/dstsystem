@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
+import logo from "@/assets/logo_dst.png";
 
 const HeroSection = () => (
   <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -12,32 +13,44 @@ const HeroSection = () => (
       style={{ backgroundImage: `url(${heroBg})` }}
     />
     {/* Dark overlay */}
-    <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background" />
+    <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/75 to-background" />
     {/* Tactical grid */}
-    <div className="absolute inset-0 tactical-grid opacity-30" />
+    <div className="absolute inset-0 tactical-grid opacity-20" />
 
     <div className="container mx-auto px-4 relative z-10 text-center">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        className="flex flex-col items-center"
       >
+        {/* Logo prominent */}
+        <motion.img
+          src={logo}
+          alt="DST-System — Drill & Skills Training"
+          className="w-48 md:w-64 lg:w-80 mb-8 drop-shadow-2xl"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        />
+
         <div className="inline-block px-4 py-2 mb-6 border border-primary/30 rounded-full bg-primary/10">
           <span className="text-primary text-sm font-medium tracking-wider uppercase">
-            Drill & Skills Training
+            Entraînement opérationnel par simulateur laser
           </span>
         </div>
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-          Maintien des acquis.
+          Entraînez vos forces.
           <br />
-          <span className="text-primary">Montée en compétences.</span>
+          <span className="text-primary">Partout. Sans contrainte.</span>
         </h1>
 
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-          DST-System se déplace dans vos locaux avec une solution
-          d'entraînement au tir par simulateur laser — sans munitions, sans
-          infrastructure lourde, sans contrainte.
+          DST-System déploie un simulateur de tir laser directement dans vos
+          locaux — entraînement au tir opérationnel, zéro munition, zéro
+          infrastructure lourde. Maintenez les compétences de vos agents avec
+          une solution mobile et immédiate.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
