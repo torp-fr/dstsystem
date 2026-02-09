@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import FranceMap from "@/components/contact/FranceMap";
+import ContactVisual from "@/components/contact/FranceMap";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -169,7 +169,7 @@ const Contact = () => {
                   </div>
 
                   {/* France map */}
-                  <FranceMap />
+                  <ContactVisual />
                 </div>
               </AnimatedSection>
             </div>
