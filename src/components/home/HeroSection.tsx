@@ -24,15 +24,17 @@ const HeroSection = () => (
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="flex flex-col items-center"
       >
-        {/* Logo prominent */}
-        <motion.img
-          src={logo}
-          alt="DST-System — Drill & Skills Training"
-          className="w-48 md:w-64 lg:w-80 mb-8 drop-shadow-2xl"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        />
+        {/* Logo prominent — abaissé pour ne pas se confondre avec le header */}
+        <div className="mt-16 md:mt-20 lg:mt-24">
+          <motion.img
+            src={logo}
+            alt="DST-System — Drill & Skills Training"
+            className="w-52 md:w-72 lg:w-96 mb-10 drop-shadow-2xl"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          />
+        </div>
 
         <div className="inline-block px-4 py-2 mb-6 border border-primary/30 rounded-full bg-primary/10">
           <span className="text-primary text-sm font-medium tracking-wider uppercase">
@@ -49,7 +51,7 @@ const HeroSection = () => (
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
           DST-System déploie un simulateur de tir laser directement dans vos
           locaux — entraînement au tir opérationnel, zéro munition, zéro
-          infrastructure lourde. Maintenez les compétences de vos agents avec
+          infrastructure lourde. Maintenez les compétences avec
           une solution mobile et immédiate.
         </p>
 
