@@ -4,10 +4,6 @@
   "installCommand": "npm install",
   "framework": "vite",
   "outputDirectory": "dist",
-  "env": [
-    "EMAIL_USER",
-    "EMAIL_PASSWORD"
-  ],
   "rewrites": [
     {
       "source": "/(.*)",
