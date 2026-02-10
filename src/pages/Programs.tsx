@@ -1,10 +1,11 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AnimatedSection from "@/components/AnimatedSection";
 import ProgramsHero from "@/components/programs/ProgramsHero";
 import ProgramCards from "@/components/programs/ProgramCards";
 import CapacityInfo from "@/components/programs/CapacityInfo";
 import DecisionMakers from "@/components/programs/DecisionMakers";
+import ServiceOffers from "@/components/programs/ServiceOffers";
+import CollateralSupport from "@/components/programs/CollateralSupport";
 import MutualisationCTA from "@/components/programs/MutualisationCTA";
 
 const Programs = () => (
@@ -15,6 +16,8 @@ const Programs = () => (
       <ProgramCards />
       <CapacityInfo />
       <DecisionMakers />
+      <ServiceOffers />
+      <CollateralSupport />
       <MutualisationCTA />
     </main>
     <Footer />
