@@ -15,6 +15,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     organization: "",
     message: "",
   });
@@ -40,7 +41,7 @@ const Contact = () => {
           title: "Message envoyé avec succès !",
           description: "Nous vous répondrons dans les meilleurs délais.",
         });
-        setFormData({ name: "", email: "", organization: "", message: "" });
+        setFormData({ name: "", email: "", phone: "", organization: "", message: "" });
       } else {
         toast({
           title: "Erreur",
@@ -110,6 +111,21 @@ const Contact = () => {
                         value={formData.email}
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
+                        }
+                        className="bg-card border-border"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Téléphone <span className="text-muted-foreground text-sm">(optionnel)</span></Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder="+33 6 XX XX XX XX"
+                        value={formData.phone}
+                        onChange={(e) =>
+                          setFormData({ ...formData, phone: e.target.value })
                         }
                         className="bg-card border-border"
                       />
