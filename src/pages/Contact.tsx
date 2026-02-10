@@ -18,14 +18,46 @@ const Contact = () => {
     organization: "",
     message: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message envoyé !",
-      description: "Nous vous répondrons dans les meilleurs délais.",
-    });
-    setFormData({ name: "", email: "", organization: "", message: "" });
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3001/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        toast({
+          title: "Message envoyé avec succès !",
+          description: "Nous vous répondrons dans les meilleurs délais.",
+        });
+        setFormData({ name: "", email: "", organization: "", message: "" });
+      } else {
+        toast({
+          title: "Erreur",
+          description: data.error || "Une erreur est survenue lors de l'envoi.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast({
+        title: "Erreur de connexion",
+        description: "Impossible de se connecter au serveur. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -114,9 +146,11 @@ const Contact = () => {
                   <Button
                     type="submit"
                     size="lg"
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                    disabled={isLoading}
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50"
                   >
-                    <Send className="mr-2 h-4 w-4" /> Envoyer le message
+                    <Send className="mr-2 h-4 w-4" />
+                    {isLoading ? "Envoi en cours..." : "Envoyer le message"}
                   </Button>
                 </form>
               </AnimatedSection>
