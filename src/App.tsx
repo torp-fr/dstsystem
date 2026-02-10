@@ -12,6 +12,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import LoginPage from "./pages/auth/LoginPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
+import ClientsPage from "./pages/dashboard/ClientsPage";
+import ClientFormPage from "./pages/dashboard/ClientFormPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import NotFound from "./pages/NotFound";
@@ -48,7 +50,9 @@ const App = () => (
               }
             >
               <Route index element={<DashboardPage />} />
-              <Route path="clients" element={<div>Gestion Clients - À venir</div>} />
+              <Route path="clients" element={<ClientsPage />} />
+              <Route path="clients/new" element={<ClientFormPage />} />
+              <Route path="clients/:id/edit" element={<ClientFormPage />} />
               <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
               <Route path="finances" element={<div>Gestion Finances - À venir</div>} />
               <Route path="settings" element={<div>Paramètres - À venir</div>} />
