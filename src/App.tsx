@@ -23,6 +23,8 @@ import CostStructureFormPage from "./pages/dashboard/CostStructureFormPage";
 import CalendarPage from "./pages/dashboard/CalendarPage";
 import SessionFormPage from "./pages/dashboard/SessionFormPage";
 import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
+import QuotesPage from "./pages/dashboard/QuotesPage";
+import QuoteFormPage from "./pages/dashboard/QuoteFormPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
 import FinancesPage from "./pages/dashboard/FinancesPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
@@ -73,6 +75,9 @@ const AppRoutes = () => {
         <Route path="sessions/new" element={<SessionFormPage />} />
         <Route path="sessions/:id/edit" element={<SessionFormPage />} />
         <Route path="sessions/:id" element={<SessionDetailPage />} />
+        <Route path="quotes" element={<QuotesPage />} />
+        <Route path="quotes/new" element={<QuoteFormPage />} />
+        <Route path="quotes/:id/edit" element={<QuoteFormPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
         <Route path="finances" element={<FinancesPage />} />
