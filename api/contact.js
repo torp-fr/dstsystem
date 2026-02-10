@@ -20,11 +20,11 @@ export default async function handler(req, res) {
   try {
     console.log('[Contact API] Processing message from:', email);
 
-    // Send to DST-System (using deliverability@resend.dev for testing)
-    // In production, replace with verified domain
+    // Send to DST-System inbox
+    // Note: Once noreply-DST-system.fr domain is verified in Resend, update 'from' to: 'contact@noreply-DST-system.fr'
     const dstResult = await resend.emails.send({
       from: 'noreply@resend.dev',
-      to: 'deliverability@resend.dev', // Test address - replace with DST-System@hotmail.com when domain verified
+      to: 'dst-system@hotmail.com',
       subject: `Nouvelle demande de contact - ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; border: 2px solid #f00; padding: 20px;">
