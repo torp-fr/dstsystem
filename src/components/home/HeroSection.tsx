@@ -37,16 +37,20 @@ const HeroSection = () => (
         </div>
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-          Entraînez vos forces.
+          Entraînez-vous,
           <br />
           <span className="text-primary">Partout. Sans contrainte.</span>
         </h1>
 
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
           DST-System déploie un simulateur de tir laser directement dans vos
           locaux — entraînement au tir opérationnel, zéro munition, zéro
           infrastructure lourde. Maintenez les compétences avec
           une solution mobile et immédiate.
+        </p>
+
+        <p className="text-sm md:text-base text-primary/80 italic font-medium mb-10 tracking-wide">
+          « La sueur épargne le sang. » — Sun Tzu
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
