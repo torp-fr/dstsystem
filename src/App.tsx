@@ -24,10 +24,48 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// Tracking component that uses the hook
-const AppWithTracking = () => {
+// Routes component with tracking
+const AppRoutes = () => {
   useTracking();
-  return null;
+
+  return (
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Index />} />
+      <Route path="/solutions" element={<Solutions />} />
+      <Route path="/programmes" element={<Programs />} />
+      <Route path="/publics-cibles" element={<Audiences />} />
+      <Route path="/a-propos" element={<About />} />
+      <Route path="/tarifs" element={<Programs />} />
+      <Route path="/contact" element={<Contact />} />
+
+      {/* Auth Routes */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+
+      {/* Protected Routes */}
+      <Route
+        path="/dashboard/*"
+        element={
+          <PrivateRoute>
+            <DashboardLayout />
+          </PrivateRoute>
+        }
+      >
+        <Route index element={<DashboardPage />} />
+        <Route path="clients" element={<ClientsPage />} />
+        <Route path="clients/new" element={<ClientFormPage />} />
+        <Route path="clients/:id/edit" element={<ClientFormPage />} />
+        <Route path="analytics" element={<AnalyticsPage />} />
+        <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
+        <Route path="finances" element={<FinancesPage />} />
+        <Route path="settings" element={<div>Paramètres - À venir</div>} />
+      </Route>
+
+      {/* 404 */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
 };
 
 const App = () => (
@@ -37,43 +75,7 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <BrowserRouter>
-          <AppWithTracking />
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Index />} />
-            <Route path="/solutions" element={<Solutions />} />
-            <Route path="/programmes" element={<Programs />} />
-            <Route path="/publics-cibles" element={<Audiences />} />
-            <Route path="/a-propos" element={<About />} />
-            <Route path="/tarifs" element={<Programs />} />
-            <Route path="/contact" element={<Contact />} />
-
-            {/* Auth Routes */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-
-            {/* Protected Routes */}
-            <Route
-              path="/dashboard/*"
-              element={
-                <PrivateRoute>
-                  <DashboardLayout />
-                </PrivateRoute>
-              }
-            >
-              <Route index element={<DashboardPage />} />
-              <Route path="clients" element={<ClientsPage />} />
-              <Route path="clients/new" element={<ClientFormPage />} />
-              <Route path="clients/:id/edit" element={<ClientFormPage />} />
-              <Route path="analytics" element={<AnalyticsPage />} />
-              <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
-              <Route path="finances" element={<FinancesPage />} />
-              <Route path="settings" element={<div>Paramètres - À venir</div>} />
-            </Route>
-
-            {/* 404 */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>

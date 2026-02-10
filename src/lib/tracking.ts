@@ -13,17 +13,29 @@ const getOrCreateSessionId = (): string => {
 // Get geolocation data from IP
 export const getGeoLocation = async () => {
   try {
-    const response = await fetch('https://ipapi.co/json/');
+    const response = await fetch('https://ipapi.co/json/', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`API returned ${response.status}`);
+    }
+
     const data = await response.json();
+    console.log('[Tracking] Geolocation data:', data);
+
     return {
-      ip: data.ip,
-      country: data.country_name,
-      city: data.city,
-      latitude: data.latitude,
-      longitude: data.longitude,
+      ip: data.ip || 'unknown',
+      country: data.country_name || null,
+      city: data.city || null,
+      latitude: data.latitude || null,
+      longitude: data.longitude || null,
     };
   } catch (error) {
-    console.error('Geolocation error:', error);
+    console.warn('[Tracking] Geolocation error:', error);
     return {
       ip: 'unknown',
       country: null,
@@ -40,6 +52,8 @@ export const trackPageVisit = async (pageUrl: string, pageTitle?: string) => {
     const sessionId = getOrCreateSessionId();
     const geoData = await getGeoLocation();
 
+    console.log('[Tracking] Tracking page visit:', { pageUrl, sessionId, geoData });
+
     const { error } = await supabase.from('page_visits').insert([
       {
         page_url: pageUrl,
@@ -51,15 +65,17 @@ export const trackPageVisit = async (pageUrl: string, pageTitle?: string) => {
         city: geoData.city,
         latitude: geoData.latitude,
         longitude: geoData.longitude,
-        referrer: document.referrer,
+        referrer: document.referrer || null,
       },
     ]);
 
     if (error) {
-      console.error('Tracking error:', error);
+      console.error('[Tracking] Insert error:', error);
+    } else {
+      console.log('[Tracking] Page visit tracked successfully');
     }
   } catch (error) {
-    console.error('Track page visit error:', error);
+    console.error('[Tracking] Track page visit error:', error);
   }
 };
 
@@ -68,6 +84,8 @@ export const trackSessionStart = async () => {
   try {
     const sessionId = getOrCreateSessionId();
     const geoData = await getGeoLocation();
+
+    console.log('[Tracking] Starting session:', { sessionId, geoData });
 
     const { error } = await supabase.from('sessions').insert([
       {
@@ -85,10 +103,12 @@ export const trackSessionStart = async () => {
     ]);
 
     if (error) {
-      console.error('Session tracking error:', error);
+      console.error('[Tracking] Session insert error:', error);
+    } else {
+      console.log('[Tracking] Session started successfully');
     }
   } catch (error) {
-    console.error('Track session error:', error);
+    console.error('[Tracking] Track session error:', error);
   }
 };
 
