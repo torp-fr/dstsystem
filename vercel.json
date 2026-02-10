@@ -7,5 +7,11 @@
   "env": [
     "EMAIL_USER",
     "EMAIL_PASSWORD"
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
