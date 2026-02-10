@@ -13,6 +13,7 @@ import {
   TrendingUp,
   Crosshair,
   Calculator,
+  Calendar,
 } from 'lucide-react';
 
 interface DashboardSidebarProps {
@@ -30,6 +31,7 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
     { icon: Users, label: 'Clients', path: '/dashboard/clients' },
     { icon: Crosshair, label: 'Opérateurs', path: '/dashboard/operators' },
     { icon: Calculator, label: 'Coûts', path: '/dashboard/costs' },
+    { icon: Calendar, label: 'Calendrier', path: '/dashboard/calendar' },
     { icon: TrendingUp, label: 'Analytics', path: '/dashboard/analytics' },
     { icon: Package, label: 'Offres & Formules', path: '/dashboard/offers' },
     { icon: DollarSign, label: 'Finances', path: '/dashboard/finances' },

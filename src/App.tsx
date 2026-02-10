@@ -20,6 +20,9 @@ import OperatorsPage from "./pages/dashboard/OperatorsPage";
 import OperatorFormPage from "./pages/dashboard/OperatorFormPage";
 import CostStructuresPage from "./pages/dashboard/CostStructuresPage";
 import CostStructureFormPage from "./pages/dashboard/CostStructureFormPage";
+import CalendarPage from "./pages/dashboard/CalendarPage";
+import SessionFormPage from "./pages/dashboard/SessionFormPage";
+import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
 import FinancesPage from "./pages/dashboard/FinancesPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
@@ -66,6 +69,10 @@ const AppRoutes = () => {
         <Route path="costs" element={<CostStructuresPage />} />
         <Route path="costs/new" element={<CostStructureFormPage />} />
         <Route path="costs/:id/edit" element={<CostStructureFormPage />} />
+        <Route path="calendar" element={<CalendarPage />} />
+        <Route path="sessions/new" element={<SessionFormPage />} />
+        <Route path="sessions/:id/edit" element={<SessionFormPage />} />
+        <Route path="sessions/:id" element={<SessionDetailPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
         <Route path="finances" element={<FinancesPage />} />
