@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
+import { useTracking } from "@/hooks/useTracking";
 import Index from "./pages/Index";
 import Solutions from "./pages/Solutions";
 import Programs from "./pages/Programs";
@@ -15,11 +16,18 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import ClientsPage from "./pages/dashboard/ClientsPage";
 import ClientFormPage from "./pages/dashboard/ClientFormPage";
+import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+// Tracking component that uses the hook
+const AppWithTracking = () => {
+  useTracking();
+  return null;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -28,6 +36,7 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <BrowserRouter>
+          <AppWithTracking />
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
@@ -55,6 +64,7 @@ const App = () => (
               <Route path="clients" element={<ClientsPage />} />
               <Route path="clients/new" element={<ClientFormPage />} />
               <Route path="clients/:id/edit" element={<ClientFormPage />} />
+              <Route path="analytics" element={<AnalyticsPage />} />
               <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
               <Route path="finances" element={<div>Gestion Finances - À venir</div>} />
               <Route path="settings" element={<div>Paramètres - À venir</div>} />
