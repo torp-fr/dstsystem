@@ -9,7 +9,7 @@ import Programs from "./pages/Programs";
 import Audiences from "./pages/Audiences";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Tarifs from "./pages/Tarifs";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
