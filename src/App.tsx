@@ -16,6 +16,10 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import ClientsPage from "./pages/dashboard/ClientsPage";
 import ClientFormPage from "./pages/dashboard/ClientFormPage";
+import OperatorsPage from "./pages/dashboard/OperatorsPage";
+import OperatorFormPage from "./pages/dashboard/OperatorFormPage";
+import CostStructuresPage from "./pages/dashboard/CostStructuresPage";
+import CostStructureFormPage from "./pages/dashboard/CostStructureFormPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
 import FinancesPage from "./pages/dashboard/FinancesPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
@@ -56,6 +60,12 @@ const AppRoutes = () => {
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<ClientFormPage />} />
         <Route path="clients/:id/edit" element={<ClientFormPage />} />
+        <Route path="operators" element={<OperatorsPage />} />
+        <Route path="operators/new" element={<OperatorFormPage />} />
+        <Route path="operators/:id/edit" element={<OperatorFormPage />} />
+        <Route path="costs" element={<CostStructuresPage />} />
+        <Route path="costs/new" element={<CostStructureFormPage />} />
+        <Route path="costs/:id/edit" element={<CostStructureFormPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
         <Route path="finances" element={<FinancesPage />} />
