@@ -25,7 +25,7 @@ const HeroSection = () => (
         className="flex flex-col items-center"
       >
         {/* Logo prominent — abaissé pour ne pas se confondre avec le header */}
-        <div className="mt-16 md:mt-20 lg:mt-24">
+        <div className="mt-8 md:mt-12 lg:mt-16">
           <motion.img
             src={logo}
             alt="DST-System — Drill & Skills Training"
@@ -34,12 +34,6 @@ const HeroSection = () => (
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           />
-        </div>
-
-        <div className="inline-block px-4 py-2 mb-6 border border-primary/30 rounded-full bg-primary/10">
-          <span className="text-primary text-sm font-medium tracking-wider uppercase">
-            Entraînement opérationnel par simulateur laser
-          </span>
         </div>
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">

@@ -10,6 +10,7 @@ const navLinks = [
   { to: "/solutions", label: "Nos Solutions" },
   { to: "/programmes", label: "Programmes" },
   { to: "/publics-cibles", label: "Publics Cibles" },
+  { to: "/tarifs", label: "Tarifs" },
   { to: "/a-propos", label: "À propos" },
   { to: "/contact", label: "Contact" },
 ];
