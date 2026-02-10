@@ -11,6 +11,7 @@ import Audiences from "./pages/Audiences";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import ClientsPage from "./pages/dashboard/ClientsPage";
 import ClientFormPage from "./pages/dashboard/ClientFormPage";
@@ -39,6 +40,7 @@ const App = () => (
 
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
             {/* Protected Routes */}
             <Route

@@ -4,31 +4,65 @@ import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AlertCircle, LogIn } from 'lucide-react';
+import { AlertCircle, LogIn, CheckCircle } from 'lucide-react';
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
-  const { login, error } = useAuth();
+  const { register, error } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
+
+    if (password !== confirmPassword) {
+      setErrorMessage('Les mots de passe ne correspondent pas');
+      return;
+    }
+
+    if (password.length < 8) {
+      setErrorMessage('Le mot de passe doit contenir au moins 8 caractères');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      await login(email, password);
-      navigate('/dashboard');
+      await register(email, password);
+      setIsSuccess(true);
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
     } catch (err) {
-      setErrorMessage(error?.message || 'Une erreur est survenue lors de la connexion');
-      console.error('Login error:', err);
+      setErrorMessage(error?.message || 'Une erreur est survenue lors de l\'inscription');
+      console.error('Register error:', err);
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background to-secondary/10 flex items-center justify-center px-4">
+        <div className="w-full max-w-md">
+          <div className="bg-card rounded-xl border border-border shadow-lg p-8 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/10 mb-4">
+              <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+            </div>
+            <h2 className="text-2xl font-bold mb-2">Inscription réussie !</h2>
+            <p className="text-muted-foreground mb-6">
+              Votre compte a été créé avec succès. Redirection vers la connexion...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary/10 flex items-center justify-center px-4">
@@ -39,10 +73,10 @@ const LoginPage = () => {
             <LogIn className="h-8 w-8 text-primary" />
           </div>
           <h1 className="text-3xl font-bold">DST-System</h1>
-          <p className="text-muted-foreground mt-2">Tableau de bord de gestion</p>
+          <p className="text-muted-foreground mt-2">Créer un compte</p>
         </div>
 
-        {/* Login Form */}
+        {/* Register Form */}
         <div className="bg-card rounded-xl border border-border shadow-lg p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Error Message */}
@@ -81,24 +115,42 @@ const LoginPage = () => {
                 className="bg-background border-border"
                 required
               />
+              <p className="text-xs text-muted-foreground">
+                Minimum 8 caractères
+              </p>
+            </div>
+
+            {/* Confirm Password Field */}
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                disabled={isLoading}
+                className="bg-background border-border"
+                required
+              />
             </div>
 
             {/* Submit Button */}
             <Button
               type="submit"
-              disabled={isLoading || !email || !password}
+              disabled={isLoading || !email || !password || !confirmPassword}
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50"
             >
-              {isLoading ? 'Connexion en cours...' : 'Se connecter'}
+              {isLoading ? 'Inscription en cours...' : 'Créer un compte'}
             </Button>
           </form>
 
-          {/* Register Link */}
+          {/* Login Link */}
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              Pas encore de compte ?{' '}
-              <Link to="/register" className="text-primary hover:underline font-medium">
-                Créer un compte
+              Vous avez déjà un compte ?{' '}
+              <Link to="/login" className="text-primary hover:underline font-medium">
+                Se connecter
               </Link>
             </p>
           </div>
@@ -109,10 +161,10 @@ const LoginPage = () => {
           </p>
         </div>
 
-        {/* Development Note */}
+        {/* Info Box */}
         <div className="mt-6 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-xs text-blue-600 dark:text-blue-400">
-            💡 <strong>Pour les tests :</strong> Créez un compte via le formulaire d'inscription ou utilisez les identifiants fournis.
+            💡 Créez un compte avec votre email et un mot de passe fort pour accéder au tableau de bord.
           </p>
         </div>
       </div>
@@ -120,4 +172,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
