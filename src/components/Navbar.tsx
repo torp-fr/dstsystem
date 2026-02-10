@@ -8,9 +8,8 @@ import logo from "@/assets/logo_dst.png";
 const navLinks = [
   { to: "/", label: "Accueil" },
   { to: "/solutions", label: "Nos Solutions" },
-  { to: "/programmes", label: "Programmes" },
+  { to: "/programmes", label: "Programmes & Offres" },
   { to: "/publics-cibles", label: "Publics Cibles" },
-  { to: "/tarifs", label: "Tarifs" },
   { to: "/a-propos", label: "À propos" },
   { to: "/contact", label: "Contact" },
 ];
