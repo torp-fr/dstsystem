@@ -73,8 +73,8 @@ const institutionalOffers = [
     color: "border-blue-500/40",
     badge: "Volume",
     badgeClass: "bg-blue-500/10 text-blue-400",
-    title: "Séances libres en volume",
-    subtitle: "≥ 10 journées / an",
+    title: "Séances libres - Personnalisable",
+    subtitle: "+ 20 journées / an",
     indication: "Tarif optimisé par le volume",
     description:
       "Capacité optimisée avec mutualisation possible. Les collectivités s'organisent librement pour la répartition inter-services ou inter-communes.",
