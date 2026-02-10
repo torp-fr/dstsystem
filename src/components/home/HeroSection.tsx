@@ -36,12 +36,6 @@ const HeroSection = () => (
           />
         </div>
 
-        <div className="inline-block px-4 py-2 mb-6 border border-primary/30 rounded-full bg-primary/10">
-          <span className="text-primary text-sm font-medium tracking-wider uppercase">
-            Entraînement opérationnel par simulateur laser
-          </span>
-        </div>
-
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
           Entraînez vos forces.
           <br />
