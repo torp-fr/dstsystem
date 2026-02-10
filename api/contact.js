@@ -1,4 +1,6 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -12,37 +14,24 @@ export default async function handler(req, res) {
     if (!name || !email || !message) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields',
+        error: 'Missing required fields (name, email, message)',
       });
     }
 
-    // Check environment variables
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
-      console.error('Missing email environment variables');
+    // Check API key
+    if (!process.env.RESEND_API_KEY) {
+      console.error('[Contact API] Missing RESEND_API_KEY');
       return res.status(500).json({
         success: false,
-        error: 'Server configuration error: Missing credentials',
+        error: 'Server configuration error: Missing API key',
       });
     }
 
-    console.log('[Contact API] Starting email send for:', email);
-
-    // Create Nodemailer transporter for Hotmail/Outlook
-    const transporter = nodemailer.createTransport({
-      host: 'smtp-mail.outlook.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-
-    console.log('[Contact API] Transporter created, sending email to DST-System...');
+    console.log('[Contact API] Sending email for:', email);
 
     // Send email to DST-System
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    const dstEmailResult = await resend.emails.send({
+      from: 'Contact DST-System <onboarding@resend.dev>',
       to: 'DST-System@hotmail.com',
       subject: `Nouvelle demande de contact - ${name}`,
       html: `
@@ -64,12 +53,20 @@ export default async function handler(req, res) {
       replyTo: email,
     });
 
-    console.log('[Contact API] Email sent to DST-System successfully');
+    if (dstEmailResult.error) {
+      console.error('[Contact API] Error sending to DST-System:', dstEmailResult.error);
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to send email to DST-System',
+        details: dstEmailResult.error.message,
+      });
+    }
+
+    console.log('[Contact API] Email sent to DST-System:', dstEmailResult.id);
 
     // Send confirmation email to user
-    console.log('[Contact API] Sending confirmation email to user...');
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    const confirmationResult = await resend.emails.send({
+      from: 'DST-System <onboarding@resend.dev>',
       to: email,
       subject: 'Confirmation - Votre message a été reçu | DST-System',
       html: `
@@ -87,7 +84,12 @@ export default async function handler(req, res) {
       `,
     });
 
-    console.log('[Contact API] Confirmation email sent successfully');
+    if (confirmationResult.error) {
+      console.error('[Contact API] Error sending confirmation:', confirmationResult.error);
+      // Still success for user, but log the error
+    }
+
+    console.log('[Contact API] Confirmation email sent:', confirmationResult.id);
 
     return res.status(200).json({
       success: true,
@@ -95,15 +97,14 @@ export default async function handler(req, res) {
       data: { name, email },
     });
   } catch (error) {
-    console.error('[Contact API] Error:', {
+    console.error('[Contact API] Unexpected error:', {
       message: error.message,
-      code: error.code,
       stack: error.stack,
     });
 
     return res.status(500).json({
       success: false,
-      error: 'Failed to send email',
+      error: 'Failed to process contact form',
       details: error.message,
     });
   }
