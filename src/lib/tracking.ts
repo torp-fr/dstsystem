@@ -10,14 +10,11 @@ const getOrCreateSessionId = (): string => {
   return sessionId;
 };
 
-// Get geolocation data from IP
+// Get geolocation data from Vercel API (server-side to avoid CORS)
 export const getGeoLocation = async () => {
   try {
-    const response = await fetch('https://ipapi.co/json/', {
+    const response = await fetch('/api/geolocation', {
       method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
     });
 
     if (!response.ok) {
@@ -28,8 +25,8 @@ export const getGeoLocation = async () => {
     console.log('[Tracking] Geolocation data:', data);
 
     return {
-      ip: data.ip || 'unknown',
-      country: data.country_name || null,
+      ip: data.ip || null,
+      country: data.country || null,
       city: data.city || null,
       latitude: data.latitude || null,
       longitude: data.longitude || null,
@@ -37,7 +34,7 @@ export const getGeoLocation = async () => {
   } catch (error) {
     console.warn('[Tracking] Geolocation error:', error);
     return {
-      ip: 'unknown',
+      ip: null,
       country: null,
       city: null,
       latitude: null,
