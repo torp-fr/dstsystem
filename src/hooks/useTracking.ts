@@ -1,13 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { trackPageVisit, trackSessionStart } from '@/lib/tracking';
 
 export const useTracking = () => {
   const location = useLocation();
+  const sessionStarted = useRef(false);
 
-  // Track session start on mount
+  // Track session start ONLY once
   useEffect(() => {
-    trackSessionStart();
+    if (!sessionStarted.current) {
+      trackSessionStart();
+      sessionStarted.current = true;
+    }
   }, []);
 
   // Track page visits on route change
