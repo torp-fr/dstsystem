@@ -25,7 +25,7 @@ const HeroSection = () => (
         className="flex flex-col items-center"
       >
         {/* Logo prominent — abaissé pour ne pas se confondre avec le header */}
-        <div className="mt-16 md:mt-20 lg:mt-24">
+        <div className="mt-8 md:mt-12 lg:mt-16">
           <motion.img
             src={logo}
             alt="DST-System — Drill & Skills Training"
