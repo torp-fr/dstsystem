@@ -524,7 +524,7 @@ export default function SessionFormPage() {
                     return (
                       <div
                         key={so.id}
-                        className="bg-gray-50 p-3 rounded-lg flex items-center justify-between"
+                        className="bg-card p-3 rounded-lg flex items-center justify-between"
                       >
                         <div className="text-sm">
                           <p className="font-medium">
