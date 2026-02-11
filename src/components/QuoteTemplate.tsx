@@ -17,6 +17,7 @@ interface QuoteTemplateProps {
   onPrint?: () => void;
   onEmail?: () => void;
   onDownload?: () => void;
+  id?: string;
 }
 
 export default function QuoteTemplate({
@@ -33,9 +34,11 @@ export default function QuoteTemplate({
   onPrint,
   onEmail,
   onDownload,
+  id,
 }: QuoteTemplateProps) {
   const quoteDate = new Date(quote.created_at);
   const validUntil = new Date(quote.valid_until);
+  const elementId = id || `quote-${quote.id}`;
 
   return (
     <div className="space-y-6">
@@ -56,7 +59,7 @@ export default function QuoteTemplate({
       </div>
 
       {/* Main Quote Card */}
-      <Card className="print:shadow-none print:border-none">
+      <Card id={elementId} className="print:shadow-none print:border-none">
         <CardContent className="p-8 print:p-0">
           <div className="space-y-8">
             {/* Header */}
@@ -67,7 +70,7 @@ export default function QuoteTemplate({
                   <img
                     src="/favicon.png"
                     alt="Logo"
-                    className="h-24 w-24 object-contain mb-4"
+                    className="h-48 w-48 object-contain mb-4"
                   />
                   <div className="space-y-1 text-sm">
                     <h2 className="text-lg font-bold">{company.name}</h2>

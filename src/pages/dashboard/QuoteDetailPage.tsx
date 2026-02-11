@@ -4,12 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft } from 'lucide-react';
 import { useQuotes } from '@/hooks/useQuotes';
 import { useClients } from '@/hooks/useClients';
+import { usePdfExport } from '@/hooks/usePdfExport';
+import { useToast } from '@/hooks/use-toast';
 import QuoteTemplate from '@/components/QuoteTemplate';
 import { Loader2 } from 'lucide-react';
 
 export default function QuoteDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { exportQuoteToPDF } = usePdfExport();
 
   const { data: quotes = [] } = useQuotes();
   const { data: clients = [] } = useClients();
@@ -66,9 +70,21 @@ export default function QuoteDetailPage() {
     alert('Fonction d\'envoi par email à implémenter');
   };
 
-  const handleDownload = () => {
-    // TODO: Implement PDF download
-    alert('Fonction de téléchargement PDF à implémenter');
+  const handleDownload = async () => {
+    try {
+      await exportQuoteToPDF(quote.id, quote.quote_number);
+      toast({
+        title: 'Succès',
+        description: `${quote.quote_number}.pdf téléchargé`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Erreur',
+        description: 'Erreur lors du téléchargement du PDF',
+        variant: 'destructive',
+      });
+      console.error('PDF export error:', error);
+    }
   };
 
   return (
@@ -85,6 +101,7 @@ export default function QuoteDetailPage() {
       </div>
 
       <QuoteTemplate
+        id={`quote-${quote.id}`}
         quote={quote}
         client={client}
         company={companyInfo}
