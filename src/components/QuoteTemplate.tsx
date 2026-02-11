@@ -59,9 +59,9 @@ export default function QuoteTemplate({
       </div>
 
       {/* Main Quote Card - Use flexbox for footer positioning */}
-      <Card id={elementId} className="print:shadow-none print:border-none print:bg-white flex flex-col min-h-screen print:min-h-full" style={{ background: 'var(--card)' }}>
+      <Card id={elementId} className="print:shadow-none print:border-none print:bg-white flex flex-col" style={{ background: 'var(--card)', minHeight: '297mm' }} >
         <CardContent className="p-8 print:p-0 print:bg-white flex-1 flex flex-col" style={{ background: 'var(--card)' }}>
-          <div className="space-y-8 flex-1">
+          <div className="space-y-8 flex-1 flex flex-col">
             {/* Header - Logo Left, DEVIS + Client Right */}
             <div className="border-b pb-6">
               <div className="flex gap-8 justify-between">
@@ -246,7 +246,7 @@ export default function QuoteTemplate({
           </div>
 
           {/* Footer - Pushed to bottom */}
-          <div className="pt-6 border-t text-center text-xs text-muted-foreground space-y-2 mt-auto">
+          <div className="pt-6 border-t text-center text-xs text-muted-foreground space-y-2 mt-auto flex-shrink-0">
             <p>Merci de votre confiance</p>
             <p>Pour toute question, veuillez contacter {company.email}</p>
             <p className="pt-4">--- Fin du devis ---</p>
