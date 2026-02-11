@@ -436,32 +436,6 @@ export default function CalendarPage() {
               </div>
             </>
           )}
-                        {statusCounts.completed > 0 && (
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                            <span className="text-muted-foreground">
-                              {statusCounts.completed} complétée{statusCounts.completed > 1 ? 's' : ''}
-                            </span>
-                          </div>
-                        )}
-                        {statusCounts.cancelled > 0 && (
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-rose-500"></div>
-                            <span className="text-muted-foreground">
-                              {statusCounts.cancelled} annulée{statusCounts.cancelled > 1 ? 's' : ''}
-                            </span>
-                          </div>
-                        )}
-                        {monthSessions.length === 0 && (
-                          <p className="text-muted-foreground">Aucune session</p>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          )}
 
           {/* Legend */}
           <div className="mt-2 p-2 bg-muted/30 rounded-lg border-border border text-xs">
