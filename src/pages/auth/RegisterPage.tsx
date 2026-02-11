@@ -50,7 +50,7 @@ const RegisterPage = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-secondary/10 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
-          <div className="bg-card rounded-xl border border-border shadow-lg p-8 text-center">
+          <div className="bg-card rounded-xl border-border border-border-border shadow-lg p-8 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/10 mb-4">
               <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
@@ -77,11 +77,11 @@ const RegisterPage = () => {
         </div>
 
         {/* Register Form */}
-        <div className="bg-card rounded-xl border border-border shadow-lg p-6">
+        <div className="bg-card rounded-xl border-border border-border-border shadow-lg p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Error Message */}
             {errorMessage && (
-              <div className="flex items-start gap-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <div className="flex items-start gap-3 p-3 bg-destructive/10 border-border border-destructive/20 rounded-lg">
                 <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-destructive">{errorMessage}</p>
               </div>
@@ -97,7 +97,7 @@ const RegisterPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
-                className="bg-background border-border"
+                className="bg-background border-border-border"
                 required
               />
             </div>
@@ -112,7 +112,7 @@ const RegisterPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
-                className="bg-background border-border"
+                className="bg-background border-border-border"
                 required
               />
               <p className="text-xs text-muted-foreground">
@@ -130,7 +130,7 @@ const RegisterPage = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={isLoading}
-                className="bg-background border-border"
+                className="bg-background border-border-border"
                 required
               />
             </div>
@@ -162,7 +162,7 @@ const RegisterPage = () => {
         </div>
 
         {/* Info Box */}
-        <div className="mt-6 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+        <div className="mt-6 p-3 bg-blue-500/10 border-border border-blue-500/20 rounded-lg">
           <p className="text-xs text-blue-600 dark:text-blue-400">
             💡 Créez un compte avec votre email et un mot de passe fort pour accéder au tableau de bord.
           </p>

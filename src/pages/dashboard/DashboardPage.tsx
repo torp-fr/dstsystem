@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const StatCard = ({ icon: Icon, label, value, color, trend }: any) => (
-  <div className="bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors">
+  <div className="bg-card rounded-lg border-border border-border-border p-5 hover:border-primary/30 transition-colors">
     <div className="flex items-start justify-between">
       <div className="flex-1">
         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">{label}</p>
@@ -139,7 +139,7 @@ const DashboardPage = () => {
       {/* Main Content Grid - 16:9 Optimized */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Upcoming Sessions - Wider Column */}
-        <div className="lg:col-span-2 bg-card rounded-lg border border-border p-6">
+        <div className="lg:col-span-2 bg-card rounded-lg border-border border-border-border p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Calendar className="h-5 w-5 text-amber-600 dark:text-amber-400" />
@@ -164,7 +164,7 @@ const DashboardPage = () => {
               {upcomingSessions.slice(0, 4).map((session: any) => (
                 <div
                   key={session.id}
-                  className="p-3 rounded-lg bg-gradient-to-r from-amber-50 to-transparent dark:from-amber-500/10 border border-amber-200/50 dark:border-amber-500/20 hover:border-amber-400/50 transition-colors cursor-pointer"
+                  className="p-3 rounded-lg bg-gradient-to-r from-amber-50 to-transparent dark:from-amber-500/10 border-border border-amber-200/50 dark:border-amber-500/20 hover:border-amber-400/50 transition-colors cursor-pointer"
                   onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
                 >
                   <div className="flex items-center justify-between">
@@ -187,7 +187,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Recent Clients - Side Column */}
-        <div className="bg-card rounded-lg border border-border p-6">
+        <div className="bg-card rounded-lg border-border border-border-border p-6">
           <div className="flex items-center gap-2 mb-4">
             <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             <h2 className="text-lg font-bold">Derniers clients</h2>
@@ -232,7 +232,7 @@ const DashboardPage = () => {
       {/* Recent Quotes & Financial Overview - 16:9 Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Recent Quotes */}
-        <div className="lg:col-span-2 bg-card rounded-lg border border-border p-6">
+        <div className="lg:col-span-2 bg-card rounded-lg border-border border-border-border p-6">
           <div className="flex items-center gap-2 mb-4">
             <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             <h2 className="text-lg font-bold">Devis et factures récents</h2>
@@ -284,7 +284,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Financial Summary */}
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-500/10 dark:to-emerald-500/10 rounded-lg border border-green-200 dark:border-green-500/30 p-6">
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-500/10 dark:to-emerald-500/10 rounded-lg border-border border-green-200 dark:border-green-500/30 p-6">
           <div className="flex items-center gap-2 mb-4">
             <Zap className="h-5 w-5 text-green-600 dark:text-green-400" />
             <h2 className="text-lg font-bold">Résumé financier</h2>
@@ -297,7 +297,7 @@ const DashboardPage = () => {
               </p>
               <p className="text-xs text-muted-foreground mt-1">{recentQuotes.length} devis</p>
             </div>
-            <div className="h-px bg-border opacity-50" />
+            <div className="h-px bg-border-border opacity-50" />
             <div>
               <p className="text-xs font-medium text-muted-foreground uppercase">Coûts mensuels</p>
               <p className="text-2xl font-bold text-red-600 dark:text-red-400">
@@ -310,7 +310,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Quick Actions - Compact 16:9 Layout */}
-      <div className="bg-card rounded-lg border border-border p-6">
+      <div className="bg-card rounded-lg border-border border-border-border p-6">
         <div className="flex items-center gap-2 mb-4">
           <Zap className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-bold">Actions rapides</h2>
@@ -366,23 +366,6 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      {/* System Status Footer */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <Alert className="border-green-500/30 bg-green-50/50 dark:bg-green-500/10 lg:col-span-2">
-          <AlertCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
-          <AlertDescription className="text-green-800 dark:text-green-300 text-sm">
-            <strong>✅ Système actif</strong> • Tous les modules opérationnels (Clients, Opérateurs, Sessions, Devis, Factures, Avenants, Acomptes)
-          </AlertDescription>
-        </Alert>
-        <Button
-          variant="outline"
-          onClick={() => navigate('/dashboard/operators/analysis')}
-          className="gap-2"
-        >
-          <Zap className="h-4 w-4" />
-          Analyse comparative coûts
-        </Button>
-      </div>
     </div>
   );
 };

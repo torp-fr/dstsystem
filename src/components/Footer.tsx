@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import logo from "@/assets/logo_dst.png";
 
 const Footer = () => (
-  <footer className="bg-card border-t border-border">
+  <footer className="bg-card border-t border-border-border">
     <div className="container mx-auto px-4 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         {/* Logo & description */}
@@ -73,7 +73,7 @@ const Footer = () => (
         </div>
       </div>
 
-      <div className="border-t border-border mt-12 pt-8 text-center">
+      <div className="border-t border-border-border mt-12 pt-8 text-center">
         <p className="text-muted-foreground text-sm">
           © {new Date().getFullYear()} DST-System. Tous droits réservés.
         </p>

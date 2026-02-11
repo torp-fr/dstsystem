@@ -71,10 +71,10 @@ const ProgramCards = () => (
         {programs.map((prog, i) => (
           <AnimatedSection key={prog.title} delay={i * 0.15}>
             <div
-              className={`h-full p-8 rounded-2xl border transition-all group relative ${
+              className={`h-full p-8 rounded-2xl border-border transition-all group relative ${
                 prog.highlight
                   ? "bg-primary/5 border-primary/30 shadow-lg shadow-primary/5"
-                  : "bg-card border-border hover:border-primary/30"
+                  : "bg-card border-border-border hover:border-primary/30"
               }`}
             >
               {prog.highlight && (
@@ -82,7 +82,7 @@ const ProgramCards = () => (
                   Recommandé
                 </div>
               )}
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 mb-6">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 border-border border-primary/20 mb-6">
                 <prog.icon className="h-7 w-7 text-primary" />
               </div>
               <h2 className="text-2xl font-bold mb-1">{prog.title}</h2>

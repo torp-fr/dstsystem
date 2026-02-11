@@ -199,14 +199,14 @@ export default function CalendarPage() {
           </div>
 
           {/* Calendar grid */}
-          <div className="border rounded-lg overflow-hidden">
+          <div className="border-border rounded-lg overflow-hidden">
             {weeks.map((week, weekIdx) => (
               <div key={weekIdx} className="grid grid-cols-7 border-t">
                 {week.map((day, dayIdx) => (
                   <div
                     key={`${weekIdx}-${dayIdx}`}
                     className={`min-h-24 p-2 border-r last:border-r-0 ${
-                      !day.isCurrentMonth ? 'bg-gray-50' : 'bg-white'
+                      !day.isCurrentMonth ? 'bg-gray-50' : 'bg-card'
                     } ${
                       day.isCurrentMonth &&
                       day.date.toDateString() === today.toDateString()

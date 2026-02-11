@@ -28,7 +28,7 @@ const FinancesPage = () => {
       {/* Main Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Revenue */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-2">Revenus ce mois</p>
@@ -42,7 +42,7 @@ const FinancesPage = () => {
         </div>
 
         {/* Expenses */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-2">Dépenses ce mois</p>
@@ -56,7 +56,7 @@ const FinancesPage = () => {
         </div>
 
         {/* Net Profit */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-2">Bénéfice net</p>
@@ -72,7 +72,7 @@ const FinancesPage = () => {
         </div>
 
         {/* Profitability */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-2">Rentabilité globale</p>
@@ -89,7 +89,7 @@ const FinancesPage = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Invoices */}
-        <div className="lg:col-span-2 bg-card rounded-xl border border-border p-6">
+        <div className="lg:col-span-2 bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold">Factures</h2>
             <Button className="bg-primary hover:bg-primary/90">
@@ -124,7 +124,7 @@ const FinancesPage = () => {
         </div>
 
         {/* Expenses Summary */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold">Dépenses</h2>
             <Button variant="outline" size="sm">
@@ -155,7 +155,7 @@ const FinancesPage = () => {
 
       {/* Coming Soon Features */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <h3 className="text-lg font-bold mb-4">📊 Rapports financiers</h3>
           <p className="text-muted-foreground text-sm mb-4">
             Génération automatique de rapports mensuels, trimestriels et annuels.
@@ -165,7 +165,7 @@ const FinancesPage = () => {
           </Button>
         </div>
 
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <h3 className="text-lg font-bold mb-4">📈 Projections</h3>
           <p className="text-muted-foreground text-sm mb-4">
             Prévisions de cash flow et analyses de rentabilité par prestations.
@@ -175,7 +175,7 @@ const FinancesPage = () => {
           </Button>
         </div>
 
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <h3 className="text-lg font-bold mb-4">💰 Tarification</h3>
           <p className="text-muted-foreground text-sm mb-4">
             Calcul automatique des tarifs planchers basés sur les coûts et marges.
@@ -185,7 +185,7 @@ const FinancesPage = () => {
           </Button>
         </div>
 
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <h3 className="text-lg font-bold mb-4">📉 Analyse</h3>
           <p className="text-muted-foreground text-sm mb-4">
             Analyse détaillée par client, par prestation, par période.
@@ -197,7 +197,7 @@ const FinancesPage = () => {
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
+      <div className="bg-blue-500/10 border-border border-blue-500/20 rounded-xl p-6">
         <h3 className="font-semibold text-blue-600 dark:text-blue-400 mb-2">💡 Phase 1 - Foundation</h3>
         <p className="text-sm text-blue-600/80 dark:text-blue-400/80">
           Le dashboard financier est préparé pour la Phase 2. Vous pouvez commencer à enregistrer vos factures et dépenses.

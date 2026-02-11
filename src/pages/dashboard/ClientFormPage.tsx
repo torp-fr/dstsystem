@@ -115,7 +115,7 @@ const ClientFormPage = () => {
       </div>
 
       {/* Form */}
-      <div className="bg-card rounded-xl border border-border p-8">
+      <div className="bg-card rounded-xl border-border border-border-border p-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Section: Informations personnelles */}
           <div>
@@ -129,7 +129,7 @@ const ClientFormPage = () => {
                   value={formData.first_name}
                   onChange={handleChange}
                   placeholder="Jean"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                   required
                 />
               </div>
@@ -141,7 +141,7 @@ const ClientFormPage = () => {
                   value={formData.last_name}
                   onChange={handleChange}
                   placeholder="Dupont"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                   required
                 />
               </div>
@@ -154,7 +154,7 @@ const ClientFormPage = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="jean@example.com"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                 />
               </div>
               <div className="space-y-2">
@@ -165,7 +165,7 @@ const ClientFormPage = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+33 6 XX XX XX XX"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                 />
               </div>
             </div>
@@ -183,7 +183,7 @@ const ClientFormPage = () => {
                   value={formData.company_name}
                   onChange={handleChange}
                   placeholder="Acme Corp"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                 />
               </div>
               <div className="space-y-2">
@@ -194,7 +194,7 @@ const ClientFormPage = () => {
                   value={formData.industry}
                   onChange={handleChange}
                   placeholder="Technologie"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                 />
               </div>
               <div className="space-y-2">
@@ -205,7 +205,7 @@ const ClientFormPage = () => {
                   value={formData.website}
                   onChange={handleChange}
                   placeholder="https://example.com"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                 />
               </div>
               <div className="space-y-2">
@@ -216,7 +216,7 @@ const ClientFormPage = () => {
                   value={formData.category}
                   onChange={handleChange}
                   placeholder="Client premium"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                 />
               </div>
             </div>
@@ -234,7 +234,7 @@ const ClientFormPage = () => {
                   value={formData.address}
                   onChange={handleChange}
                   placeholder="123 Rue de la Paix"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -246,7 +246,7 @@ const ClientFormPage = () => {
                     value={formData.postal_code}
                     onChange={handleChange}
                     placeholder="75000"
-                    className="bg-background border-border"
+                    className="bg-background border-border-border"
                   />
                 </div>
                 <div className="space-y-2">
@@ -257,7 +257,7 @@ const ClientFormPage = () => {
                     value={formData.city}
                     onChange={handleChange}
                     placeholder="Paris"
-                    className="bg-background border-border"
+                    className="bg-background border-border-border"
                   />
                 </div>
                 <div className="space-y-2">
@@ -268,7 +268,7 @@ const ClientFormPage = () => {
                     value={formData.country}
                     onChange={handleChange}
                     placeholder="France"
-                    className="bg-background border-border"
+                    className="bg-background border-border-border"
                   />
                 </div>
               </div>
@@ -289,7 +289,7 @@ const ClientFormPage = () => {
                   value={formData.learner_count}
                   onChange={handleChange}
                   placeholder="ex. 25"
-                  className="bg-background border-border"
+                  className="bg-background border-border-border"
                 />
                 <p className="text-xs text-muted-foreground">
                   Jauge max: 20 tireurs. Pour plus: 2+ jours
@@ -302,7 +302,7 @@ const ClientFormPage = () => {
                   name="structure_type"
                   value={formData.structure_type}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground"
+                  className="w-full px-4 py-2 rounded-lg border-border border-border-border bg-background text-foreground"
                 >
                   <option value="police">Police Nationale</option>
                   <option value="gendarme">Gendarmerie</option>
@@ -328,7 +328,7 @@ const ClientFormPage = () => {
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground"
+                className="w-full px-4 py-2 rounded-lg border-border border-border-border bg-background text-foreground"
               >
                 <option value="prospect">Prospect</option>
                 <option value="active">Actif</option>
@@ -349,7 +349,7 @@ const ClientFormPage = () => {
                 onChange={handleChange}
                 placeholder="Ajoutez des notes sur ce client..."
                 rows={4}
-                className="bg-background border-border"
+                className="bg-background border-border-border"
               />
             </div>
           </div>

@@ -22,7 +22,7 @@ const DashboardTopNav = ({ toggleSidebar, sidebarOpen }: DashboardTopNavProps) =
   };
 
   return (
-    <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6">
+    <header className="h-16 bg-card border-b border-border-border flex items-center justify-between px-6">
       {/* Left Section */}
       <div className="flex items-center gap-4">
         <button
@@ -43,7 +43,7 @@ const DashboardTopNav = ({ toggleSidebar, sidebarOpen }: DashboardTopNavProps) =
         </button>
 
         {/* User Menu */}
-        <div className="flex items-center gap-3 pl-4 border-l border-border">
+        <div className="flex items-center gap-3 pl-4 border-l border-border-border">
           <div className="text-right">
             <p className="text-sm font-medium">{user?.email?.split('@')[0]}</p>
             <p className="text-xs text-muted-foreground">Admin</p>

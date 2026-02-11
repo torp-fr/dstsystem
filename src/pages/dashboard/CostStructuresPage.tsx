@@ -149,21 +149,21 @@ export default function CostStructuresPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-card rounded-lg border border-border p-4">
+        <div className="bg-card rounded-lg border-border border-border-border p-4">
           <p className="text-sm text-muted-foreground">Coûts mensuels</p>
           <p className="text-2xl font-bold">{monthlyCosts.toFixed(2)}€</p>
         </div>
-        <div className="bg-card rounded-lg border border-border p-4">
+        <div className="bg-card rounded-lg border-border border-border-border p-4">
           <p className="text-sm text-muted-foreground">Coûts annuels</p>
           <p className="text-2xl font-bold">{annualCosts.toFixed(2)}€</p>
         </div>
-        <div className="bg-card rounded-lg border border-border p-4">
+        <div className="bg-card rounded-lg border-border border-border-border p-4">
           <p className="text-sm text-muted-foreground">Coûts fixes</p>
           <p className="text-2xl font-bold text-blue-600">
             {(costsByCategory.fixed_cost || 0).toFixed(2)}€
           </p>
         </div>
-        <div className="bg-card rounded-lg border border-border p-4">
+        <div className="bg-card rounded-lg border-border border-border-border p-4">
           <p className="text-sm text-muted-foreground">Amortissements</p>
           <p className="text-2xl font-bold text-purple-600">
             {(costsByCategory.amortization || 0).toFixed(2)}€
@@ -173,7 +173,7 @@ export default function CostStructuresPage() {
 
       {/* Quick Add Form */}
       {showQuickAdd && (
-        <div className="bg-card rounded-lg border border-border p-6 mb-6">
+        <div className="bg-card rounded-lg border-border border-border-border p-6 mb-6">
           <h3 className="font-semibold mb-4">Ajouter un coût rapidement</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div>
@@ -237,7 +237,7 @@ export default function CostStructuresPage() {
       )}
 
       {/* Filters */}
-      <div className="bg-card rounded-lg border border-border p-4 mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
+      <div className="bg-card rounded-lg border-border border-border-border p-4 mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
         <Input
           placeholder="Rechercher par nom ou description..."
           value={searchTerm}
@@ -284,7 +284,7 @@ export default function CostStructuresPage() {
       ) : (
         <div className="space-y-3">
           {filteredCosts.map((cost) => (
-            <div key={cost.id} className="bg-card p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
+            <div key={cost.id} className="bg-card p-4 rounded-lg border-border border-border-border hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">

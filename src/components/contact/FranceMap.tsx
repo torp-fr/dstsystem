@@ -1,7 +1,7 @@
 import partnershipImg from "@/assets/contact-partnership.jpg";
 
 const ContactVisual = () => (
-  <div className="rounded-2xl bg-card border border-border overflow-hidden relative">
+  <div className="rounded-2xl bg-card border-border border-border-border overflow-hidden relative">
     <img
       src={partnershipImg}
       alt="Partenariat opérationnel DST-System"

@@ -1,7 +1,7 @@
 import AnimatedSection from "@/components/AnimatedSection";
 
 const ProgramsHero = () => (
-  <section className="py-20 border-b border-border">
+  <section className="py-20 border-b border-border-border">
     <div className="container mx-auto px-4">
       <AnimatedSection>
         <div className="text-center max-w-3xl mx-auto">

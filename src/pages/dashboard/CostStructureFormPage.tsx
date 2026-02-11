@@ -203,7 +203,7 @@ export default function CostStructureFormPage() {
                     }`}
                   >
                     <div
-                      className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                      className={`w-5 h-5 rounded-full bg-card transition-transform ${
                         formData.is_active ? 'translate-x-6' : 'translate-x-0.5'
                       }`}
                     />

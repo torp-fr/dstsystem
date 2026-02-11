@@ -104,22 +104,22 @@ export default function AmendmentsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg border">
+        <div className="bg-card p-4 rounded-lg border-border">
           <p className="text-sm text-gray-600">Total avenants</p>
           <p className="text-2xl font-bold">{totalAmendments}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
+        <div className="bg-card p-4 rounded-lg border-border">
           <p className="text-sm text-gray-600">Montant total des modifications</p>
           <p className="text-2xl font-bold">{totalAmount.toFixed(2)}€</p>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
+        <div className="bg-card p-4 rounded-lg border-border">
           <p className="text-sm text-gray-600">Acceptés</p>
           <p className="text-2xl font-bold text-green-600">{acceptedAmount.toFixed(2)}€</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg border mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
+      <div className="bg-card p-4 rounded-lg border-border mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
         <Input
           placeholder="Rechercher par numéro ou description..."
           value={searchTerm}
@@ -164,7 +164,7 @@ export default function AmendmentsPage() {
           {filteredAmendments.map((amendment: any) => (
             <div
               key={amendment.id}
-              className="bg-white p-4 rounded-lg border hover:shadow-md transition-shadow"
+              className="bg-card p-4 rounded-lg border-border hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">

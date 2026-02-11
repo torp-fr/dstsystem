@@ -28,7 +28,7 @@ const AnalyticsPage = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-2">Pages visitées</p>
@@ -40,7 +40,7 @@ const AnalyticsPage = () => {
           </div>
         </div>
 
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-2">Sessions</p>
@@ -52,7 +52,7 @@ const AnalyticsPage = () => {
           </div>
         </div>
 
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-2">Pays uniques</p>
@@ -64,7 +64,7 @@ const AnalyticsPage = () => {
           </div>
         </div>
 
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm text-muted-foreground mb-2">Connexions</p>
@@ -80,7 +80,7 @@ const AnalyticsPage = () => {
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Map of Connections */}
-        <div className="lg:col-span-2 bg-card rounded-xl border border-border p-6">
+        <div className="lg:col-span-2 bg-card rounded-xl border-border border-border-border p-6">
           <h2 className="text-xl font-bold mb-4">Localisation des connexions</h2>
           <div className="bg-secondary/20 rounded-lg p-4 min-h-96 flex items-center justify-center">
             {sessions.length === 0 ? (
@@ -126,7 +126,7 @@ const AnalyticsPage = () => {
         </div>
 
         {/* Top Pages */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <h2 className="text-xl font-bold mb-4">Pages les plus visitées</h2>
           {stats.topPages.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">
@@ -154,7 +154,7 @@ const AnalyticsPage = () => {
       </div>
 
       {/* Visits by Country */}
-      <div className="bg-card rounded-xl border border-border p-6">
+      <div className="bg-card rounded-xl border-border border-border-border p-6">
         <h2 className="text-xl font-bold mb-4">Visites par pays</h2>
         {stats.visitsByCountry.length === 0 ? (
           <div className="text-center text-muted-foreground py-8">
@@ -174,7 +174,7 @@ const AnalyticsPage = () => {
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
+      <div className="bg-blue-500/10 border-border border-blue-500/20 rounded-xl p-6">
         <h3 className="font-semibold text-blue-600 dark:text-blue-400 mb-2">📊 Analytics en temps réel</h3>
         <p className="text-sm text-blue-600/80 dark:text-blue-400/80">
           Le suivi des visites est activé sur toutes les pages du site. Les données se mettent à jour en temps réel.

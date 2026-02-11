@@ -71,10 +71,10 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
       <aside
         className={`${
           open ? 'translate-x-0' : '-translate-x-full'
-        } fixed md:static md:translate-x-0 w-64 h-screen bg-card border-r border-border flex flex-col transition-transform duration-300 z-40`}
+        } fixed md:static md:translate-x-0 w-64 h-screen bg-card border-r border-border-border flex flex-col transition-transform duration-300 z-40`}
       >
         {/* Logo */}
-        <div className="p-6 border-b border-border">
+        <div className="p-6 border-b border-border-border">
           <h1 className="text-2xl font-bold text-primary">DST-System</h1>
           <p className="text-xs text-muted-foreground mt-1">Gestion d'entreprise</p>
         </div>
@@ -104,7 +104,7 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
         </nav>
 
         {/* Logout Button */}
-        <div className="p-3 border-t border-border">
+        <div className="p-3 border-t border-border-border">
           <Button
             onClick={handleLogout}
             variant="ghost"

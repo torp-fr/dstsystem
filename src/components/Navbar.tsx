@@ -29,7 +29,7 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-background/95 backdrop-blur-md border-b border-border shadow-lg"
+          ? "bg-background/95 backdrop-blur-md border-b border-border-border shadow-lg"
           : "bg-transparent"
       }`}
     >
@@ -65,7 +65,7 @@ const Navbar = () => {
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="bg-background border-border w-80">
+          <SheetContent side="right" className="bg-background border-border-border w-80">
             <div className="flex flex-col gap-6 mt-12">
               {navLinks.map((link) => (
                 <Link

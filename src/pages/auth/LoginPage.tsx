@@ -43,11 +43,11 @@ const LoginPage = () => {
         </div>
 
         {/* Login Form */}
-        <div className="bg-card rounded-xl border border-border shadow-lg p-6">
+        <div className="bg-card rounded-xl border-border border-border-border shadow-lg p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Error Message */}
             {errorMessage && (
-              <div className="flex items-start gap-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <div className="flex items-start gap-3 p-3 bg-destructive/10 border-border border-destructive/20 rounded-lg">
                 <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-destructive">{errorMessage}</p>
               </div>
@@ -63,7 +63,7 @@ const LoginPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
-                className="bg-background border-border"
+                className="bg-background border-border-border"
                 required
               />
             </div>
@@ -78,7 +78,7 @@ const LoginPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
-                className="bg-background border-border"
+                className="bg-background border-border-border"
                 required
               />
             </div>
@@ -110,7 +110,7 @@ const LoginPage = () => {
         </div>
 
         {/* Development Note */}
-        <div className="mt-6 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+        <div className="mt-6 p-3 bg-blue-500/10 border-border border-blue-500/20 rounded-lg">
           <p className="text-xs text-blue-600 dark:text-blue-400">
             💡 <strong>Pour les tests :</strong> Créez un compte via le formulaire d'inscription ou utilisez les identifiants fournis.
           </p>

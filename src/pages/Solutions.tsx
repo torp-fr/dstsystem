@@ -97,7 +97,7 @@ const Solutions = () => (
     <Navbar />
     <main className="pt-20">
       {/* Header */}
-      <section className="py-20 border-b border-border">
+      <section className="py-20 border-b border-border-border">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
@@ -119,11 +119,11 @@ const Solutions = () => (
       </section>
 
       {/* Mobile advantage banner */}
-      <section className="py-12 bg-primary/5 border-b border-border">
+      <section className="py-12 bg-primary/5 border-b border-border-border">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="flex flex-col md:flex-row items-center justify-center gap-8 text-center md:text-left">
-              <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex-shrink-0">
+              <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 border-border border-primary/20 flex-shrink-0">
                 <Truck className="h-8 w-8 text-primary" />
               </div>
               <div>
@@ -149,7 +149,7 @@ const Solutions = () => (
             <AnimatedSection>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border border-primary/20 mb-6">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border-border border-primary/20 mb-6">
                     <sol.icon className="h-8 w-8 text-primary" />
                   </div>
                   <h2 className="text-3xl font-bold mb-2">{sol.title}</h2>
@@ -169,7 +169,7 @@ const Solutions = () => (
                   </ul>
                 </div>
                 <div className={i % 2 === 1 ? "lg:order-1" : ""}>
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-border">
+                  <div className="aspect-[4/3] rounded-2xl overflow-hidden border-border border-border-border">
                     <img
                       src={sol.image}
                       alt={sol.title}
@@ -185,7 +185,7 @@ const Solutions = () => (
       ))}
 
       {/* Catalogue de modules */}
-      <section className="py-20 border-t border-border">
+      <section className="py-20 border-t border-border-border">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="text-center mb-16">
@@ -206,8 +206,8 @@ const Solutions = () => (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {modules.map((mod, i) => (
               <AnimatedSection key={mod.title} delay={i * 0.1}>
-                <div className="p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all h-full group">
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 mb-6 group-hover:bg-primary/20 transition-colors">
+                <div className="p-8 rounded-2xl bg-card border-border border-border-border hover:border-primary/30 transition-all h-full group">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 border-border border-primary/20 mb-6 group-hover:bg-primary/20 transition-colors">
                     <mod.icon className="h-7 w-7 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3">{mod.title}</h3>

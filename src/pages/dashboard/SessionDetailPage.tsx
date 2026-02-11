@@ -215,7 +215,7 @@ export default function SessionDetailPage() {
             </div>
 
             {/* Note */}
-            <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-lg text-xs text-yellow-800">
+            <div className="bg-yellow-50 border-border border-yellow-200 p-3 rounded-lg text-xs text-yellow-800">
               <p>💡 Les coûts sont des estimations basées sur les tarifs définis des opérateurs.</p>
             </div>
 
@@ -249,7 +249,7 @@ export default function SessionDetailPage() {
           <CardContent>
             <div className="grid gap-3 md:grid-cols-2">
               {sessionOperators.map((so: any) => (
-                <div key={so.id} className="bg-gray-50 p-4 rounded-lg border">
+                <div key={so.id} className="bg-gray-50 p-4 rounded-lg border-border">
                   <p className="font-semibold">
                     {so.operator?.first_name} {so.operator?.last_name}
                   </p>

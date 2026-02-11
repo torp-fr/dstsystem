@@ -14,7 +14,7 @@ const audiences = [
 ];
 
 const AudiencesPreview = () => (
-  <section className="py-24 bg-card border-y border-border">
+  <section className="py-24 bg-card border-y border-border-border">
     <div className="container mx-auto px-4">
       <AnimatedSection>
         <div className="text-center mb-16">
@@ -34,7 +34,7 @@ const AudiencesPreview = () => (
       <div className="flex flex-wrap justify-center gap-6">
         {audiences.map((aud, i) => (
           <AnimatedSection key={aud.label} delay={i * 0.08}>
-            <div className="flex flex-col items-center gap-3 p-6 rounded-xl bg-background border border-border hover:border-primary/30 transition-all min-w-[140px]">
+            <div className="flex flex-col items-center gap-3 p-6 rounded-xl bg-background border-border border-border-border hover:border-primary/30 transition-all min-w-[140px]">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
                 <aud.icon className="h-6 w-6 text-primary" />
               </div>

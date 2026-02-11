@@ -247,12 +247,12 @@ export default function CostInitializationPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Totals */}
-              <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+              <div className="bg-blue-50 p-3 rounded-lg border-border border-blue-200">
                 <p className="text-sm text-gray-600">Coûts mensuels totaux</p>
                 <p className="text-2xl font-bold text-blue-600">{totalMonthly}€</p>
               </div>
 
-              <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+              <div className="bg-green-50 p-3 rounded-lg border-border border-green-200">
                 <p className="text-sm text-gray-600">Coûts annuels totaux</p>
                 <p className="text-2xl font-bold text-green-600">{totalAnnual}€</p>
               </div>

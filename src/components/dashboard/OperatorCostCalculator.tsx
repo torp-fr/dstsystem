@@ -159,7 +159,7 @@ export const OperatorCostCalculator = () => {
               <p className="text-xs text-muted-foreground mt-1">Converti : {(hourlyRate * 8).toFixed(2)}€/jour</p>
             </div>
           </div>
-          <div className="mt-4 p-3 bg-blue-500/10 rounded-lg text-sm border border-blue-500/20">
+          <div className="mt-4 p-3 bg-blue-500/10 rounded-lg text-sm border-border border-blue-500/20">
             <p className="text-blue-600 dark:text-blue-400">
               <strong>Charges sociales France:</strong> Charges salariales {employeeChargesPercent}% • Charges patronales {employerChargesPercent}%
             </p>
