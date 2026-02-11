@@ -346,7 +346,7 @@ export default function QuoteFormPage() {
                       value={formData.discount_percentage}
                       onChange={handleInputChange}
                       placeholder="0"
-                      className="bg-background"
+                      className="bg-card"
                     />
                   </div>
                   <div>
@@ -358,7 +358,7 @@ export default function QuoteFormPage() {
                       value={formData.discount_amount}
                       onChange={handleInputChange}
                       placeholder="0.00"
-                      className="bg-background"
+                      className="bg-card"
                     />
                   </div>
                 </div>
@@ -369,7 +369,7 @@ export default function QuoteFormPage() {
                     value={formData.discount_reason}
                     onChange={handleInputChange}
                     placeholder="Ex: Fidélité client, Volume important..."
-                    className="bg-background"
+                    className="bg-card"
                   />
                 </div>
               </div>

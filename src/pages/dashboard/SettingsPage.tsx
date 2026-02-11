@@ -52,18 +52,17 @@ export default function SettingsPage() {
     }
   };
 
-  const SettingField = ({ label, id, value, onChange, help }: any) => (
-    <div className="flex items-end gap-3 pb-2 border-b border-border/50">
-      <div className="flex-1 min-w-0">
-        <Label htmlFor={id} className="text-xs font-medium">{label}</Label>
-        <p className="text-xs text-muted-foreground mt-0.5">{help}</p>
-      </div>
+  const SettingField = ({ label, id, value, onChange, help, type = 'number' }: any) => (
+    <div className="pb-3 border-b border-border/50">
+      <Label htmlFor={id} className="text-xs font-medium">{label}</Label>
+      <p className="text-xs text-muted-foreground mt-0.5">{help}</p>
       <Input
         id={id}
-        type="number"
+        type={type}
         value={value}
         onChange={onChange}
-        className="w-20 h-8 text-sm"
+        className="mt-2 w-full"
+        step={type === 'number' ? 'any' : undefined}
       />
     </div>
   );
