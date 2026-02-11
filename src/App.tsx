@@ -19,6 +19,7 @@ import ClientFormPage from "./pages/dashboard/ClientFormPage";
 import ClientDetailPage from "./pages/dashboard/ClientDetailPage";
 import OperatorsPage from "./pages/dashboard/OperatorsPage";
 import OperatorFormPage from "./pages/dashboard/OperatorFormPage";
+import OperatorCostAnalysisPage from "./pages/dashboard/OperatorCostAnalysisPage";
 import CostStructuresPage from "./pages/dashboard/CostStructuresPage";
 import CostStructureFormPage from "./pages/dashboard/CostStructureFormPage";
 import CalendarPage from "./pages/dashboard/CalendarPage";
@@ -81,6 +82,7 @@ const AppRoutes = () => {
         <Route path="operators/initialize" element={<OperatorInitializationPage />} />
         <Route path="operators/new" element={<OperatorFormPage />} />
         <Route path="operators/:id/edit" element={<OperatorFormPage />} />
+        <Route path="operators/analysis" element={<OperatorCostAnalysisPage />} />
         <Route path="costs" element={<CostStructuresPage />} />
         <Route path="costs/initialize" element={<CostInitializationPage />} />
         <Route path="costs/new" element={<CostStructureFormPage />} />
