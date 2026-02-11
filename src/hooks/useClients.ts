@@ -18,6 +18,8 @@ interface Client {
   postal_code?: string;
   website?: string;
   notes?: string;
+  learner_count?: number;
+  structure_type?: string;
 }
 
 export const useClients = (filters?: any) => {
@@ -65,18 +67,23 @@ export const useCreateClient = () => {
 
   return useMutation({
     mutationFn: async (client: Client) => {
+      // Ensure numeric fields are numbers
+      const cleanedClient = {
+        ...client,
+        learner_count: client.learner_count ? parseInt(String(client.learner_count)) : 0,
+        created_by: user?.id,
+      };
+
       const { data, error } = await supabase
         .from('clients')
-        .insert([
-          {
-            ...client,
-            created_by: user?.id,
-          },
-        ])
+        .insert([cleanedClient])
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Client create error:', error);
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {
@@ -90,9 +97,12 @@ export const useUpdateClient = () => {
 
   return useMutation({
     mutationFn: async ({ id, ...client }: Client & { id: string }) => {
+      // Remove created_by from update to avoid issues
+      const { created_by, created_at, updated_at, ...clientData } = client as any;
+
       const { data, error } = await supabase
         .from('clients')
-        .update(client)
+        .update(clientData)
         .eq('id', id)
         .select()
         .single();

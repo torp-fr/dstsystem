@@ -47,9 +47,16 @@ const ClientFormPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    let processedValue: any = value;
+
+    // Handle numeric fields
+    if (name === 'learner_count') {
+      processedValue = parseInt(value) || 0;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: processedValue,
     }));
   };
 

@@ -21,6 +21,7 @@ import { Badge } from '@/components/ui/badge';
 import {
   useCostStructures,
   useDeleteCostStructure,
+  useCreateCostStructure,
   useMonthlyCostTotal,
   useAnnualCostTotal,
   useCostsByCategory,
@@ -46,6 +47,14 @@ export default function CostStructuresPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [showQuickAdd, setShowQuickAdd] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    category: 'fixed_cost',
+    monthly_amount: '',
+    annual_amount: '',
+  });
 
   const { data: costStructures = [], isLoading, error } = useCostStructures({
     category: categoryFilter === 'all' ? undefined : categoryFilter,
@@ -53,6 +62,7 @@ export default function CostStructuresPage() {
   });
 
   const deleteCostStructure = useDeleteCostStructure();
+  const createCostStructure = useCreateCostStructure();
   const monthlyCosts = useMonthlyCostTotal(costStructures);
   const annualCosts = useAnnualCostTotal(costStructures);
   const costsByCategory = useCostsByCategory(costStructures);
@@ -62,6 +72,40 @@ export default function CostStructuresPage() {
       cost.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       cost.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleQuickAdd = async () => {
+    if (!formData.name || !formData.monthly_amount) {
+      toast({
+        title: 'Erreur',
+        description: 'Le nom et le montant mensuel sont requis',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      await createCostStructure.mutateAsync({
+        name: formData.name,
+        description: formData.description || undefined,
+        category: formData.category as any,
+        monthly_amount: parseFloat(formData.monthly_amount),
+        annual_amount: parseFloat(formData.annual_amount) || parseFloat(formData.monthly_amount) * 12,
+        is_active: true,
+      });
+      toast({
+        title: 'Succès',
+        description: 'Coût ajouté avec succès',
+      });
+      setFormData({ name: '', description: '', category: 'fixed_cost', monthly_amount: '', annual_amount: '' });
+      setShowQuickAdd(false);
+    } catch (error) {
+      toast({
+        title: 'Erreur',
+        description: 'Erreur lors de l\'ajout du coût',
+        variant: 'destructive',
+      });
+    }
+  };
 
   const handleDelete = async () => {
     if (!deleteId) return;
@@ -95,7 +139,7 @@ export default function CostStructuresPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold">Structure des coûts</h1>
-          <p className="text-gray-600">Gestion des coûts fixes, amortissements et charges</p>
+          <p className="text-muted-foreground">Gestion des coûts fixes, amortissements et charges</p>
         </div>
         <Button onClick={() => navigate('/dashboard/costs/new')} className="gap-2">
           <Plus className="h-4 w-4" />
@@ -105,30 +149,95 @@ export default function CostStructuresPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg border">
-          <p className="text-sm text-gray-600">Coûts mensuels</p>
+        <div className="bg-card rounded-lg border border-border p-4">
+          <p className="text-sm text-muted-foreground">Coûts mensuels</p>
           <p className="text-2xl font-bold">{monthlyCosts.toFixed(2)}€</p>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <p className="text-sm text-gray-600">Coûts annuels</p>
+        <div className="bg-card rounded-lg border border-border p-4">
+          <p className="text-sm text-muted-foreground">Coûts annuels</p>
           <p className="text-2xl font-bold">{annualCosts.toFixed(2)}€</p>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <p className="text-sm text-gray-600">Coûts fixes</p>
+        <div className="bg-card rounded-lg border border-border p-4">
+          <p className="text-sm text-muted-foreground">Coûts fixes</p>
           <p className="text-2xl font-bold text-blue-600">
             {(costsByCategory.fixed_cost || 0).toFixed(2)}€
           </p>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <p className="text-sm text-gray-600">Amortissements</p>
+        <div className="bg-card rounded-lg border border-border p-4">
+          <p className="text-sm text-muted-foreground">Amortissements</p>
           <p className="text-2xl font-bold text-purple-600">
             {(costsByCategory.amortization || 0).toFixed(2)}€
           </p>
         </div>
       </div>
 
+      {/* Quick Add Form */}
+      {showQuickAdd && (
+        <div className="bg-card rounded-lg border border-border p-6 mb-6">
+          <h3 className="font-semibold mb-4">Ajouter un coût rapidement</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div>
+              <label className="text-sm font-medium">Nom *</label>
+              <Input
+                placeholder="Ex: Loyer"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Catégorie</label>
+              <Select value={formData.category} onValueChange={(v) => setFormData({ ...formData, category: v })}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="fixed_cost">Coûts fixes</SelectItem>
+                  <SelectItem value="amortization">Amortissements</SelectItem>
+                  <SelectItem value="operating_expense">Charges d'exploitation</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <label className="text-sm font-medium">Montant mensuel (€) *</label>
+              <Input
+                type="number"
+                placeholder="0"
+                min="0"
+                step="100"
+                value={formData.monthly_amount}
+                onChange={(e) => setFormData({ ...formData, monthly_amount: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Montant annuel (€)</label>
+              <Input
+                type="number"
+                placeholder="Auto (×12)"
+                min="0"
+                step="100"
+                value={formData.annual_amount}
+                onChange={(e) => setFormData({ ...formData, annual_amount: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+            <div className="flex items-end gap-2">
+              <Button onClick={handleQuickAdd} className="flex-1">
+                <Plus className="h-4 w-4 mr-2" />
+                Ajouter
+              </Button>
+              <Button variant="outline" onClick={() => setShowQuickAdd(false)} className="flex-1">
+                Annuler
+              </Button>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">Description optionnelle : laissez vide pour ajouter après</p>
+        </div>
+      )}
+
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg border mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
+      <div className="bg-card rounded-lg border border-border p-4 mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
         <Input
           placeholder="Rechercher par nom ou description..."
           value={searchTerm}
@@ -146,6 +255,12 @@ export default function CostStructuresPage() {
             <SelectItem value="operating_expense">Charges d'exploitation</SelectItem>
           </SelectContent>
         </Select>
+        {!showQuickAdd && (
+          <Button variant="outline" onClick={() => setShowQuickAdd(true)} className="gap-2">
+            <Plus className="h-4 w-4" />
+            Ajout rapide
+          </Button>
+        )}
       </div>
 
       {/* Cost List */}
@@ -154,8 +269,8 @@ export default function CostStructuresPage() {
           <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
         </div>
       ) : filteredCosts.length === 0 ? (
-        <div className="text-center p-8 bg-gray-50 rounded-lg space-y-4">
-          <p className="text-gray-600">Aucun coût défini</p>
+        <div className="text-center p-8 bg-muted rounded-lg space-y-4">
+          <p className="text-muted-foreground">Aucun coût défini</p>
           <div className="flex gap-3 justify-center">
             <Button onClick={() => navigate('/dashboard/costs/initialize')} className="gap-2">
               <Plus className="h-4 w-4" />
@@ -169,7 +284,7 @@ export default function CostStructuresPage() {
       ) : (
         <div className="space-y-3">
           {filteredCosts.map((cost) => (
-            <div key={cost.id} className="bg-white p-4 rounded-lg border hover:shadow-md transition-shadow">
+            <div key={cost.id} className="bg-card p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
@@ -179,20 +294,20 @@ export default function CostStructuresPage() {
                     </Badge>
                   </div>
                   {cost.description && (
-                    <p className="text-sm text-gray-600 mb-3">{cost.description}</p>
+                    <p className="text-sm text-muted-foreground mb-3">{cost.description}</p>
                   )}
                   <div className="flex gap-6 text-sm">
                     <div>
-                      <span className="text-gray-600">Mensuel:</span>
+                      <span className="text-muted-foreground">Mensuel:</span>
                       <span className="font-semibold ml-2">{cost.monthly_amount.toFixed(2)}€</span>
                     </div>
                     <div>
-                      <span className="text-gray-600">Annuel:</span>
+                      <span className="text-muted-foreground">Annuel:</span>
                       <span className="font-semibold ml-2">{cost.annual_amount.toFixed(2)}€</span>
                     </div>
                     {cost.expense_account && (
                       <div>
-                        <span className="text-gray-600">Compte:</span>
+                        <span className="text-muted-foreground">Compte:</span>
                         <span className="font-mono ml-2 text-xs">{cost.expense_account}</span>
                       </div>
                     )}
