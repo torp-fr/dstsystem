@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
+import { generateCustomerNumber } from '@/utils/customerNumber';
 
 interface Client {
   id?: string;
@@ -20,6 +21,7 @@ interface Client {
   notes?: string;
   learner_count?: number;
   structure_type?: string;
+  customer_number?: string;
 }
 
 export const useClients = (filters?: any) => {
@@ -69,9 +71,12 @@ export const useCreateClient = () => {
       // Remove fields that might not exist in the schema or cause FK issues
       const { learner_count, structure_type, ...clientData } = client as any;
 
+      // Auto-generate customer number if not provided
+      const customerNumber = clientData.customer_number || generateCustomerNumber();
+
       const { data, error } = await supabase
         .from('clients')
-        .insert([clientData])
+        .insert([{ ...clientData, customer_number: customerNumber }])
         .select()
         .single();
 

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Download, Printer, Mail } from 'lucide-react';
+import { Download, Printer, Mail, AlertCircle } from 'lucide-react';
 
 interface QuoteTemplateProps {
   quote: any;
@@ -61,8 +61,17 @@ export default function QuoteTemplate({
           <div className="space-y-8">
             {/* Header */}
             <div className="border-b pb-6">
-              <div className="grid grid-cols-2 gap-8">
-                {/* Company Info - Left */}
+              <div className="grid grid-cols-3 gap-8 mb-6">
+                {/* Logo - Left */}
+                <div className="flex items-center">
+                  <img
+                    src="/favicon.png"
+                    alt="Logo"
+                    className="h-16 w-16 object-contain"
+                  />
+                </div>
+
+                {/* Company Info - Center */}
                 <div>
                   <h2 className="text-2xl font-bold mb-1">{company.name}</h2>
                   <p className="text-sm text-muted-foreground mb-4">Gestion d'entreprise</p>
@@ -118,6 +127,9 @@ export default function QuoteTemplate({
                 <div className="space-y-1 text-sm">
                   <p className="font-semibold">
                     {client.first_name} {client.last_name}
+                    {client.customer_number && (
+                      <span className="text-muted-foreground font-normal ml-2">({client.customer_number})</span>
+                    )}
                   </p>
                   {client.company_name && <p>{client.company_name}</p>}
                   {client.address && <p>{client.address}</p>}
@@ -189,6 +201,33 @@ export default function QuoteTemplate({
                   <span className="text-muted-foreground">Sous-total HT:</span>
                   <span className="font-semibold">{quote.subtotal?.toFixed(2)}€</span>
                 </div>
+
+                {/* Reductions */}
+                {(quote.discount_percentage || quote.discount_amount) && (
+                  <>
+                    {quote.discount_percentage && (
+                      <div className="flex justify-between py-2 border-b text-red-600">
+                        <span className="text-muted-foreground">
+                          Réduction {quote.discount_percentage}%
+                          {quote.discount_reason && ` (${quote.discount_reason})`}:
+                        </span>
+                        <span className="font-semibold">
+                          -{(quote.subtotal * (quote.discount_percentage / 100))?.toFixed(2)}€
+                        </span>
+                      </div>
+                    )}
+                    {quote.discount_amount && (
+                      <div className="flex justify-between py-2 border-b text-red-600">
+                        <span className="text-muted-foreground">
+                          Déduction
+                          {quote.discount_reason && ` (${quote.discount_reason})`}:
+                        </span>
+                        <span className="font-semibold">-{quote.discount_amount?.toFixed(2)}€</span>
+                      </div>
+                    )}
+                  </>
+                )}
+
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-muted-foreground">TVA (20%):</span>
                   <span className="font-semibold">{quote.tax_amount?.toFixed(2)}€</span>
@@ -200,11 +239,27 @@ export default function QuoteTemplate({
               </div>
             </div>
 
+            {/* Context / Free Field */}
+            {quote.context && (
+              <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <h4 className="font-semibold mb-2 text-blue-900 dark:text-blue-100">Contexte / Détails:</h4>
+                <p className="text-sm text-blue-800 dark:text-blue-200 whitespace-pre-wrap">{quote.context}</p>
+              </div>
+            )}
+
             {/* Notes */}
             {quote.notes && (
               <div className="bg-muted/30 p-4 rounded-lg border border-border">
                 <h4 className="font-semibold mb-2">Notes:</h4>
-                <p className="text-sm text-muted-foreground">{quote.notes}</p>
+                <p className="text-sm text-muted-foreground whitespace-pre-wrap">{quote.notes}</p>
+              </div>
+            )}
+
+            {/* Payment Terms */}
+            {quote.payment_terms && (
+              <div className="bg-amber-50 dark:bg-amber-950/20 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
+                <h4 className="font-semibold mb-2 text-amber-900 dark:text-amber-100">Modalités de paiement:</h4>
+                <p className="text-sm text-amber-800 dark:text-amber-200 whitespace-pre-wrap">{quote.payment_terms}</p>
               </div>
             )}
 
