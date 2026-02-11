@@ -87,8 +87,8 @@ export default function QuoteTemplate({
                   <h1 className="text-4xl font-bold text-primary">DEVIS</h1>
                 </div>
 
-                {/* Client Info - Aligned with company info, positioned 2/3 right */}
-                <div className="text-right" style={{ marginTop: '200px', width: '280px' }}>
+                {/* Client Info - Aligned with company info, positioned 2/3 right with margin */}
+                <div className="text-right" style={{ marginTop: '200px', width: '280px', marginLeft: '80px' }}>
                   <h3 className="font-semibold mb-3 text-base">Destinataire:</h3>
                   <div className="space-y-1 text-base">
                     <p className="font-semibold">
