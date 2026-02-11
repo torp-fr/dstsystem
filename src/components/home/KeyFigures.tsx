@@ -25,13 +25,13 @@ const figures = [
 ];
 
 const KeyFigures = () => (
-  <section className="py-20 bg-card border-y border-border">
+  <section className="py-20 bg-card border-y border-border-border">
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {figures.map((fig, i) => (
           <AnimatedSection key={fig.label} delay={i * 0.1}>
             <div className="text-center group">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-primary/10 border border-primary/20 mb-4 group-hover:bg-primary/20 transition-colors">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-primary/10 border-border border-primary/20 mb-4 group-hover:bg-primary/20 transition-colors">
                 <fig.icon className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-lg font-semibold mb-2">{fig.label}</h3>

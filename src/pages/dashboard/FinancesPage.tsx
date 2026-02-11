@@ -1,208 +1,207 @@
-import { DollarSign, TrendingUp, TrendingDown, PieChart } from 'lucide-react';
+import { DollarSign, TrendingUp, TrendingDown, Users, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useQuotes } from '@/hooks/useQuotes';
+import { useCostStructures } from '@/hooks/useCostStructures';
+import { useOperators } from '@/hooks/useOperators';
+import { useShootingSessions } from '@/hooks/useShootingSessions';
 
 const FinancesPage = () => {
   const navigate = useNavigate();
 
-  // Mock data - will be replaced with real data from Supabase
-  const finances = {
-    monthlyRevenue: 0,
-    monthlyExpenses: 0,
-    profitability: 0,
-    invoices: { total: 0, paid: 0, pending: 0, overdue: 0 },
-  };
+  // Get real data
+  const { data: quotes = [] } = useQuotes();
+  const { data: costs = [] } = useCostStructures();
+  const { data: operators = [] } = useOperators();
+  const { data: sessions = [] } = useShootingSessions();
+  const invoices = []; // Mock for now - can be connected to Supabase later
 
-  const profitMargin = finances.monthlyRevenue > 0
-    ? ((finances.monthlyRevenue - finances.monthlyExpenses) / finances.monthlyRevenue * 100).toFixed(1)
-    : 0;
+  // Calculate metrics
+  const totalMonthlyCosts = costs
+    .filter((c: any) => c.is_active)
+    .reduce((sum: number, c: any) => sum + (c.monthly_amount || 0), 0);
+
+  const totalRevenue = quotes.reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0);
+  const paidInvoices = invoices.filter((i: any) => i.status === 'paid').length;
+  const pendingInvoices = invoices.filter((i: any) => i.status === 'pending' || i.status === 'partial').length;
+  const overdueInvoices = invoices.filter((i: any) => i.status === 'overdue').length;
+
+  const netProfit = totalRevenue - totalMonthlyCosts;
+  const profitMargin = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) : 0;
+
+  // Calculate salary costs
+  const activeOperators = operators.filter((o: any) => o.status === 'active').length;
+  const operatorChargesPercent = 42; // Employee charges (France)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3 h-full overflow-y-auto">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold">Finances</h1>
-        <p className="text-muted-foreground mt-2">Suivi des revenus, dépenses et rentabilité</p>
+        <h1 className="text-2xl font-bold">Finances</h1>
+        <p className="text-xs text-muted-foreground">Suivi des revenus, dépenses et rentabilité</p>
       </div>
 
-      {/* Main Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Main Stats - Compact */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
         {/* Revenue */}
-        <div className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">Revenus ce mois</p>
-              <p className="text-3xl font-bold">{finances.monthlyRevenue.toFixed(2)} €</p>
-              <p className="text-xs text-muted-foreground mt-2">({finances.invoices.paid} factures payées)</p>
-            </div>
-            <div className="p-3 rounded-lg bg-green-500/10 text-green-600 dark:text-green-400">
-              <DollarSign className="h-6 w-6" />
-            </div>
-          </div>
+        <div className="bg-card rounded-lg border-border border p-3">
+          <p className="text-xs text-muted-foreground mb-1">Revenus totaux</p>
+          <p className="text-xl font-bold text-green-600">{totalRevenue.toFixed(0)}€</p>
+          <p className="text-xs text-muted-foreground mt-1">{quotes.length} devis</p>
         </div>
 
         {/* Expenses */}
-        <div className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">Dépenses ce mois</p>
-              <p className="text-3xl font-bold">{finances.monthlyExpenses.toFixed(2)} €</p>
-              <p className="text-xs text-muted-foreground mt-2">(fonctionnement + amortissements)</p>
-            </div>
-            <div className="p-3 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400">
-              <TrendingDown className="h-6 w-6" />
-            </div>
-          </div>
+        <div className="bg-card rounded-lg border-border border p-3">
+          <p className="text-xs text-muted-foreground mb-1">Coûts mensuels</p>
+          <p className="text-xl font-bold text-red-600">{totalMonthlyCosts.toFixed(0)}€</p>
+          <p className="text-xs text-muted-foreground mt-1">Annuel: {(totalMonthlyCosts * 12).toFixed(0)}€</p>
         </div>
 
         {/* Net Profit */}
-        <div className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">Bénéfice net</p>
-              <p className="text-3xl font-bold">
-                {(finances.monthlyRevenue - finances.monthlyExpenses).toFixed(2)} €
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">Marge: {profitMargin}%</p>
+        <div className="bg-card rounded-lg border-border border p-3">
+          <p className="text-xs text-muted-foreground mb-1">Résultat net</p>
+          <p className={`text-xl font-bold ${netProfit > 0 ? 'text-blue-600' : 'text-red-600'}`}>
+            {netProfit.toFixed(0)}€
+          </p>
+          <p className="text-xs text-muted-foreground mt-1">Marge: {profitMargin}%</p>
+        </div>
+
+        {/* Invoices Status */}
+        <div className="bg-card rounded-lg border-border border p-3">
+          <p className="text-xs text-muted-foreground mb-1">Factures</p>
+          <p className="text-xl font-bold">{invoices.length}</p>
+          <div className="flex gap-1 mt-1 text-xs">
+            <span className="text-green-600">{paidInvoices}✓</span>
+            <span className="text-orange-600">{pendingInvoices}⏱</span>
+            <span className="text-red-600">{overdueInvoices}!</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Financial Details Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        {/* Salary Charges Analysis */}
+        <div className="bg-card rounded-lg border-border border p-3">
+          <h3 className="font-semibold text-sm mb-2 flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            Charges salariales
+          </h3>
+          <div className="space-y-1 text-xs">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Opérateurs actifs:</span>
+              <span className="font-medium">{activeOperators}</span>
             </div>
-            <div className="p-3 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
-              <TrendingUp className="h-6 w-6" />
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Charges patronales (45%):</span>
+              <span className="font-medium text-red-600">À calculer</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Charges salariées (42%):</span>
+              <span className="font-medium text-red-600">À calculer</span>
+            </div>
+            <div className="h-px bg-border my-1" />
+            <div className="flex justify-between font-semibold">
+              <span>Coût total opérateurs:</span>
+              <span className="text-red-600">{totalMonthlyCosts.toFixed(0)}€/mois</span>
             </div>
           </div>
         </div>
 
-        {/* Profitability */}
-        <div className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">Rentabilité globale</p>
-              <p className="text-3xl font-bold">{finances.profitability.toFixed(1)}%</p>
-              <p className="text-xs text-muted-foreground mt-2">Sur l'année</p>
+        {/* Sessions & Performance */}
+        <div className="bg-card rounded-lg border-border border p-3">
+          <h3 className="font-semibold text-sm mb-2 flex items-center gap-2">
+            <Calendar className="h-4 w-4" />
+            Performance des sessions
+          </h3>
+          <div className="space-y-1 text-xs">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Sessions planifiées:</span>
+              <span className="font-medium">{sessions.filter((s: any) => s.status === 'scheduled').length}</span>
             </div>
-            <div className="p-3 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400">
-              <PieChart className="h-6 w-6" />
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Sessions complétées:</span>
+              <span className="font-medium text-green-600">{sessions.filter((s: any) => s.status === 'completed').length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Taux de réalisation:</span>
+              <span className="font-medium">
+                {sessions.length > 0 ? ((sessions.filter((s: any) => s.status === 'completed').length / sessions.length) * 100).toFixed(0) : 0}%
+              </span>
+            </div>
+            <div className="h-px bg-border my-1" />
+            <div className="flex justify-between font-semibold">
+              <span>Coût moyen/session:</span>
+              <span className="text-orange-600">
+                {sessions.length > 0 ? (totalMonthlyCosts / sessions.length).toFixed(0) : 0}€
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Cost Breakdown */}
+        <div className="bg-card rounded-lg border-border border p-3">
+          <h3 className="font-semibold text-sm mb-2">Ventilation des coûts</h3>
+          <div className="space-y-1 text-xs">
+            {costs.filter((c: any) => c.is_active).length === 0 ? (
+              <p className="text-muted-foreground italic">Aucun coût enregistré</p>
+            ) : (
+              costs.filter((c: any) => c.is_active).map((cost: any) => (
+                <div key={cost.id} className="flex justify-between">
+                  <span className="text-muted-foreground truncate">{cost.name}:</span>
+                  <span className="font-medium whitespace-nowrap ml-2">{cost.monthly_amount}€/m</span>
+                </div>
+              ))
+            )}
+            <div className="h-px bg-border my-1" />
+            <div className="flex justify-between font-semibold">
+              <span>Total mensuel:</span>
+              <span className="text-red-600">{totalMonthlyCosts.toFixed(0)}€</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Quote & Invoice Summary */}
+        <div className="bg-card rounded-lg border-border border p-3">
+          <h3 className="font-semibold text-sm mb-2">Suivi commercial</h3>
+          <div className="space-y-1 text-xs">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Devis créés:</span>
+              <span className="font-medium">{quotes.length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Valeur totale:</span>
+              <span className="font-medium text-green-600">{totalRevenue.toFixed(0)}€</span>
+            </div>
+            <div className="h-px bg-border my-1" />
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Factures:</span>
+              <span className="font-medium">{invoices.length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Payées:</span>
+              <span className="font-medium text-green-600">{paidInvoices}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Impayées:</span>
+              <span className={`font-medium ${pendingInvoices + overdueInvoices > 0 ? 'text-red-600' : ''}`}>
+                {pendingInvoices + overdueInvoices}
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Invoices */}
-        <div className="lg:col-span-2 bg-card rounded-xl border border-border p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold">Factures</h2>
-            <Button className="bg-primary hover:bg-primary/90">
-              Nouvelle facture
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="p-4 rounded-lg bg-secondary/30">
-              <p className="text-sm text-muted-foreground mb-1">Total</p>
-              <p className="text-2xl font-bold">{finances.invoices.total}</p>
-            </div>
-            <div className="p-4 rounded-lg bg-green-500/10">
-              <p className="text-sm text-green-600 dark:text-green-400 mb-1">Payées</p>
-              <p className="text-2xl font-bold text-green-600 dark:text-green-400">{finances.invoices.paid}</p>
-            </div>
-            <div className="p-4 rounded-lg bg-orange-500/10">
-              <p className="text-sm text-orange-600 dark:text-orange-400 mb-1">En attente</p>
-              <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{finances.invoices.pending}</p>
-            </div>
-            <div className="p-4 rounded-lg bg-red-500/10">
-              <p className="text-sm text-red-600 dark:text-red-400 mb-1">En retard</p>
-              <p className="text-2xl font-bold text-red-600 dark:text-red-400">{finances.invoices.overdue}</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-            <DollarSign className="h-12 w-12 mb-3 opacity-50" />
-            <p>Aucune facture enregistrée</p>
-            <p className="text-sm mt-1">Commencez par ajouter une facture</p>
-          </div>
-        </div>
-
-        {/* Expenses Summary */}
-        <div className="bg-card rounded-xl border border-border p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold">Dépenses</h2>
-            <Button variant="outline" size="sm">
-              + Ajouter
-            </Button>
-          </div>
-
-          <div className="space-y-3">
-            <div className="p-3 rounded-lg bg-secondary/30">
-              <p className="text-sm text-muted-foreground mb-1">Séances de tir</p>
-              <p className="text-lg font-bold">0 €</p>
-            </div>
-            <div className="p-3 rounded-lg bg-secondary/30">
-              <p className="text-sm text-muted-foreground mb-1">Amortissements</p>
-              <p className="text-lg font-bold">0 €</p>
-            </div>
-            <div className="p-3 rounded-lg bg-secondary/30">
-              <p className="text-sm text-muted-foreground mb-1">Fonctionnement</p>
-              <p className="text-lg font-bold">0 €</p>
-            </div>
-            <div className="p-3 rounded-lg bg-secondary/30">
-              <p className="text-sm text-muted-foreground mb-1">Autres</p>
-              <p className="text-lg font-bold">0 €</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Coming Soon Features */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-card rounded-xl border border-border p-6">
-          <h3 className="text-lg font-bold mb-4">📊 Rapports financiers</h3>
-          <p className="text-muted-foreground text-sm mb-4">
-            Génération automatique de rapports mensuels, trimestriels et annuels.
-          </p>
-          <Button variant="outline" disabled className="w-full">
-            À venir en Phase 2
-          </Button>
-        </div>
-
-        <div className="bg-card rounded-xl border border-border p-6">
-          <h3 className="text-lg font-bold mb-4">📈 Projections</h3>
-          <p className="text-muted-foreground text-sm mb-4">
-            Prévisions de cash flow et analyses de rentabilité par prestations.
-          </p>
-          <Button variant="outline" disabled className="w-full">
-            À venir en Phase 2
-          </Button>
-        </div>
-
-        <div className="bg-card rounded-xl border border-border p-6">
-          <h3 className="text-lg font-bold mb-4">💰 Tarification</h3>
-          <p className="text-muted-foreground text-sm mb-4">
-            Calcul automatique des tarifs planchers basés sur les coûts et marges.
-          </p>
-          <Button variant="outline" disabled className="w-full">
-            À venir en Phase 2
-          </Button>
-        </div>
-
-        <div className="bg-card rounded-xl border border-border p-6">
-          <h3 className="text-lg font-bold mb-4">📉 Analyse</h3>
-          <p className="text-muted-foreground text-sm mb-4">
-            Analyse détaillée par client, par prestation, par période.
-          </p>
-          <Button variant="outline" disabled className="w-full">
-            À venir en Phase 2
-          </Button>
-        </div>
-      </div>
-
-      {/* Info Box */}
-      <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-        <h3 className="font-semibold text-blue-600 dark:text-blue-400 mb-2">💡 Phase 1 - Foundation</h3>
-        <p className="text-sm text-blue-600/80 dark:text-blue-400/80">
-          Le dashboard financier est préparé pour la Phase 2. Vous pouvez commencer à enregistrer vos factures et dépenses.
-          Les rapports et projections seront disponibles dans les prochaines phases.
-        </p>
+      {/* Action Buttons */}
+      <div className="flex gap-2">
+        <Button size="sm" onClick={() => navigate('/dashboard/quotes')} className="text-xs">
+          Devis
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => navigate('/dashboard/invoices')} className="text-xs">
+          Factures
+        </Button>
+        <Button size="sm" variant="outline" onClick={() => navigate('/dashboard/costs')} className="text-xs">
+          Coûts
+        </Button>
       </div>
     </div>
   );

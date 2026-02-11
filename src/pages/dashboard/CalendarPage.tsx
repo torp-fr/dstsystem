@@ -36,6 +36,7 @@ interface CalendarDay {
 export default function CalendarPage() {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [viewMode, setViewMode] = useState<'monthly' | 'weekly' | 'annual'>('monthly');
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
 
@@ -141,165 +142,161 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 flex flex-col h-full overflow-hidden">
+      <div className="flex items-center justify-between mb-3">
         <div>
-          <h1 className="text-3xl font-bold">Planning des sessions</h1>
-          <p className="text-gray-600">Calendrier annuel des sessions de tir</p>
+          <h1 className="text-2xl font-bold">Planning</h1>
+          <p className="text-xs text-muted-foreground">Calendrier des sessions de tir</p>
         </div>
-        <Button onClick={() => navigate('/dashboard/sessions/new')} className="gap-2">
-          <Plus className="h-4 w-4" />
-          Nouvelle session
-        </Button>
+        <div className="flex gap-2 items-center">
+          <div className="flex gap-1 bg-muted p-1 rounded-lg">
+            <Button
+              size="sm"
+              variant={viewMode === 'weekly' ? 'default' : 'ghost'}
+              className="text-xs"
+              onClick={() => setViewMode('weekly')}
+            >
+              Semaine
+            </Button>
+            <Button
+              size="sm"
+              variant={viewMode === 'monthly' ? 'default' : 'ghost'}
+              className="text-xs"
+              onClick={() => setViewMode('monthly')}
+            >
+              Mois
+            </Button>
+            <Button
+              size="sm"
+              variant={viewMode === 'annual' ? 'default' : 'ghost'}
+              className="text-xs"
+              onClick={() => setViewMode('annual')}
+            >
+              Année
+            </Button>
+          </div>
+          <Button size="sm" onClick={() => navigate('/dashboard/sessions/new')} className="gap-1 text-xs">
+            <Plus className="h-3 w-3" />
+            Session
+          </Button>
+        </div>
       </div>
 
-      <Card>
-        <CardHeader>
+      <Card className="flex-1 flex flex-col overflow-hidden">
+        <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold">
-                {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
+              <h2 className="text-lg font-bold">
+                {viewMode === 'annual' ? currentDate.getFullYear() : `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`}
               </h2>
             </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={previousMonth}
-              >
-                <ChevronLeft className="h-4 w-4" />
+            <div className="flex gap-1">
+              <Button variant="outline" size="sm" onClick={previousMonth} className="h-8 w-8 p-0">
+                <ChevronLeft className="h-3 w-3" />
               </Button>
               {!isCurrentMonth && (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setCurrentDate(new Date())}
+                  className="text-xs h-8"
                 >
                   Aujourd'hui
                 </Button>
               )}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={nextMonth}
-              >
-                <ChevronRight className="h-4 w-4" />
+              <Button variant="outline" size="sm" onClick={nextMonth} className="h-8 w-8 p-0">
+                <ChevronRight className="h-3 w-3" />
               </Button>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
-          {/* Day headers */}
-          <div className="grid grid-cols-7 gap-1 mb-2">
-            {dayNames.map((day) => (
-              <div key={day} className="text-center font-semibold text-sm py-2">
-                {day}
-              </div>
-            ))}
-          </div>
-
-          {/* Calendar grid */}
-          <div className="border rounded-lg overflow-hidden">
-            {weeks.map((week, weekIdx) => (
-              <div key={weekIdx} className="grid grid-cols-7 border-t">
-                {week.map((day, dayIdx) => (
-                  <div
-                    key={`${weekIdx}-${dayIdx}`}
-                    className={`min-h-24 p-2 border-r last:border-r-0 ${
-                      !day.isCurrentMonth ? 'bg-gray-50' : 'bg-white'
-                    } ${
-                      day.isCurrentMonth &&
-                      day.date.toDateString() === today.toDateString()
-                        ? 'bg-blue-50'
-                        : ''
-                    }`}
-                  >
-                    <div
-                      className={`text-sm font-semibold mb-1 ${
-                        !day.isCurrentMonth ? 'text-gray-400' : 'text-gray-700'
-                      }`}
-                    >
-                      {day.date.getDate()}
-                    </div>
-
-                    {/* Sessions for this day */}
-                    <div className="space-y-1">
-                      {day.sessions.map((session) => (
-                        <div
-                          key={session.id}
-                          onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
-                          className="text-xs bg-blue-100 p-1 rounded cursor-pointer hover:bg-blue-200 transition-colors truncate"
-                        >
-                          <div className="font-medium truncate">
-                            {session.theme || 'Sans thème'}
-                          </div>
-                          <div className="text-gray-600 truncate text-xs">
-                            {getClientName(session.client_id)}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+        <CardContent className="flex-1 overflow-auto">
+          {viewMode === 'monthly' && (
+            <>
+              {/* Day headers */}
+              <div className="grid grid-cols-7 gap-0.5 mb-1">
+                {dayNames.map((day) => (
+                  <div key={day} className="text-center font-semibold text-xs py-1">
+                    {day}
                   </div>
                 ))}
               </div>
-            ))}
-          </div>
+
+              {/* Calendar grid */}
+              <div className="border-border rounded-lg overflow-hidden">
+                {weeks.map((week, weekIdx) => (
+                  <div key={weekIdx} className="grid grid-cols-7 border-t">
+                    {week.map((day, dayIdx) => (
+                      <div
+                        key={`${weekIdx}-${dayIdx}`}
+                        className={`min-h-14 p-1 border-r last:border-r-0 text-xs ${
+                          !day.isCurrentMonth ? 'bg-muted/30' : 'bg-card'
+                        } ${
+                          day.isCurrentMonth &&
+                          day.date.toDateString() === today.toDateString()
+                            ? 'bg-blue-500/10'
+                            : ''
+                        }`}
+                      >
+                        <div
+                          className={`text-xs font-semibold mb-0.5 ${
+                            !day.isCurrentMonth ? 'text-muted-foreground/50' : 'text-foreground'
+                          }`}
+                        >
+                          {day.date.getDate()}
+                        </div>
+
+                        {/* Sessions for this day */}
+                        <div className="space-y-0.5">
+                          {day.sessions.slice(0, 1).map((session) => (
+                            <div
+                              key={session.id}
+                              onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+                              className="text-xs bg-blue-100 dark:bg-blue-900 p-0.5 rounded cursor-pointer hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors truncate"
+                            >
+                              <div className="font-medium truncate text-xs">
+                                {session.theme || 'S.'}
+                              </div>
+                            </div>
+                          ))}
+                          {day.sessions.length > 1 && (
+                            <div className="text-xs text-muted-foreground">+{day.sessions.length - 1}</div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {viewMode === 'weekly' && (
+            <div className="text-center text-muted-foreground py-4">
+              Vue hebdomadaire - À venir
+            </div>
+          )}
+
+          {viewMode === 'annual' && (
+            <div className="text-center text-muted-foreground py-4">
+              Vue annuelle - À venir
+            </div>
+          )}
 
           {/* Legend */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm font-semibold mb-3">Statuts des sessions:</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="mt-2 p-2 bg-muted/30 rounded-lg border-border border text-xs">
+            <p className="text-xs font-semibold mb-1">Statuts:</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {Object.entries(statusLabels).map(([key, label]) => (
-                <div key={key} className="flex items-center gap-2">
-                  <div className={`w-3 h-3 rounded ${statusColors[key]}`} />
-                  <span className="text-sm">{label}</span>
+                <div key={key} className="flex items-center gap-1">
+                  <div className={`w-2 h-2 rounded ${statusColors[key]}`} />
+                  <span className="text-xs">{label}</span>
                 </div>
               ))}
             </div>
           </div>
         </CardContent>
       </Card>
-
-      {/* Upcoming sessions sidebar */}
-      {sessions.filter((s) => new Date(s.session_date) >= today).length > 0 && (
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Prochaines sessions</CardTitle>
-            <CardDescription>
-              {sessions.filter((s) => new Date(s.session_date) >= today).length} sessions à venir
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {sessions
-                .filter((s) => new Date(s.session_date) >= today)
-                .sort((a, b) => new Date(a.session_date).getTime() - new Date(b.session_date).getTime())
-                .slice(0, 5)
-                .map((session) => (
-                  <div
-                    key={session.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"
-                    onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
-                  >
-                    <div className="flex-1">
-                      <p className="font-semibold">{session.theme || 'Sans thème'}</p>
-                      <p className="text-sm text-gray-600">
-                        {new Date(session.session_date).toLocaleDateString('fr-FR')}
-                        {session.session_time && ` à ${session.session_time}`}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {getClientName(session.client_id)}
-                      </p>
-                    </div>
-                    <Badge className={statusColors[session.status]}>
-                      {statusLabels[session.status]}
-                    </Badge>
-                  </div>
-                ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }

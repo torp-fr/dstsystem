@@ -10,7 +10,7 @@ const CTASection = () => (
         <div className="relative rounded-2xl overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/5" />
           <div className="absolute inset-0 tactical-grid opacity-20" />
-          <div className="relative p-12 md:p-20 text-center border border-primary/20 rounded-2xl">
+          <div className="relative p-12 md:p-20 text-center border-border border-primary/20 rounded-2xl">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Prêt à transformer votre entraînement ?
             </h2>

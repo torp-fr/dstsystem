@@ -250,7 +250,7 @@ export default function OfferFormPage() {
 
               {/* Single Session */}
               <TabsContent value="single_session" className="space-y-4 border-t pt-4">
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
+                <div className="bg-blue-50 p-4 rounded-lg border-border border-blue-200 mb-4">
                   <p className="text-sm font-medium text-blue-900">Session unique</p>
                   <p className="text-sm text-blue-700">
                     Idéale pour une séance ponctuelle avec tarif fixe
@@ -275,7 +275,7 @@ export default function OfferFormPage() {
 
               {/* Subscription */}
               <TabsContent value="subscription" className="space-y-4 border-t pt-4">
-                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200 mb-4">
+                <div className="bg-purple-50 p-4 rounded-lg border-border border-purple-200 mb-4">
                   <p className="text-sm font-medium text-purple-900">Abonnement</p>
                   <p className="text-sm text-purple-700">
                     Offre récurrente avec durée définie et sessions incluses
@@ -325,7 +325,7 @@ export default function OfferFormPage() {
 
               {/* Package */}
               <TabsContent value="package" className="space-y-4 border-t pt-4">
-                <div className="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
+                <div className="bg-green-50 p-4 rounded-lg border-border border-green-200 mb-4">
                   <p className="text-sm font-medium text-green-900">Forfait</p>
                   <p className="text-sm text-green-700">
                     Offre groupée avec X sessions à un prix global

@@ -8,7 +8,7 @@ const CollateralSupport = () => (
     <div className="container mx-auto px-4">
       <AnimatedSection>
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/20 mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border-border border-primary/20 mb-6">
             <HandHeart className="h-8 w-8 text-primary" />
           </div>
           <span className="block text-primary text-sm font-medium tracking-wider uppercase mb-3">
@@ -47,7 +47,7 @@ const CollateralSupport = () => (
           },
         ].map((item, i) => (
           <AnimatedSection key={item.title} delay={i * 0.1}>
-            <div className="p-6 rounded-xl bg-card border border-border text-center h-full">
+            <div className="p-6 rounded-xl bg-card border-border border-border-border text-center h-full">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
                 <item.icon className="h-6 w-6 text-primary" />
               </div>

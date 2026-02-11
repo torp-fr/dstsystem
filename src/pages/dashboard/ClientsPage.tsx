@@ -82,14 +82,14 @@ const ClientsPage = () => {
               placeholder="Rechercher par nom, email ou entreprise..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 bg-card border-border"
+              className="pl-10 bg-card border-border-border"
             />
           </div>
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 rounded-lg border border-border bg-card text-foreground"
+          className="px-4 py-2 rounded-lg border-border border-border-border bg-card text-foreground"
         >
           <option value="">Tous les statuts</option>
           <option value="prospect">Prospect</option>
@@ -109,7 +109,7 @@ const ClientsPage = () => {
           </div>
         </div>
       ) : filteredClients.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-12 bg-card rounded-xl border border-border">
+        <div className="flex flex-col items-center justify-center py-12 bg-card rounded-xl border-border border-border-border">
           <Users className="h-12 w-12 text-muted-foreground mb-4 opacity-50" />
           <p className="text-muted-foreground font-medium">Aucun client trouvé</p>
           <p className="text-sm text-muted-foreground mt-1">
@@ -117,10 +117,10 @@ const ClientsPage = () => {
           </p>
         </div>
       ) : (
-        <div className="bg-card rounded-xl border border-border overflow-hidden">
+        <div className="bg-card rounded-xl border-border border-border-border overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-secondary/30 border-b border-border">
+              <thead className="bg-secondary/30 border-b border-border-border">
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-semibold">Nom</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">Email</th>
@@ -130,7 +130,7 @@ const ClientsPage = () => {
                   <th className="px-6 py-3 text-left text-sm font-semibold">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-border-border">
                 {filteredClients.map((client: any) => (
                   <tr
                     key={client.id}
@@ -214,17 +214,17 @@ const ClientsPage = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <p className="text-sm text-muted-foreground mb-2">Total des clients</p>
           <p className="text-3xl font-bold">{clients.length}</p>
         </div>
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <p className="text-sm text-muted-foreground mb-2">Clients actifs</p>
           <p className="text-3xl font-bold">
             {clients.filter((c: any) => c.status === 'active').length}
           </p>
         </div>
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border-border border-border-border p-6">
           <p className="text-sm text-muted-foreground mb-2">Prospects</p>
           <p className="text-3xl font-bold">
             {clients.filter((c: any) => c.status === 'prospect').length}

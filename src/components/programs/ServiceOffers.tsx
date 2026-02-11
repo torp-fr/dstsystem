@@ -127,7 +127,7 @@ const otherOffers = [
 const ServiceOffers = () => (
   <>
     {/* Approach */}
-    <section className="py-16 bg-card border-b border-border">
+    <section className="py-16 bg-card border-b border-border-border">
       <div className="container mx-auto px-4">
         <AnimatedSection>
           <div className="max-w-3xl mx-auto">
@@ -142,7 +142,7 @@ const ServiceOffers = () => (
               ].map((item) => (
                 <div
                   key={item.text}
-                  className="flex flex-col items-center text-center p-6 rounded-xl bg-background border border-border"
+                  className="flex flex-col items-center text-center p-6 rounded-xl bg-background border-border border-border-border"
                 >
                   <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-3">
                     <item.icon className="h-6 w-6 text-primary" />
@@ -230,7 +230,7 @@ const ServiceOffers = () => (
     </section>
 
     {/* B2B / B2C / Modules */}
-    <section className="py-20 bg-card border-y border-border">
+    <section className="py-20 bg-card border-y border-border-border">
       <div className="container mx-auto px-4">
         <AnimatedSection>
           <div className="text-center mb-12">
@@ -250,7 +250,7 @@ const ServiceOffers = () => (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {otherOffers.map((offer, i) => (
             <AnimatedSection key={offer.title} delay={i * 0.1}>
-              <div className="h-full p-8 rounded-2xl border border-border bg-background">
+              <div className="h-full p-8 rounded-2xl border-border border-border-border bg-background">
                 <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
                   <offer.icon className="h-6 w-6 text-primary" />
                 </div>
@@ -291,7 +291,7 @@ const ServiceOffers = () => (
               ].map((text) => (
                 <div
                   key={text}
-                  className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border"
+                  className="flex items-start gap-3 p-4 rounded-xl bg-card border-border border-border-border"
                 >
                   <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   <p className="text-sm">{text}</p>
@@ -304,7 +304,7 @@ const ServiceOffers = () => (
     </section>
 
     {/* CTA */}
-    <section className="py-20 bg-card border-t border-border">
+    <section className="py-20 bg-card border-t border-border-border">
       <div className="container mx-auto px-4">
         <AnimatedSection>
           <div className="text-center max-w-2xl mx-auto">

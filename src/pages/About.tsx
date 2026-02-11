@@ -60,7 +60,7 @@ const About = () => (
   <div className="min-h-screen bg-background">
     <Navbar />
     <main className="pt-20">
-      <section className="py-20 border-b border-border">
+      <section className="py-20 border-b border-border-border">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
@@ -111,7 +111,7 @@ const About = () => (
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.2}>
-              <div className="aspect-square rounded-2xl overflow-hidden border border-border">
+              <div className="aspect-square rounded-2xl overflow-hidden border-border border-border-border">
                 <img
                   src={missionImg}
                   alt="Centre de commandement DST-System"
@@ -125,11 +125,11 @@ const About = () => (
       </section>
 
       {/* Mobile solution */}
-      <section className="py-20 bg-card border-y border-border">
+      <section className="py-20 bg-card border-y border-border-border">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection>
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-border lg:order-1">
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden border-border border-border-border lg:order-1">
                 <img
                   src={mobileImg}
                   alt="Solution mobile DST-System"
@@ -140,7 +140,7 @@ const About = () => (
             </AnimatedSection>
             <AnimatedSection delay={0.2}>
               <div>
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border border-primary/20 mb-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border-border border-primary/20 mb-6">
                   <Truck className="h-8 w-8 text-primary" />
                 </div>
                 <h2 className="text-3xl font-bold mb-6">
@@ -159,11 +159,11 @@ const About = () => (
                   infrastructures de tir.
                 </p>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-background border border-border text-center">
+                  <div className="p-4 rounded-xl bg-background border-border border-border-border text-center">
                     <TrendingUp className="h-6 w-6 text-primary mx-auto mb-2" />
                     <p className="text-sm font-medium">Jusqu'à 20 tireurs/jour</p>
                   </div>
-                  <div className="p-4 rounded-xl bg-background border border-border text-center">
+                  <div className="p-4 rounded-xl bg-background border-border border-border-border text-center">
                     <Truck className="h-6 w-6 text-primary mx-auto mb-2" />
                     <p className="text-sm font-medium">Installation en 1h</p>
                   </div>
@@ -189,7 +189,7 @@ const About = () => (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {values.map((val, i) => (
               <AnimatedSection key={val.title} delay={i * 0.1}>
-                <div className="p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-all">
+                <div className="p-6 rounded-xl bg-card border-border border-border-border hover:border-primary/30 transition-all">
                   <val.icon className="h-8 w-8 text-primary mb-4" />
                   <h3 className="text-lg font-semibold mb-2">{val.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">
@@ -203,7 +203,7 @@ const About = () => (
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-card border-t border-border">
+      <section className="py-20 bg-card border-t border-border-border">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="text-center max-w-2xl mx-auto">

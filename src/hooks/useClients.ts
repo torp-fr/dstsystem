@@ -18,6 +18,8 @@ interface Client {
   postal_code?: string;
   website?: string;
   notes?: string;
+  learner_count?: number;
+  structure_type?: string;
 }
 
 export const useClients = (filters?: any) => {
@@ -61,22 +63,22 @@ export const useClientById = (id: string | null) => {
 
 export const useCreateClient = () => {
   const queryClient = useQueryClient();
-  const { user } = useAuth();
 
   return useMutation({
     mutationFn: async (client: Client) => {
+      // Remove fields that might not exist in the schema or cause FK issues
+      const { learner_count, structure_type, ...clientData } = client as any;
+
       const { data, error } = await supabase
         .from('clients')
-        .insert([
-          {
-            ...client,
-            created_by: user?.id,
-          },
-        ])
+        .insert([clientData])
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Client create error:', error);
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {
@@ -90,9 +92,12 @@ export const useUpdateClient = () => {
 
   return useMutation({
     mutationFn: async ({ id, ...client }: Client & { id: string }) => {
+      // Remove created_by from update to avoid issues
+      const { created_by, created_at, updated_at, ...clientData } = client as any;
+
       const { data, error } = await supabase
         .from('clients')
-        .update(client)
+        .update(clientData)
         .eq('id', id)
         .select()
         .single();

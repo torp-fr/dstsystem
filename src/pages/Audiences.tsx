@@ -100,7 +100,7 @@ const Audiences = () => (
   <div className="min-h-screen bg-background">
     <Navbar />
     <main className="pt-20">
-      <section className="py-20 border-b border-border">
+      <section className="py-20 border-b border-border-border">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
@@ -146,7 +146,7 @@ const Audiences = () => (
               <AnimatedSection>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                   <div>
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border border-primary/20 mb-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border-border border-primary/20 mb-4">
                       <aud.icon className="h-8 w-8 text-primary" />
                     </div>
                     <h2 className="text-2xl font-bold mb-3">{aud.title}</h2>
@@ -186,7 +186,7 @@ const Audiences = () => (
       </section>
 
       {/* Additional audiences */}
-      <section className="py-20 border-t border-border">
+      <section className="py-20 border-t border-border-border">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="text-center mb-16">
@@ -206,8 +206,8 @@ const Audiences = () => (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {additionalAudiences.map((aud, i) => (
               <AnimatedSection key={aud.title} delay={i * 0.1}>
-                <div className="p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all h-full">
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 mb-4">
+                <div className="p-8 rounded-2xl bg-card border-border border-border-border hover:border-primary/30 transition-all h-full">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 border-border border-primary/20 mb-4">
                     <aud.icon className="h-7 w-7 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold mb-1">{aud.title}</h3>
@@ -239,7 +239,7 @@ const Audiences = () => (
       </section>
 
       {/* Decision makers */}
-      <section className="py-20 bg-card border-t border-border">
+      <section className="py-20 bg-card border-t border-border-border">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="max-w-4xl mx-auto">
@@ -252,7 +252,7 @@ const Audiences = () => (
                 </h2>
               </div>
 
-              <div className="p-8 md:p-12 rounded-2xl bg-background border border-border">
+              <div className="p-8 md:p-12 rounded-2xl bg-background border-border border-border-border">
                 <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
                   <strong className="text-foreground">
                     Commandants d'unités, élus locaux, responsables régionaux
@@ -279,13 +279,13 @@ const Audiences = () => (
                   infrastructure à installer.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                  <div className="text-center p-4 rounded-xl bg-card border border-border">
+                  <div className="text-center p-4 rounded-xl bg-card border-border border-border-border">
                     <p className="text-2xl font-bold text-primary mb-1">0</p>
                     <p className="text-xs text-muted-foreground">
                       infrastructure requise
                     </p>
                   </div>
-                  <div className="text-center p-4 rounded-xl bg-card border border-border">
+                  <div className="text-center p-4 rounded-xl bg-card border-border border-border-border">
                     <p className="text-2xl font-bold text-primary mb-1">
                       100%
                     </p>
@@ -293,7 +293,7 @@ const Audiences = () => (
                       solution mobile
                     </p>
                   </div>
-                  <div className="text-center p-4 rounded-xl bg-card border border-border">
+                  <div className="text-center p-4 rounded-xl bg-card border-border border-border-border">
                     <p className="text-2xl font-bold text-primary mb-1">ROI</p>
                     <p className="text-xs text-muted-foreground">
                       mesurable et documenté

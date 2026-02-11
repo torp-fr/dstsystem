@@ -10,12 +10,12 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const StatCard = ({ icon: Icon, label, value, color, trend }: any) => (
-  <div className="bg-card rounded-lg border border-border p-5 hover:border-primary/30 transition-colors">
+  <div className="bg-card rounded-lg border-border border-border-border p-4 hover:border-primary/30 transition-colors">
     <div className="flex items-start justify-between">
       <div className="flex-1">
-        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">{label}</p>
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">{label}</p>
         <div className="flex items-baseline gap-2">
-          <p className="text-2xl font-bold">{value}</p>
+          <p className="text-xl font-bold">{value}</p>
           {trend && (
             <span className={`text-xs font-semibold flex items-center gap-1 ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}>
               {trend > 0 ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
@@ -25,7 +25,7 @@ const StatCard = ({ icon: Icon, label, value, color, trend }: any) => (
         </div>
       </div>
       <div className={`p-3 rounded-lg ${color} flex-shrink-0`}>
-        <Icon className="h-5 w-5" />
+        <Icon className="h-4 w-4" />
       </div>
     </div>
   </div>
@@ -66,21 +66,21 @@ const DashboardPage = () => {
   const completedSessions = sessions.filter((s: any) => s.status === 'completed').length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header Section */}
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-4xl font-bold">Tableau de bord</h1>
-          <p className="text-muted-foreground mt-1">Support opérationnel et aide au pilotage</p>
+          <h1 className="text-3xl font-bold">Tableau de bord</h1>
+          <p className="text-muted-foreground text-sm">Support opérationnel et aide au pilotage</p>
         </div>
         <div className="text-right">
           <p className="text-xs uppercase font-semibold text-muted-foreground">Statut</p>
-          <Badge className="bg-green-600 mt-1">🟢 Système Actif</Badge>
+          <Badge className="bg-green-600 mt-1 text-xs">🟢 Système Actif</Badge>
         </div>
       </div>
 
       {/* Operational Health Overview - 16:9 optimized */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <StatCard
           icon={Users}
           label="Clients actifs / Total"
@@ -104,7 +104,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Key Financial Metrics */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <StatCard
           icon={DollarSign}
           label="Coûts mensuels"
@@ -126,21 +126,20 @@ const DashboardPage = () => {
       </div>
 
       {/* Operational Alerts Section */}
-      {(upcomingSessions.length === 0 || activeClients === 0) && (
+      {upcomingSessions.length === 0 && activeClients > 0 && (
         <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-500/10">
           <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
           <AlertDescription className="text-amber-800 dark:text-amber-300 text-sm">
-            {upcomingSessions.length === 0 && activeClients > 0 && "⚠️ Aucune session prévue cette semaine. "}
-            {activeClients === 0 && "📋 Commencez par ajouter des clients pour créer des sessions."}
+            ⚠️ Aucune session prévue cette semaine.
           </AlertDescription>
         </Alert>
       )}
 
       {/* Main Content Grid - 16:9 Optimized */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Upcoming Sessions - Wider Column */}
-        <div className="lg:col-span-2 bg-card rounded-lg border border-border p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="lg:col-span-2 bg-card rounded-lg border-border border-border-border p-4">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Calendar className="h-5 w-5 text-amber-600 dark:text-amber-400" />
               <h2 className="text-lg font-bold">Sessions à venir (7 jours)</h2>
@@ -155,16 +154,16 @@ const DashboardPage = () => {
             </Button>
           </div>
           {upcomingSessions.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-              <Calendar className="h-10 w-10 mb-2 opacity-40" />
+            <div className="flex flex-col items-center justify-center py-6 text-muted-foreground">
+              <Calendar className="h-8 w-8 mb-2 opacity-40" />
               <p className="text-sm">Aucune session prévue</p>
             </div>
           ) : (
-            <div className="space-y-2">
-              {upcomingSessions.slice(0, 4).map((session: any) => (
+            <div className="space-y-1">
+              {upcomingSessions.slice(0, 3).map((session: any) => (
                 <div
                   key={session.id}
-                  className="p-3 rounded-lg bg-gradient-to-r from-amber-50 to-transparent dark:from-amber-500/10 border border-amber-200/50 dark:border-amber-500/20 hover:border-amber-400/50 transition-colors cursor-pointer"
+                  className="p-2 rounded-lg bg-gradient-to-r from-amber-50 to-transparent dark:from-amber-500/10 border-border border-amber-200/50 dark:border-amber-500/20 hover:border-amber-400/50 transition-colors cursor-pointer"
                   onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
                 >
                   <div className="flex items-center justify-between">
@@ -187,32 +186,32 @@ const DashboardPage = () => {
         </div>
 
         {/* Recent Clients - Side Column */}
-        <div className="bg-card rounded-lg border border-border p-6">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="bg-card rounded-lg border-border border-border-border p-4">
+          <div className="flex items-center gap-2 mb-3">
             <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-lg font-bold">Derniers clients</h2>
+            <h2 className="text-base font-bold">Derniers clients</h2>
           </div>
           {clients.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
-              <Users className="h-10 w-10 mb-2 opacity-40" />
+            <div className="flex flex-col items-center justify-center py-6 text-muted-foreground">
+              <Users className="h-8 w-8 mb-2 opacity-40" />
               <p className="text-sm">Aucun client</p>
               <Button
                 size="sm"
-                className="mt-3 bg-blue-600 hover:bg-blue-700"
+                className="mt-2 bg-blue-600 hover:bg-blue-700 text-xs"
                 onClick={() => navigate('/dashboard/clients/new')}
               >
                 Ajouter
               </Button>
             </div>
           ) : (
-            <div className="space-y-2">
-              {clients.slice(0, 5).map((client: any) => (
+            <div className="space-y-1">
+              {clients.slice(0, 4).map((client: any) => (
                 <div
                   key={client.id}
-                  className="p-3 rounded-lg bg-blue-50/50 dark:bg-blue-500/10 hover:bg-blue-100 dark:hover:bg-blue-500/20 transition-colors cursor-pointer text-sm"
+                  className="p-2 rounded-lg bg-blue-50/50 dark:bg-blue-500/10 hover:bg-blue-100 dark:hover:bg-blue-500/20 transition-colors cursor-pointer text-xs"
                   onClick={() => navigate(`/dashboard/clients/${client.id}`)}
                 >
-                  <p className="font-medium">{client.first_name} {client.last_name}</p>
+                  <p className="font-medium text-sm">{client.first_name} {client.last_name}</p>
                   <p className="text-xs text-muted-foreground truncate">{client.email || client.phone}</p>
                 </div>
               ))}
@@ -220,7 +219,7 @@ const DashboardPage = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => navigate('/dashboard/clients')}
-                className="w-full mt-2"
+                className="w-full text-xs"
               >
                 Voir tous ({totalClients})
               </Button>
@@ -230,42 +229,42 @@ const DashboardPage = () => {
       </div>
 
       {/* Recent Quotes & Financial Overview - 16:9 Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Recent Quotes */}
-        <div className="lg:col-span-2 bg-card rounded-lg border border-border p-6">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="lg:col-span-2 bg-card rounded-lg border-border border-border-border p-4">
+          <div className="flex items-center gap-2 mb-3">
             <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            <h2 className="text-lg font-bold">Devis et factures récents</h2>
+            <h2 className="text-base font-bold">Devis et factures récents</h2>
           </div>
           {recentQuotes.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-              <FileText className="h-10 w-10 mb-2 opacity-40" />
+            <div className="flex flex-col items-center justify-center py-6 text-muted-foreground">
+              <FileText className="h-8 w-8 mb-2 opacity-40" />
               <p className="text-sm">Aucun devis créé</p>
               <Button
                 size="sm"
-                className="mt-3 bg-purple-600 hover:bg-purple-700"
+                className="mt-2 bg-purple-600 hover:bg-purple-700 text-xs"
                 onClick={() => navigate('/dashboard/quotes/new')}
               >
                 Créer un devis
               </Button>
             </div>
           ) : (
-            <div className="space-y-2">
-              {recentQuotes.slice(0, 3).map((quote: any) => (
+            <div className="space-y-1">
+              {recentQuotes.slice(0, 2).map((quote: any) => (
                 <div
                   key={quote.id}
-                  className="p-3 rounded-lg bg-purple-50/50 dark:bg-purple-500/10 hover:bg-purple-100 dark:hover:bg-purple-500/20 transition-colors cursor-pointer"
+                  className="p-2 rounded-lg bg-purple-50/50 dark:bg-purple-500/10 hover:bg-purple-100 dark:hover:bg-purple-500/20 transition-colors cursor-pointer"
                   onClick={() => navigate(`/dashboard/quotes/${quote.id}/edit`)}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm">{quote.quote_number}</p>
+                      <p className="font-medium text-xs">{quote.quote_number}</p>
                       <p className="text-xs text-muted-foreground">
                         {new Date(quote.created_at).toLocaleDateString('fr-FR')}
                       </p>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className="font-semibold text-sm">{quote.total_amount.toFixed(2)}€</p>
+                      <p className="font-semibold text-xs">{quote.total_amount.toFixed(0)}€</p>
                       <Badge variant="outline" className="text-xs">{quote.status}</Badge>
                     </div>
                   </div>
@@ -275,7 +274,7 @@ const DashboardPage = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => navigate('/dashboard/quotes')}
-                className="w-full mt-2"
+                className="w-full text-xs"
               >
                 Voir tous les devis
               </Button>
@@ -283,106 +282,96 @@ const DashboardPage = () => {
           )}
         </div>
 
-        {/* Financial Summary */}
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-500/10 dark:to-emerald-500/10 rounded-lg border border-green-200 dark:border-green-500/30 p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="h-5 w-5 text-green-600 dark:text-green-400" />
-            <h2 className="text-lg font-bold">Résumé financier</h2>
-          </div>
-          <div className="space-y-3">
-            <div>
-              <p className="text-xs font-medium text-muted-foreground uppercase">Chiffre d'affaires (devis)</p>
-              <p className="text-2xl font-bold text-green-600 dark:text-green-400">
-                {recentQuotes.reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0).toFixed(0)}€
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">{recentQuotes.length} devis</p>
+      </div>
+
+      {/* Financial Summary - Two Cards with Visual Impact */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Revenue Card - Green Impact */}
+        <div className="bg-card rounded-lg border-2 border-green-500/60 dark:border-green-500/50 p-4 shadow-lg shadow-green-500/10">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="p-2 rounded-lg bg-green-500/10 dark:bg-green-500/15">
+              <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
             </div>
-            <div className="h-px bg-border opacity-50" />
-            <div>
-              <p className="text-xs font-medium text-muted-foreground uppercase">Coûts mensuels</p>
-              <p className="text-2xl font-bold text-red-600 dark:text-red-400">
-                {totalMonthlyCosts.toFixed(0)}€
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">Opérateurs et structure</p>
-            </div>
+            <h2 className="text-base font-bold">Chiffre d'affaires</h2>
           </div>
+          <p className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
+            {recentQuotes.reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0).toFixed(0)}€
+          </p>
+          <p className="text-xs text-muted-foreground">{recentQuotes.length} devis en cours</p>
+        </div>
+
+        {/* Costs Card - Red Impact */}
+        <div className="bg-card rounded-lg border-2 border-red-500/60 dark:border-red-500/50 p-4 shadow-lg shadow-red-500/10">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="p-2 rounded-lg bg-red-500/10 dark:bg-red-500/15">
+              <Calculator className="h-5 w-5 text-red-600 dark:text-red-400" />
+            </div>
+            <h2 className="text-base font-bold">Coûts mensuels</h2>
+          </div>
+          <p className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">
+            {totalMonthlyCosts.toFixed(0)}€
+          </p>
+          <p className="text-xs text-muted-foreground">Opérateurs et structure</p>
         </div>
       </div>
 
       {/* Quick Actions - Compact 16:9 Layout */}
-      <div className="bg-card rounded-lg border border-border p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Zap className="h-5 w-5 text-primary" />
-          <h2 className="text-lg font-bold">Actions rapides</h2>
+      <div className="bg-card rounded-lg border-border border-border-border p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Zap className="h-4 w-4 text-primary" />
+          <h2 className="text-base font-bold">Actions rapides</h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white flex flex-col gap-2 py-6"
+            className="bg-blue-600 hover:bg-blue-700 text-white flex flex-col gap-1 py-4"
             onClick={() => navigate('/dashboard/clients/new')}
           >
-            <Users className="h-5 w-5" />
+            <Users className="h-4 w-4" />
             <span className="text-xs font-medium">Client</span>
           </Button>
           <Button
             variant="outline"
-            className="flex flex-col gap-2 py-6"
+            className="flex flex-col gap-1 py-4"
             onClick={() => navigate('/dashboard/operators')}
           >
-            <Crosshair className="h-5 w-5" />
+            <Crosshair className="h-4 w-4" />
             <span className="text-xs font-medium">Opérateur</span>
           </Button>
           <Button
             variant="outline"
-            className="flex flex-col gap-2 py-6"
+            className="flex flex-col gap-1 py-4"
             onClick={() => navigate('/dashboard/calendar')}
           >
-            <Calendar className="h-5 w-5" />
+            <Calendar className="h-4 w-4" />
             <span className="text-xs font-medium">Session</span>
           </Button>
           <Button
             variant="outline"
-            className="flex flex-col gap-2 py-6"
+            className="flex flex-col gap-1 py-4"
             onClick={() => navigate('/dashboard/quotes/new')}
           >
-            <FileText className="h-5 w-5" />
+            <FileText className="h-4 w-4" />
             <span className="text-xs font-medium">Devis</span>
           </Button>
           <Button
             variant="outline"
-            className="flex flex-col gap-2 py-6"
+            className="flex flex-col gap-1 py-4"
             onClick={() => navigate('/dashboard/costs')}
           >
-            <Calculator className="h-5 w-5" />
+            <Calculator className="h-4 w-4" />
             <span className="text-xs font-medium">Coûts</span>
           </Button>
           <Button
             variant="outline"
-            className="flex flex-col gap-2 py-6"
+            className="flex flex-col gap-1 py-4"
             onClick={() => navigate('/dashboard/operators/analysis')}
           >
-            <TrendingUp className="h-5 w-5" />
+            <TrendingUp className="h-4 w-4" />
             <span className="text-xs font-medium">Analyse</span>
           </Button>
         </div>
       </div>
 
-      {/* System Status Footer */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <Alert className="border-green-500/30 bg-green-50/50 dark:bg-green-500/10 lg:col-span-2">
-          <AlertCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
-          <AlertDescription className="text-green-800 dark:text-green-300 text-sm">
-            <strong>✅ Système actif</strong> • Tous les modules opérationnels (Clients, Opérateurs, Sessions, Devis, Factures, Avenants, Acomptes)
-          </AlertDescription>
-        </Alert>
-        <Button
-          variant="outline"
-          onClick={() => navigate('/dashboard/operators/analysis')}
-          className="gap-2"
-        >
-          <Zap className="h-4 w-4" />
-          Analyse comparative coûts
-        </Button>
-      </div>
     </div>
   );
 };

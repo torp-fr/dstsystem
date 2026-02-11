@@ -48,7 +48,7 @@ const DecisionMakers = () => (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
         {advantages.map((adv, i) => (
           <AnimatedSection key={adv.title} delay={i * 0.1}>
-            <div className="flex gap-4 p-6 rounded-xl bg-card border border-border">
+            <div className="flex gap-4 p-6 rounded-xl bg-card border-border border-border-border">
               <div className="flex-shrink-0">
                 <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
                   <adv.icon className="h-6 w-6 text-primary" />

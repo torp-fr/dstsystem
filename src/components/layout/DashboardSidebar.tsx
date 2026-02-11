@@ -14,10 +14,6 @@ import {
   Crosshair,
   Calculator,
   Calendar,
-  FileText,
-  Receipt,
-  CreditCard,
-  FileCheck,
 } from 'lucide-react';
 
 interface DashboardSidebarProps {
@@ -36,10 +32,6 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
     { icon: Crosshair, label: 'Opérateurs', path: '/dashboard/operators' },
     { icon: Calculator, label: 'Coûts', path: '/dashboard/costs' },
     { icon: Calendar, label: 'Calendrier', path: '/dashboard/calendar' },
-    { icon: FileText, label: 'Devis', path: '/dashboard/quotes' },
-    { icon: FileCheck, label: 'Factures', path: '/dashboard/invoices' },
-    { icon: Receipt, label: 'Avenants', path: '/dashboard/amendments' },
-    { icon: CreditCard, label: 'Acomptes', path: '/dashboard/deposits' },
     { icon: TrendingUp, label: 'Analytics', path: '/dashboard/analytics' },
     { icon: Package, label: 'Offres & Formules', path: '/dashboard/offers' },
     { icon: DollarSign, label: 'Finances', path: '/dashboard/finances' },
@@ -71,10 +63,10 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
       <aside
         className={`${
           open ? 'translate-x-0' : '-translate-x-full'
-        } fixed md:static md:translate-x-0 w-64 h-screen bg-card border-r border-border flex flex-col transition-transform duration-300 z-40`}
+        } fixed md:static md:translate-x-0 w-64 h-screen bg-card border-r border-border-border flex flex-col transition-transform duration-300 z-40`}
       >
         {/* Logo */}
-        <div className="p-6 border-b border-border">
+        <div className="p-6 border-b border-border-border">
           <h1 className="text-2xl font-bold text-primary">DST-System</h1>
           <p className="text-xs text-muted-foreground mt-1">Gestion d'entreprise</p>
         </div>
@@ -104,7 +96,7 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
         </nav>
 
         {/* Logout Button */}
-        <div className="p-3 border-t border-border">
+        <div className="p-3 border-t border-border-border">
           <Button
             onClick={handleLogout}
             variant="ghost"

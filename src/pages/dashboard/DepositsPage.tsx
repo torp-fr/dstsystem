@@ -128,26 +128,26 @@ export default function DepositsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg border">
+        <div className="bg-card p-4 rounded-lg border-border">
           <p className="text-sm text-gray-600">Total acomptes</p>
           <p className="text-2xl font-bold">{totalDeposits}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
+        <div className="bg-card p-4 rounded-lg border-border">
           <p className="text-sm text-gray-600">Montant total</p>
           <p className="text-2xl font-bold">{totalAmount.toFixed(2)}€</p>
         </div>
-        <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+        <div className="bg-green-50 p-4 rounded-lg border-border border-green-200">
           <p className="text-sm text-gray-600">Payés</p>
           <p className="text-2xl font-bold text-green-600">{paidAmount.toFixed(2)}€</p>
         </div>
-        <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+        <div className="bg-yellow-50 p-4 rounded-lg border-border border-yellow-200">
           <p className="text-sm text-gray-600">En attente</p>
           <p className="text-2xl font-bold text-yellow-600">{pendingAmount.toFixed(2)}€</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg border mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
+      <div className="bg-card p-4 rounded-lg border-border mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
         <Input
           placeholder="Rechercher par numéro..."
           value={searchTerm}
@@ -187,8 +187,8 @@ export default function DepositsPage() {
             return (
               <div
                 key={deposit.id}
-                className={`p-4 rounded-lg border hover:shadow-md transition-shadow ${
-                  isOverdue ? 'bg-red-50 border-red-200' : 'bg-white'
+                className={`p-4 rounded-lg border-border hover:shadow-md transition-shadow ${
+                  isOverdue ? 'bg-red-50 border-red-200' : 'bg-card'
                 }`}
               >
                 <div className="flex items-start justify-between">

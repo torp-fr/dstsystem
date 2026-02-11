@@ -65,7 +65,7 @@ const Contact = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="pt-20">
-        <section className="py-20 border-b border-border">
+        <section className="py-20 border-b border-border-border">
           <div className="container mx-auto px-4">
             <AnimatedSection>
               <div className="text-center max-w-3xl mx-auto">
@@ -99,7 +99,7 @@ const Contact = () => {
                         onChange={(e) =>
                           setFormData({ ...formData, name: e.target.value })
                         }
-                        className="bg-card border-border"
+                        className="bg-card border-border-border"
                       />
                     </div>
                     <div className="space-y-2">
@@ -112,7 +112,7 @@ const Contact = () => {
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
-                        className="bg-card border-border"
+                        className="bg-card border-border-border"
                       />
                     </div>
                   </div>
@@ -127,7 +127,7 @@ const Contact = () => {
                         onChange={(e) =>
                           setFormData({ ...formData, phone: e.target.value })
                         }
-                        className="bg-card border-border"
+                        className="bg-card border-border-border"
                       />
                     </div>
                   </div>
@@ -143,7 +143,7 @@ const Contact = () => {
                           organization: e.target.value,
                         })
                       }
-                      className="bg-card border-border"
+                      className="bg-card border-border-border"
                     />
                   </div>
                   <div className="space-y-2">
@@ -156,7 +156,7 @@ const Contact = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, message: e.target.value })
                       }
-                      className="bg-card border-border"
+                      className="bg-card border-border-border"
                     />
                   </div>
                   <Button
@@ -180,7 +180,7 @@ const Contact = () => {
                     <div className="space-y-4">
                       <a
                         href="mailto:dst-system@hotmail.com"
-                        className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
+                        className="flex items-center gap-4 p-4 rounded-xl bg-card border-border border-border-border hover:border-primary/30 transition-colors"
                       >
                         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
                           <Mail className="h-5 w-5 text-primary" />
@@ -192,7 +192,7 @@ const Contact = () => {
                       </a>
                       <a
                         href="tel:+33665445226"
-                        className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
+                        className="flex items-center gap-4 p-4 rounded-xl bg-card border-border border-border-border hover:border-primary/30 transition-colors"
                       >
                         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
                           <Phone className="h-5 w-5 text-primary" />
@@ -204,7 +204,7 @@ const Contact = () => {
                           <p className="font-medium">+33 6 65 44 52 26</p>
                         </div>
                       </a>
-                      <div className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border">
+                      <div className="flex items-center gap-4 p-4 rounded-xl bg-card border-border border-border-border">
                         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
                           <MapPin className="h-5 w-5 text-primary" />
                         </div>

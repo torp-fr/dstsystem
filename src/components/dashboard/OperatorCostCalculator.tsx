@@ -123,7 +123,7 @@ export const OperatorCostCalculator = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="salary">Salaire mensuel net (€)</Label>
+              <Label htmlFor="salary">Salaire mensuel NET (€) <span className="text-xs text-muted-foreground">(ce que reçoit l'employé)</span></Label>
               <Input
                 id="salary"
                 type="number"
@@ -132,9 +132,10 @@ export const OperatorCostCalculator = () => {
                 value={baseSalary}
                 onChange={(e) => setBaseSalary(parseFloat(e.target.value))}
               />
+              <p className="text-xs text-muted-foreground mt-1">Le coût total entreprise inclut charges patronales</p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="daily">Tarif journalier freelance (€)</Label>
+              <Label htmlFor="daily">Tarif journalier freelance (€) <span className="text-xs text-muted-foreground">(8h de travail)</span></Label>
               <Input
                 id="daily"
                 type="number"
@@ -143,9 +144,10 @@ export const OperatorCostCalculator = () => {
                 value={dailyRate}
                 onChange={(e) => setDailyRate(parseFloat(e.target.value))}
               />
+              <p className="text-xs text-muted-foreground mt-1">Freelance : aucune charge sociale</p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="hourly">Tarif horaire freelance (€)</Label>
+              <Label htmlFor="hourly">Tarif horaire freelance (€) <span className="text-xs text-muted-foreground">(/heure)</span></Label>
               <Input
                 id="hourly"
                 type="number"
@@ -154,10 +156,11 @@ export const OperatorCostCalculator = () => {
                 value={hourlyRate}
                 onChange={(e) => setHourlyRate(parseFloat(e.target.value))}
               />
+              <p className="text-xs text-muted-foreground mt-1">Converti : {(hourlyRate * 8).toFixed(2)}€/jour</p>
             </div>
           </div>
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg text-sm">
-            <p className="text-blue-900">
+          <div className="mt-4 p-3 bg-blue-500/10 rounded-lg text-sm border-border border-blue-500/20">
+            <p className="text-blue-600 dark:text-blue-400">
               <strong>Charges sociales France:</strong> Charges salariales {employeeChargesPercent}% • Charges patronales {employerChargesPercent}%
             </p>
           </div>
@@ -259,9 +262,9 @@ export const OperatorCostCalculator = () => {
                 </div>
               )}
               {comp.breakdown.companyCost && (
-                <div className="border-t pt-2 mt-2 flex justify-between font-semibold bg-gray-100 p-2 rounded">
-                  <span>Coût total entreprise/jour</span>
-                  <span className="font-mono text-lg">{comp.breakdown.companyCost.toFixed(2)}€</span>
+                <div className="border-t pt-2 mt-2 flex justify-between font-semibold bg-muted p-2 rounded">
+                  <span>💰 Coût total entreprise/jour</span>
+                  <span className="font-mono text-lg text-green-600 dark:text-green-400">{comp.breakdown.companyCost.toFixed(2)}€</span>
                 </div>
               )}
             </CardContent>
@@ -270,17 +273,17 @@ export const OperatorCostCalculator = () => {
       </div>
 
       {/* Info Box */}
-      <Card className="bg-amber-50 border-amber-200">
+      <Card className="bg-amber-500/10 border-amber-500/30">
         <CardContent className="pt-6">
-          <div className="text-sm space-y-2">
+          <div className="text-sm space-y-2 text-amber-900 dark:text-amber-100">
             <p>
               <strong>💡 Calcul français:</strong> Les charges salariales (42%) et patronales (45%) sont basées sur les barèmes français actuels et peuvent varier selon l'affiliation (privé/public).
             </p>
             <p>
-              <strong>💰 Coût total entreprise:</strong> Inclut le salaire brut + charges patronales pour un salarié.
+              <strong>💰 Coût total entreprise:</strong> Le coût réel pour l'entreprise = Salaire NET (saisie) + Charges salariales (42% du BRUT) + Charges patronales (45% du BRUT).
             </p>
             <p>
-              <strong>🎯 Freelance:</strong> Aucune charge sociale (à l'opérateur de déclarer ses revenus).
+              <strong>🎯 Freelance:</strong> Aucune charge sociale (à l'opérateur de déclarer ses revenus). Le prix affiché = coût direct.
             </p>
           </div>
         </CardContent>

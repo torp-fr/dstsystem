@@ -85,17 +85,17 @@ export default function OperatorsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg border">
+        <div className="bg-card p-4 rounded-lg border-border">
           <p className="text-sm text-gray-600">Total opérateurs</p>
           <p className="text-2xl font-bold">{operators.length}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
+        <div className="bg-card p-4 rounded-lg border-border">
           <p className="text-sm text-gray-600">Salariés</p>
           <p className="text-2xl font-bold text-blue-600">
             {operators.filter((o) => o.employment_type === 'salary').length}
           </p>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
+        <div className="bg-card p-4 rounded-lg border-border">
           <p className="text-sm text-gray-600">Freelances</p>
           <p className="text-2xl font-bold text-green-600">
             {operators.filter((o) => o.employment_type === 'freelance').length}
@@ -104,7 +104,7 @@ export default function OperatorsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg border mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
+      <div className="bg-card p-4 rounded-lg border-border mb-6 flex flex-col gap-4 md:flex-row md:gap-2">
         <Input
           placeholder="Rechercher par nom ou email..."
           value={searchTerm}
@@ -158,7 +158,7 @@ export default function OperatorsPage() {
       ) : (
         <div className="grid gap-4">
           {filteredOperators.map((operator) => (
-            <div key={operator.id} className="bg-white p-4 rounded-lg border hover:shadow-md transition-shadow">
+            <div key={operator.id} className="bg-card p-4 rounded-lg border-border hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">

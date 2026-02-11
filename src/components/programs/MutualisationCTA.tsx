@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const MutualisationCTA = () => (
-  <section className="py-20 bg-card border-y border-border">
+  <section className="py-20 bg-card border-y border-border-border">
     <div className="container mx-auto px-4">
       <AnimatedSection>
         <div className="text-center max-w-3xl mx-auto">
