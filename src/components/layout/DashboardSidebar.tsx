@@ -10,6 +10,11 @@ import {
   LogOut,
   Menu,
   X,
+  TrendingUp,
+  Crosshair,
+  Calculator,
+  Calendar,
+  FileText,
 } from 'lucide-react';
 
 interface DashboardSidebarProps {
@@ -25,6 +30,11 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
   const menuItems = [
     { icon: BarChart3, label: 'Tableau de bord', path: '/dashboard' },
     { icon: Users, label: 'Clients', path: '/dashboard/clients' },
+    { icon: Crosshair, label: 'Opérateurs', path: '/dashboard/operators' },
+    { icon: Calculator, label: 'Coûts', path: '/dashboard/costs' },
+    { icon: Calendar, label: 'Calendrier', path: '/dashboard/calendar' },
+    { icon: FileText, label: 'Devis', path: '/dashboard/quotes' },
+    { icon: TrendingUp, label: 'Analytics', path: '/dashboard/analytics' },
     { icon: Package, label: 'Offres & Formules', path: '/dashboard/offers' },
     { icon: DollarSign, label: 'Finances', path: '/dashboard/finances' },
     { icon: Settings, label: 'Paramètres', path: '/dashboard/settings' },
