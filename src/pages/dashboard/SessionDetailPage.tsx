@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,12 +10,30 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { useToast } from '@/hooks/use-toast';
+import {
   useSessionById,
   useSessionOperators,
+  useAddSessionOperator,
+  useRemoveSessionOperator,
 } from '@/hooks/useShootingSessions';
-import { useOperatorRates } from '@/hooks/useOperators';
+import { useOperators } from '@/hooks/useOperators';
 import { useClients } from '@/hooks/useClients';
-import { Loader2, ArrowLeft, Edit2, MapPin, Users, Clock, Calendar } from 'lucide-react';
+import { Loader2, ArrowLeft, Edit2, MapPin, Users, Clock, Calendar, Plus, X } from 'lucide-react';
 
 const statusColors: Record<string, string> = {
   scheduled: 'bg-blue-100 text-blue-800',
@@ -33,9 +52,18 @@ const statusLabels: Record<string, string> = {
 export default function SessionDetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { toast } = useToast();
   const { data: session, isLoading: sessionLoading } = useSessionById(id);
   const { data: sessionOperators = [] } = useSessionOperators(id);
   const { data: clients = [] } = useClients();
+  const { data: operators = [] } = useOperators({ status: 'active' });
+
+  const addSessionOperator = useAddSessionOperator();
+  const removeSessionOperator = useRemoveSessionOperator();
+
+  const [selectedOperator, setSelectedOperator] = useState('');
+  const [operatorRole, setOperatorRole] = useState('instructor');
+  const [deleteOperatorId, setDeleteOperatorId] = useState<string | null>(null);
 
   if (sessionLoading || !id) {
     return (
@@ -57,6 +85,62 @@ export default function SessionDetailPage() {
     if (!clientId) return 'Sans client';
     const client = clients.find((c) => c.id === clientId);
     return client ? `${client.first_name} ${client.last_name}` : 'Client inconnu';
+  };
+
+  const getOperatorName = (operatorId: string) => {
+    const op = operators.find((o) => o.id === operatorId);
+    return op ? `${op.first_name} ${op.last_name}` : 'Opérateur inconnu';
+  };
+
+  const getOperatorObject = (operatorId: string) => {
+    return operators.find((o) => o.id === operatorId);
+  };
+
+  const handleAddOperator = async () => {
+    if (!selectedOperator || !id) return;
+
+    try {
+      await addSessionOperator.mutateAsync({
+        session_id: id,
+        operator_id: selectedOperator,
+        role: operatorRole,
+        cost_override: null,
+      });
+      toast({
+        title: 'Succès',
+        description: 'Opérateur ajouté à la session',
+      });
+      setSelectedOperator('');
+      setOperatorRole('instructor');
+    } catch (error) {
+      toast({
+        title: 'Erreur',
+        description: 'Erreur lors de l\'ajout de l\'opérateur',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleDeleteOperator = async () => {
+    if (!deleteOperatorId || !id) return;
+
+    try {
+      await removeSessionOperator.mutateAsync({
+        id: deleteOperatorId,
+        session_id: id,
+      });
+      toast({
+        title: 'Succès',
+        description: 'Opérateur supprimé de la session',
+      });
+      setDeleteOperatorId(null);
+    } catch (error) {
+      toast({
+        title: 'Erreur',
+        description: 'Erreur lors de la suppression',
+        variant: 'destructive',
+      });
+    }
   };
 
   // Calculate operator costs
@@ -121,29 +205,35 @@ export default function SessionDetailPage() {
             {/* Details Grid */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Client</p>
+                <p className="text-sm text-muted-foreground mb-1">Client</p>
                 <p className="font-semibold">{getClientName(session.client_id)}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600 mb-1">Statut</p>
+                <p className="text-sm text-muted-foreground mb-1">Statut</p>
                 <Badge className={statusColors[session.status]}>
                   {statusLabels[session.status]}
                 </Badge>
               </div>
               <div>
-                <p className="text-sm text-gray-600 mb-1">Heure</p>
+                <p className="text-sm text-muted-foreground mb-1">Heure</p>
                 <p className="font-semibold flex items-center gap-2">
                   <Clock className="h-4 w-4" />
                   {session.session_time || 'Non définie'}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600 mb-1">Durée</p>
-                <p className="font-semibold">{session.duration_minutes} minutes</p>
+                <p className="text-sm text-muted-foreground mb-1">Durée</p>
+                <p className="font-semibold">
+                  {(session as any).duration_type
+                    ? (session as any).duration_type === 'full_day'
+                      ? 'Journée complète'
+                      : '1/2 journée'
+                    : `${session.duration_minutes} min`}
+                </p>
               </div>
               {session.location && (
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Lieu</p>
+                  <p className="text-sm text-muted-foreground mb-1">Lieu</p>
                   <p className="font-semibold flex items-center gap-2">
                     <MapPin className="h-4 w-4" />
                     {session.location}
@@ -152,7 +242,7 @@ export default function SessionDetailPage() {
               )}
               {session.max_participants && (
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Participants max</p>
+                  <p className="text-sm text-muted-foreground mb-1">Participants max</p>
                   <p className="font-semibold flex items-center gap-2">
                     <Users className="h-4 w-4" />
                     {session.max_participants}
@@ -163,18 +253,18 @@ export default function SessionDetailPage() {
 
             {session.notes && (
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-2">Notes</p>
-                <p className="bg-gray-50 p-3 rounded-lg text-sm">{session.notes}</p>
+                <p className="text-sm font-medium text-muted-foreground mb-2">Notes</p>
+                <p className="bg-card p-3 rounded-lg text-sm border border-border">{session.notes}</p>
               </div>
             )}
 
             {/* Dates Info */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-xs text-gray-600">
+            <div className="bg-card border border-border p-4 rounded-lg">
+              <p className="text-xs text-muted-foreground">
                 Créée le {new Date(session.created_at).toLocaleDateString('fr-FR')}
               </p>
               {session.updated_at !== session.created_at && (
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-muted-foreground">
                   Modifiée le {new Date(session.updated_at).toLocaleDateString('fr-FR')}
                 </p>
               )}
@@ -193,7 +283,7 @@ export default function SessionDetailPage() {
             <div>
               <p className="text-sm font-medium mb-3">Coûts opérateurs</p>
               {sessionOperators.length === 0 ? (
-                <p className="text-xs text-gray-500">Aucun opérateur assigné</p>
+                <p className="text-xs text-muted-foreground">Aucun opérateur assigné</p>
               ) : (
                 <div className="space-y-2">
                   {sessionOperators.map((so: any) => (
@@ -204,9 +294,9 @@ export default function SessionDetailPage() {
                       </span>
                     </div>
                   ))}
-                  <div className="flex justify-between items-center py-2 bg-blue-50 px-2 rounded">
+                  <div className="flex justify-between items-center py-2 bg-blue-600/10 px-2 rounded border border-blue-500/30">
                     <span className="font-semibold">Total opérateurs</span>
-                    <span className="font-bold text-blue-600">
+                    <span className="font-bold text-blue-600 dark:text-blue-400">
                       {totalOperatorCost.toFixed(2)}€
                     </span>
                   </div>
@@ -214,9 +304,35 @@ export default function SessionDetailPage() {
               )}
             </div>
 
-            {/* Note */}
-            <div className="bg-yellow-50 border-border border-yellow-200 p-3 rounded-lg text-xs text-yellow-800">
-              <p>💡 Les coûts sont des estimations basées sur les tarifs définis des opérateurs.</p>
+            {/* Profitability Status */}
+            <div className="pt-2 border-t">
+              <p className="text-sm font-medium mb-2">Rentabilité</p>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-muted-foreground">État</span>
+                  <Badge
+                    className={`text-xs ${
+                      session.status === 'completed'
+                        ? 'bg-emerald-600/20 text-emerald-700 dark:text-emerald-300'
+                        : session.status === 'cancelled'
+                        ? 'bg-rose-600/20 text-rose-700 dark:text-rose-300'
+                        : 'bg-amber-600/20 text-amber-700 dark:text-amber-300'
+                    }`}
+                  >
+                    {session.status === 'completed'
+                      ? 'Complétée'
+                      : session.status === 'cancelled'
+                      ? 'Annulée'
+                      : 'En attente'}
+                  </Badge>
+                </div>
+                {totalOperatorCost > 0 && (
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-muted-foreground">Coûts estimés</span>
+                    <span className="font-semibold text-red-600 dark:text-red-400">{totalOperatorCost.toFixed(2)}€</span>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Quick Actions */}
@@ -239,49 +355,128 @@ export default function SessionDetailPage() {
         </Card>
       </div>
 
+      {/* Delete Operator Dialog */}
+      <AlertDialog open={!!deleteOperatorId} onOpenChange={(open) => !open && setDeleteOperatorId(null)}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Retirer l'opérateur</AlertDialogTitle>
+          <AlertDialogDescription>
+            Êtes-vous sûr de vouloir retirer cet opérateur de la session ?
+          </AlertDialogDescription>
+          <div className="flex gap-3 justify-end">
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteOperator} className="bg-red-600">
+              Retirer
+            </AlertDialogAction>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* Operators Section */}
-      {sessionOperators.length > 0 && (
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Opérateurs assignés</CardTitle>
-            <CardDescription>{sessionOperators.length} opérateur(s)</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-3 md:grid-cols-2">
-              {sessionOperators.map((so: any) => (
-                <div key={so.id} className="bg-gray-50 p-4 rounded-lg border-border">
-                  <p className="font-semibold">
-                    {so.operator?.first_name} {so.operator?.last_name}
-                  </p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <Badge variant="outline" className="text-xs">
-                      {so.role === 'instructor'
-                        ? '👤 Instructeur'
-                        : so.role === 'assistant'
-                        ? '👥 Assistant'
-                        : '🆘 Support'}
-                    </Badge>
-                    <Badge
-                      className={`text-xs ${
-                        so.operator?.employment_type === 'salary'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-green-100 text-green-800'
-                      }`}
-                    >
-                      {so.operator?.employment_type === 'salary' ? 'Salarié' : 'Freelance'}
-                    </Badge>
-                  </div>
-                  {so.cost_override && (
-                    <p className="text-sm text-gray-600 mt-2">
-                      Coût: <span className="font-semibold">{so.cost_override.toFixed(2)}€</span>
-                    </p>
-                  )}
-                </div>
-              ))}
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle>Opérateurs assignés</CardTitle>
+          <CardDescription>{sessionOperators.length} opérateur(s)</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Add Operator Form */}
+          <div className="space-y-3 pb-4 border-b">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-sm font-medium">Opérateur</label>
+                <Select value={selectedOperator} onValueChange={setSelectedOperator}>
+                  <SelectTrigger className="text-sm">
+                    <SelectValue placeholder="Sélectionner" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {operators
+                      .filter((op) => !sessionOperators.some((so: any) => so.operator_id === op.id))
+                      .map((op) => (
+                        <SelectItem key={op.id} value={op.id}>
+                          {op.first_name} {op.last_name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Rôle</label>
+                <Select value={operatorRole} onValueChange={setOperatorRole}>
+                  <SelectTrigger className="text-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="instructor">Instructeur</SelectItem>
+                    <SelectItem value="assistant">Assistant</SelectItem>
+                    <SelectItem value="support">Support</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          </CardContent>
-        </Card>
-      )}
+
+            <Button
+              size="sm"
+              className="w-full gap-2"
+              onClick={handleAddOperator}
+              disabled={!selectedOperator || addSessionOperator.isPending}
+            >
+              <Plus className="h-3 w-3" />
+              Ajouter opérateur
+            </Button>
+          </div>
+
+          {/* Operators List */}
+          {sessionOperators.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-4">Aucun opérateur assigné</p>
+          ) : (
+            <div className="grid gap-3 md:grid-cols-2">
+              {sessionOperators.map((so: any) => {
+                const op = getOperatorObject(so.operator_id);
+                return (
+                  <div key={so.id} className="bg-card border border-border p-4 rounded-lg flex items-start justify-between gap-2">
+                    <div className="flex-1">
+                      <p className="font-semibold">
+                        {op?.first_name} {op?.last_name}
+                      </p>
+                      <div className="flex items-center gap-2 mt-2 flex-wrap">
+                        <Badge variant="outline" className="text-xs">
+                          {so.role === 'instructor'
+                            ? 'Instructeur'
+                            : so.role === 'assistant'
+                            ? 'Assistant'
+                            : 'Support'}
+                        </Badge>
+                        <Badge
+                          className={`text-xs ${
+                            op?.employment_type === 'salary'
+                              ? 'bg-blue-600/20 text-blue-700 dark:text-blue-300'
+                              : 'bg-green-600/20 text-green-700 dark:text-green-300'
+                          }`}
+                        >
+                          {op?.employment_type === 'salary' ? 'Salarié' : 'Freelance'}
+                        </Badge>
+                      </div>
+                      {so.cost_override && (
+                        <p className="text-sm text-muted-foreground mt-2">
+                          Coût: <span className="font-semibold">{so.cost_override.toFixed(2)}€</span>
+                        </p>
+                      )}
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setDeleteOperatorId(so.id)}
+                      className="h-8 w-8 p-0 shrink-0"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

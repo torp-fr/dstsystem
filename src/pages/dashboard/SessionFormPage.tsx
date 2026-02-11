@@ -63,6 +63,7 @@ export default function SessionFormPage() {
     session_date: new Date().toISOString().split('T')[0],
     session_time: '',
     duration_minutes: '60',
+    duration_type: null as 'full_day' | 'half_day' | null,
     theme: '',
     max_participants: '',
     status: 'scheduled' as const,
@@ -83,6 +84,7 @@ export default function SessionFormPage() {
         session_date: session.session_date,
         session_time: session.session_time || '',
         duration_minutes: session.duration_minutes.toString(),
+        duration_type: session.duration_type,
         theme: session.theme || '',
         max_participants: session.max_participants?.toString() || '',
         status: session.status,
@@ -123,11 +125,20 @@ export default function SessionFormPage() {
     }
 
     try {
+      // Calculate duration_minutes based on duration_type if set
+      let durationMinutes = parseInt(formData.duration_minutes) || 60;
+      if (formData.duration_type === 'full_day') {
+        durationMinutes = 480; // 8 hours
+      } else if (formData.duration_type === 'half_day') {
+        durationMinutes = 240; // 4 hours
+      }
+
       const data = {
         client_id: formData.client_id || null,
         session_date: formData.session_date,
         session_time: formData.session_time || null,
-        duration_minutes: parseInt(formData.duration_minutes) || 60,
+        duration_minutes: durationMinutes,
+        duration_type: formData.duration_type,
         theme: formData.theme || null,
         max_participants: formData.max_participants ? parseInt(formData.max_participants) : null,
         status: formData.status,
@@ -297,6 +308,23 @@ export default function SessionFormPage() {
               </div>
 
               <div>
+                <label className="text-sm font-medium">Type de durée</label>
+                <Select
+                  value={formData.duration_type || ''}
+                  onValueChange={(value) => handleSelectChange('duration_type', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sélectionner une durée" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Personnalisée</SelectItem>
+                    <SelectItem value="half_day">1/2 journée (4h)</SelectItem>
+                    <SelectItem value="full_day">Journée complète (8h)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
                 <label className="text-sm font-medium">Client</label>
                 <Select
                   value={formData.client_id}
@@ -334,6 +362,14 @@ export default function SessionFormPage() {
                     name="duration_minutes"
                     value={formData.duration_minutes}
                     onChange={handleInputChange}
+                    disabled={!!formData.duration_type}
+                    placeholder={
+                      formData.duration_type === 'full_day'
+                        ? '480'
+                        : formData.duration_type === 'half_day'
+                        ? '240'
+                        : '60'
+                    }
                   />
                 </div>
                 <div>

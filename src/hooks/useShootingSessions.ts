@@ -7,6 +7,7 @@ export interface ShootingSession {
   session_date: string;
   session_time: string | null;
   duration_minutes: number;
+  duration_type: 'full_day' | 'half_day' | null;
   theme: string | null;
   max_participants: number | null;
   status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
