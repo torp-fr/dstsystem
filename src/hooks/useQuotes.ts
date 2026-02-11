@@ -183,6 +183,31 @@ export const useUpdateQuote = () => {
   });
 };
 
+// Delete quote
+export const useDeleteQuote = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      try {
+        const { error } = await supabase
+          .from('quotes')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+        return id;
+      } catch (error) {
+        console.error('[Quotes] Error deleting quote:', error);
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quotes'] });
+    },
+  });
+};
+
 // Convert quote to invoice
 export const useConvertQuoteToInvoice = () => {
   const queryClient = useQueryClient();

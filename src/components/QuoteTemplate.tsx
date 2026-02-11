@@ -63,11 +63,11 @@ export default function QuoteTemplate({
             <div className="border-b pb-6">
               <div className="grid grid-cols-3 gap-8 mb-6">
                 {/* Logo - Left */}
-                <div className="flex items-center">
+                <div className="flex items-center justify-center">
                   <img
                     src="/favicon.png"
                     alt="Logo"
-                    className="h-16 w-16 object-contain"
+                    className="h-24 w-24 object-contain"
                   />
                 </div>
 
