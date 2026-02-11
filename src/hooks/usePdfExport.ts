@@ -77,21 +77,23 @@ export const usePdfExport = () => {
       const availableWidth = pageWidth - marginLeft - marginRight;
       const availableHeight = pageHeight - marginTop - marginBottom;
 
-      const imgWidth = availableWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = marginTop;
+      // Calculate dimensions - single page only
+      let imgWidth = availableWidth;
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      // Add image to PDF with page breaks
-      pdf.addImage(imgData, 'PNG', marginLeft, position, imgWidth, imgHeight);
-      heightLeft -= availableHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight + marginTop;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', marginLeft, position, imgWidth, imgHeight);
-        heightLeft -= availableHeight;
+      // If content exceeds one page, scale it down to fit
+      if (imgHeight > availableHeight) {
+        const scaleFactor = availableHeight / imgHeight;
+        imgWidth = imgWidth * scaleFactor;
+        imgHeight = availableHeight;
       }
+
+      // Center the image horizontally if it's smaller than available width
+      const xPosition = marginLeft + (availableWidth - imgWidth) / 2;
+      const yPosition = marginTop;
+
+      // Add single image to single page
+      pdf.addImage(imgData, 'PNG', xPosition, yPosition, imgWidth, imgHeight);
 
       // Save the PDF
       pdf.save(options.filename);
