@@ -100,7 +100,7 @@ export default function QuoteTemplate({
             {/* Client Info */}
             <div className="grid grid-cols-2 gap-8 py-6 border-b">
               <div>
-                <h3 className="font-semibold mb-3">Facturé à:</h3>
+                <h3 className="font-semibold mb-3">Destinataire:</h3>
                 <div className="space-y-1 text-sm">
                   <p className="font-semibold">
                     {client.first_name} {client.last_name}

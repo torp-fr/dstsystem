@@ -24,12 +24,42 @@ export const usePdfExport = () => {
         throw new Error(`Element with id ${elementId} not found`);
       }
 
-      // Create canvas from the element
-      const canvas = await html2canvas(element, {
+      // Clone the element to avoid modifying the original
+      const clonedElement = element.cloneNode(true) as HTMLElement;
+
+      // Force all text to black for PDF export
+      const forceBlackText = (el: HTMLElement) => {
+        // Set text color to black for all elements
+        el.style.color = 'black';
+        el.style.backgroundColor = 'white';
+
+        // Process all child elements
+        Array.from(el.children).forEach((child) => {
+          forceBlackText(child as HTMLElement);
+        });
+      };
+
+      forceBlackText(clonedElement);
+
+      // Temporarily add the cloned element to the DOM for canvas capture
+      const tempContainer = document.createElement('div');
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      tempContainer.style.top = '-9999px';
+      tempContainer.appendChild(clonedElement);
+      document.body.appendChild(tempContainer);
+
+      // Create canvas from the cloned element
+      const canvas = await html2canvas(clonedElement, {
         scale: 2,
         useCORS: true,
         backgroundColor: '#ffffff',
+        allowTaint: true,
+        logging: false,
       });
+
+      // Remove temporary container
+      document.body.removeChild(tempContainer);
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
