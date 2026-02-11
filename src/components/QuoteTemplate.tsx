@@ -59,9 +59,9 @@ export default function QuoteTemplate({
       </div>
 
       {/* Main Quote Card - Use flexbox for footer positioning */}
-      <Card id={elementId} className="print:shadow-none print:border-none print:bg-white flex flex-col" style={{ background: 'var(--card)', minHeight: '297mm' }} >
-        <CardContent className="p-8 print:p-0 print:bg-white flex-1 flex flex-col" style={{ background: 'var(--card)' }}>
-          <div className="space-y-8 flex-1 flex flex-col">
+      <Card id={elementId} className="print:shadow-none print:border-none print:bg-white flex flex-col" style={{ background: 'var(--card)' }}>
+        <CardContent className="p-8 print:p-0 print:bg-white flex-1 flex flex-col" style={{ background: 'var(--card)', display: 'flex', flexDirection: 'column', minHeight: '1000px' }}>
+          <div className="space-y-8 flex-1">
             {/* Header - Logo Left, DEVIS + Client Right */}
             <div className="border-b pb-6">
               <div className="flex gap-8 justify-between">
@@ -83,9 +83,9 @@ export default function QuoteTemplate({
                 </div>
 
                 {/* DEVIS Header + Client Info - Right */}
-                <div className="flex-1">
+                <div className="flex-1 overflow-hidden">
                   <div className="text-right mb-6">
-                    <h1 className="text-5xl font-bold text-primary mb-2">DEVIS</h1>
+                    <h1 className="text-4xl font-bold text-primary mb-2 overflow-hidden text-ellipsis">DEVIS</h1>
                     <p className="text-sm text-muted-foreground mb-2">{quote.quote_number}</p>
                     {quote.status && (
                       <Badge className="float-right mb-2">{quote.status}</Badge>
