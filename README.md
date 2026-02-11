@@ -10,7 +10,7 @@ There are several ways of editing your application.
 
 **Use Lovable**
 
-Simply visit the (https://www.DST-System.fr)and start prompting.
+Simply visit the (https://www.DST-System.fr) and start prompting.
 
 Changes made via Lovable will be committed automatically to this repo.
 
