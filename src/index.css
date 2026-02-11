@@ -104,17 +104,54 @@
     padding: 0 !important;
   }
 
-  /* Remove all backgrounds from all elements */
+  /* Remove card backgrounds but keep text readable */
+  .bg-primary\/5,
+  .bg-blue-50,
+  .bg-muted\/30,
+  .bg-amber-50,
+  .bg-muted\/50 {
+    background: white !important;
+    background-color: white !important;
+    border: 1px solid #ccc !important;
+  }
+
+  /* Ensure text is visible and readable */
   * {
-    background: transparent !important;
-    background-color: transparent !important !important;
+    color: black !important;
+    background-color: transparent !important;
     box-shadow: none !important;
   }
 
-  /* Force white on specific elements */
-  body, html, main, [id] {
+  /* Force white background on root containers */
+  html, body {
     background: white !important;
     background-color: white !important;
+  }
+
+  /* Ensure specific text colors are black */
+  .text-primary {
+    color: black !important;
+  }
+
+  .text-muted-foreground {
+    color: #333 !important;
+  }
+
+  .text-foreground {
+    color: black !important;
+  }
+
+  .text-white,
+  .dark\:text-white {
+    color: black !important;
+  }
+
+  .text-blue-800,
+  .text-blue-900,
+  .text-amber-800,
+  .text-amber-900,
+  .text-red-600 {
+    color: black !important;
   }
 
   /* Ensure links are visible */
@@ -139,35 +176,31 @@
     color: black !important;
   }
 
+  /* Table styling for print */
   table {
     width: 100% !important;
     border-collapse: collapse !important;
   }
 
   th, td {
-    border: 1px solid #000 !important;
-    background: white !important;
-    color: black !important;
-  }
-
-  /* Remove colored boxes and backgrounds */
-  .bg-primary\/5,
-  .bg-blue-50,
-  .bg-muted\/30,
-  .bg-amber-50,
-  .bg-red-600,
-  .bg-muted\/50 {
+    border: 1px solid #999 !important;
     background: white !important;
     background-color: white !important;
-    border: 1px solid #999 !important;
-  }
-
-  /* Ensure text is black */
-  .text-primary {
     color: black !important;
   }
 
-  .text-muted-foreground {
-    color: #333 !important;
+  th {
+    background: #f5f5f5 !important;
+    font-weight: bold;
+  }
+
+  /* Ensure badges are readable */
+  span {
+    color: black !important;
+  }
+
+  /* Section headers */
+  .font-semibold {
+    color: black !important;
   }
 }
