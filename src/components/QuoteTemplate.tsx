@@ -240,7 +240,7 @@ export default function QuoteTemplate({
           </div>
 
           {/* Footer - Truly fixed to bottom of page */}
-          <div className="text-center text-xs text-muted-foreground space-y-2" style={{ position: 'absolute', bottom: '0', left: '0', right: '0', padding: '24px 32px', width: '100%', boxSizing: 'border-box', borderTop: '1px solid var(--border)' }}>
+          <div className="text-center text-xs text-muted-foreground space-y-2 border-t pt-6" style={{ position: 'absolute', bottom: '0', left: '0', right: '0', padding: '24px 32px', width: '100%', boxSizing: 'border-box' }}>
             <p>Merci de votre confiance</p>
             <p>Pour toute question, veuillez contacter {company.email}</p>
             <p className="pt-4">--- Fin du devis ---</p>
