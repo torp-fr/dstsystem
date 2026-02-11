@@ -206,17 +206,17 @@ export default function CalendarPage() {
                   <div
                     key={`${weekIdx}-${dayIdx}`}
                     className={`min-h-24 p-2 border-r last:border-r-0 ${
-                      !day.isCurrentMonth ? 'bg-gray-50' : 'bg-card'
+                      !day.isCurrentMonth ? 'bg-muted/30' : 'bg-card'
                     } ${
                       day.isCurrentMonth &&
                       day.date.toDateString() === today.toDateString()
-                        ? 'bg-blue-50'
+                        ? 'bg-blue-500/10'
                         : ''
                     }`}
                   >
                     <div
                       className={`text-sm font-semibold mb-1 ${
-                        !day.isCurrentMonth ? 'text-gray-400' : 'text-gray-700'
+                        !day.isCurrentMonth ? 'text-muted-foreground/50' : 'text-foreground'
                       }`}
                     >
                       {day.date.getDate()}
@@ -246,13 +246,13 @@ export default function CalendarPage() {
           </div>
 
           {/* Legend */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+          <div className="mt-6 p-4 bg-muted/30 rounded-lg border-border border">
             <p className="text-sm font-semibold mb-3">Statuts des sessions:</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {Object.entries(statusLabels).map(([key, label]) => (
                 <div key={key} className="flex items-center gap-2">
                   <div className={`w-3 h-3 rounded ${statusColors[key]}`} />
-                  <span className="text-sm">{label}</span>
+                  <span className="text-sm text-foreground">{label}</span>
                 </div>
               ))}
             </div>
@@ -278,16 +278,16 @@ export default function CalendarPage() {
                 .map((session) => (
                   <div
                     key={session.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"
+                    className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
                     onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
                   >
                     <div className="flex-1">
-                      <p className="font-semibold">{session.theme || 'Sans thème'}</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="font-semibold text-foreground">{session.theme || 'Sans thème'}</p>
+                      <p className="text-sm text-muted-foreground">
                         {new Date(session.session_date).toLocaleDateString('fr-FR')}
                         {session.session_time && ` à ${session.session_time}`}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground/75">
                         {getClientName(session.client_id)}
                       </p>
                     </div>

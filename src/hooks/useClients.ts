@@ -67,10 +67,11 @@ export const useCreateClient = () => {
 
   return useMutation({
     mutationFn: async (client: Client) => {
-      // Ensure numeric fields are numbers
+      // Remove fields that might not exist in the schema
+      const { learner_count, structure_type, ...clientData } = client as any;
+
       const cleanedClient = {
-        ...client,
-        learner_count: client.learner_count ? parseInt(String(client.learner_count)) : 0,
+        ...clientData,
         created_by: user?.id,
       };
 

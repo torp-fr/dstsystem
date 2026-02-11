@@ -173,14 +173,6 @@ const AnalyticsPage = () => {
         )}
       </div>
 
-      {/* Info Box */}
-      <div className="bg-blue-500/10 border-border border-blue-500/20 rounded-xl p-6">
-        <h3 className="font-semibold text-blue-600 dark:text-blue-400 mb-2">📊 Analytics en temps réel</h3>
-        <p className="text-sm text-blue-600/80 dark:text-blue-400/80">
-          Le suivi des visites est activé sur toutes les pages du site. Les données se mettent à jour en temps réel.
-          Une intégration de carte interactive sera ajoutée dans les phases suivantes.
-        </p>
-      </div>
     </div>
   );
 };

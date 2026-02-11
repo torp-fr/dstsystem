@@ -39,6 +39,7 @@ import CostInitializationPage from "./pages/dashboard/CostInitializationPage";
 import OperatorInitializationPage from "./pages/dashboard/OperatorInitializationPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
 import FinancesPage from "./pages/dashboard/FinancesPage";
+import SettingsPage from "./pages/dashboard/SettingsPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import NotFound from "./pages/NotFound";
@@ -107,7 +108,7 @@ const AppRoutes = () => {
         <Route path="offers/new" element={<OfferFormPage />} />
         <Route path="offers/:id/edit" element={<OfferFormPage />} />
         <Route path="finances" element={<FinancesPage />} />
-        <Route path="settings" element={<div>Paramètres - À venir</div>} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
 
       {/* 404 */}
