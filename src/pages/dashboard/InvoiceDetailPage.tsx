@@ -9,18 +9,43 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
 import { useClients } from '@/hooks/useClients';
 import { useQuotes, useAmendments, useDeposits } from '@/hooks/useQuotes';
-import { ArrowLeft, FileText, AlertCircle, Check, Clock } from 'lucide-react';
+import { usePdfExport } from '@/hooks/usePdfExport';
+import { ArrowLeft, FileText, AlertCircle, Check, Clock, Download, Printer } from 'lucide-react';
 
 export default function InvoiceDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { exportInvoiceToPDF } = usePdfExport();
 
   const { data: clients = [] } = useClients();
   const { data: quotesData = [] } = useQuotes();
   const { data: amendments = [] } = useAmendments();
   const { data: deposits = [] } = useDeposits();
+
+  const handlePrintInvoice = () => {
+    window.print();
+  };
+
+  const handleExportPDF = async () => {
+    try {
+      if (!invoice?.id) return;
+      await exportInvoiceToPDF(invoice.id, invoice.invoice_number);
+      toast({
+        title: 'Succès',
+        description: 'Facture exportée en PDF',
+      });
+    } catch (error) {
+      toast({
+        title: 'Erreur',
+        description: 'Erreur lors de l\'export PDF',
+        variant: 'destructive',
+      });
+    }
+  };
 
   // Find invoice and related quote
   const quoteWithInvoice = quotesData.find(
@@ -368,11 +393,38 @@ export default function InvoiceDetailPage() {
       </Tabs>
 
       {/* Actions */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 print:hidden">
+        <Button
+          onClick={handleExportPDF}
+          className="gap-2"
+        >
+          <Download className="h-4 w-4" />
+          Exporter PDF
+        </Button>
+        <Button
+          variant="outline"
+          onClick={handlePrintInvoice}
+          className="gap-2"
+        >
+          <Printer className="h-4 w-4" />
+          Imprimer
+        </Button>
         <Button variant="outline" onClick={() => navigate('/dashboard/invoices')}>
           Retour à la liste
         </Button>
       </div>
+
+      {/* Printable Content */}
+      <style>{`
+        @media print {
+          body {
+            background: white;
+          }
+          .print\:hidden {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
