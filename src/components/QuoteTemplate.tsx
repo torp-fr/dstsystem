@@ -60,7 +60,7 @@ export default function QuoteTemplate({
 
       {/* Main Quote Card */}
       <Card id={elementId} className="print:shadow-none print:border-none print:bg-white" style={{ background: 'var(--card)' }}>
-        <CardContent className="p-8 print:p-0 print:bg-white" style={{ background: 'var(--card)' }}>
+        <CardContent className="p-4 print:p-1 print:bg-white" style={{ background: 'var(--card)' }}>
           <div className="space-y-8">
             {/* Header */}
             <div className="border-b pb-6">
