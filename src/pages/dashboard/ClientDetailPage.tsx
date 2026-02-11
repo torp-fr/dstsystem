@@ -12,6 +12,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useClients } from '@/hooks/useClients';
 import { useQuotes, useAmendments, useDeposits } from '@/hooks/useQuotes';
 import { ArrowLeft, FileText, Receipt, CreditCard, DollarSign, Users } from 'lucide-react';
+import ClientFinancialSummary from '@/components/ClientFinancialSummary';
+import ClientSubscriptionManager from '@/components/ClientSubscriptionManager';
 
 export default function ClientDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -178,6 +180,12 @@ export default function ClientDetailPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Client Financial Analysis */}
+      <ClientFinancialSummary clientId={id!} />
+
+      {/* Client Subscription Manager */}
+      <ClientSubscriptionManager clientId={id!} />
 
       {/* Documents Tabs */}
       <Tabs defaultValue="quotes" className="w-full">
