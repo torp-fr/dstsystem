@@ -88,9 +88,9 @@ export default function QuoteTemplate({
                 </div>
 
                 {/* Client Info - Aligned with company info */}
-                <div className="text-right flex-shrink-0 w-48 mt-12">
+                <div className="text-right flex-shrink-0 w-48" style={{ marginTop: '48px' }}>
                   <h3 className="font-semibold mb-3 text-sm">Destinataire:</h3>
-                  <div className="space-y-1 text-xs">
+                  <div className="space-y-1 text-sm">
                     <p className="font-semibold">
                       {client.first_name} {client.last_name}
                       {client.customer_number && (
@@ -110,8 +110,8 @@ export default function QuoteTemplate({
 
                   {(client.learner_count || client.industry) && (
                     <div className="mt-3">
-                      <h4 className="font-semibold mb-1 text-xs">Infos:</h4>
-                      <div className="space-y-0.5 text-xs text-muted-foreground">
+                      <h4 className="font-semibold mb-1 text-sm">Infos:</h4>
+                      <div className="space-y-0.5 text-sm text-muted-foreground">
                         {client.learner_count && (
                           <p><span className="font-semibold text-foreground">Apprenants:</span> {client.learner_count}</p>
                         )}
