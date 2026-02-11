@@ -275,60 +275,81 @@ export default function CalendarPage() {
 
           {viewMode === 'weekly' && (
             <>
-              {/* Weekly view */}
-              <div className="space-y-4">
-                {Array.from({ length: 7 }).map((_, dayOffset) => {
-                  const weekStart = new Date(currentDate);
-                  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-                  const dayDate = new Date(weekStart);
-                  dayDate.setDate(dayDate.getDate() + dayOffset);
-                  const dateStr = dayDate.toISOString().split('T')[0];
-                  const daySessions = sessions.filter((s) => s.session_date === dateStr);
+              {/* Weekly view - Table format */}
+              <div className="space-y-2 mb-4">
+                <div className="grid grid-cols-7 gap-1">
+                  {Array.from({ length: 7 }).map((_, dayOffset) => {
+                    const weekStart = new Date(currentDate);
+                    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+                    const dayDate = new Date(weekStart);
+                    dayDate.setDate(dayDate.getDate() + dayOffset);
+                    const dateStr = dayDate.toISOString().split('T')[0];
+                    const daySessions = sessions.filter((s) => s.session_date === dateStr);
+                    const isToday = dayDate.toDateString() === today.toDateString();
 
-                  return (
-                    <div key={dayOffset} className="border-l-4 border-blue-500 pl-4 py-2">
-                      <p className="font-semibold text-sm mb-2">
-                        {dayDate.toLocaleDateString('fr-FR', {
-                          weekday: 'long',
-                          month: 'short',
-                          day: 'numeric',
-                        })}
-                      </p>
-                      {daySessions.length === 0 ? (
-                        <p className="text-xs text-muted-foreground">Aucune session</p>
-                      ) : (
-                        <div className="space-y-2">
-                          {daySessions.map((session) => (
-                            <div
-                              key={session.id}
-                              onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
-                              className={`text-xs p-3 rounded cursor-pointer transition-all hover:shadow-md ${
-                                statusColors[session.status] || 'bg-blue-600/20 text-blue-700'
-                              }`}
-                            >
-                              <div className="font-medium">{session.theme || 'Session'}</div>
-                              <div className="text-xs opacity-75 mt-1">
-                                {session.session_time && <div>{session.session_time}</div>}
-                                <div>{session.duration_minutes} min</div>
-                              </div>
-                            </div>
-                          ))}
+                    return (
+                      <div
+                        key={dayOffset}
+                        className={`border-2 rounded-lg overflow-hidden ${
+                          isToday ? 'border-blue-500 bg-blue-500/5' : 'border-border bg-card'
+                        }`}
+                      >
+                        {/* Day Header */}
+                        <div className="bg-muted/50 p-2 text-center border-b border-border">
+                          <p className="text-xs font-semibold capitalize">
+                            {dayDate.toLocaleDateString('fr-FR', { weekday: 'short' })}
+                          </p>
+                          <p className="text-sm font-bold text-foreground">
+                            {dayDate.getDate()}
+                          </p>
                         </div>
-                      )}
-                    </div>
-                  );
-                })}
+
+                        {/* Sessions List */}
+                        <div className="p-2 space-y-1 min-h-[200px] overflow-y-auto">
+                          {daySessions.length === 0 ? (
+                            <p className="text-xs text-muted-foreground text-center py-4">-</p>
+                          ) : (
+                            daySessions.map((session) => (
+                              <div
+                                key={session.id}
+                                onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+                                className={`text-xs p-2 rounded cursor-pointer transition-all hover:shadow-md border-l-2 ${
+                                  statusColors[session.status] || 'bg-blue-600/20 text-blue-700'
+                                }`}
+                              >
+                                <div className="font-medium truncate">{session.theme || 'Session'}</div>
+                                {session.session_time && (
+                                  <div className="text-xs opacity-75">{session.session_time}</div>
+                                )}
+                              </div>
+                            ))
+                          )}
+                        </div>
+
+                        {/* Session count badge */}
+                        {daySessions.length > 0 && (
+                          <div className="text-center text-xs py-1 bg-muted/30 border-t border-border">
+                            <span className="font-semibold">{daySessions.length}</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </>
           )}
 
           {viewMode === 'annual' && (
             <>
-              {/* Annual view - 12 month grid */}
+              {/* Annual view - Mini calendars with daily indicators */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {Array.from({ length: 12 }).map((_, monthOffset) => {
                   const monthDate = new Date(currentDate.getFullYear(), monthOffset, 1);
-                  const monthStr = monthDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+                  const daysInMonth = new Date(currentDate.getFullYear(), monthOffset + 1, 0).getDate();
+                  const monthStr = monthDate.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' });
+
+                  // Get all sessions for this month
                   const monthSessions = sessions.filter((s) => {
                     const sessionDate = new Date(s.session_date);
                     return (
@@ -337,33 +358,84 @@ export default function CalendarPage() {
                     );
                   });
 
-                  const statusCounts = {
-                    scheduled: monthSessions.filter((s) => s.status === 'scheduled').length,
-                    in_progress: monthSessions.filter((s) => s.status === 'in_progress').length,
-                    completed: monthSessions.filter((s) => s.status === 'completed').length,
-                    cancelled: monthSessions.filter((s) => s.status === 'cancelled').length,
-                  };
+                  // Group sessions by day
+                  const sessionsByDay = monthSessions.reduce((acc: any, session: any) => {
+                    const day = new Date(session.session_date).getDate();
+                    if (!acc[day]) acc[day] = [];
+                    acc[day].push(session);
+                    return acc;
+                  }, {});
 
                   return (
-                    <div key={monthOffset} className="bg-card border border-border rounded-lg p-4">
-                      <p className="font-semibold text-sm mb-3 capitalize">{monthStr}</p>
-                      <div className="space-y-2 text-xs">
-                        {statusCounts.scheduled > 0 && (
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                            <span className="text-muted-foreground">
-                              {statusCounts.scheduled} programmée{statusCounts.scheduled > 1 ? 's' : ''}
-                            </span>
+                    <div key={monthOffset} className="bg-card border border-border rounded-lg p-3 space-y-2">
+                      {/* Month Header */}
+                      <p className="font-semibold text-sm capitalize text-center">{monthStr}</p>
+
+                      {/* Day grid */}
+                      <div className="grid grid-cols-7 gap-1">
+                        {Array.from({ length: daysInMonth }).map((_, dayIndex) => {
+                          const day = dayIndex + 1;
+                          const daySessions = sessionsByDay[day] || [];
+
+                          // Get status for this day (prioritize by severity)
+                          let dayStatus = null;
+                          if (daySessions.some((s: any) => s.status === 'completed')) dayStatus = 'completed';
+                          else if (daySessions.some((s: any) => s.status === 'in_progress')) dayStatus = 'in_progress';
+                          else if (daySessions.some((s: any) => s.status === 'scheduled')) dayStatus = 'scheduled';
+                          else if (daySessions.some((s: any) => s.status === 'cancelled')) dayStatus = 'cancelled';
+
+                          const statusColorMap: Record<string, string> = {
+                            scheduled: 'bg-blue-500',
+                            in_progress: 'bg-amber-500',
+                            completed: 'bg-emerald-500',
+                            cancelled: 'bg-rose-500',
+                          };
+
+                          return (
+                            <div
+                              key={day}
+                              className="aspect-square flex flex-col items-center justify-center rounded-sm relative group"
+                            >
+                              <span className="text-xs font-semibold text-foreground">{day}</span>
+                              {daySessions.length > 0 && (
+                                <>
+                                  <div className={`absolute bottom-0.5 w-1.5 h-1.5 rounded-full ${statusColorMap[dayStatus] || 'bg-gray-400'}`}></div>
+                                  {daySessions.length > 1 && (
+                                    <div className="absolute -top-1 -right-1 bg-muted text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                                      {daySessions.length}
+                                    </div>
+                                  )}
+                                  {/* Tooltip */}
+                                  <div className="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 bg-popover border border-border rounded p-2 whitespace-nowrap text-xs hidden group-hover:block z-10 shadow-md">
+                                    <div className="font-semibold mb-1">{daySessions.length} session{daySessions.length > 1 ? 's' : ''}</div>
+                                    {daySessions.map((s: any) => (
+                                      <div key={s.id} className="text-muted-foreground truncate max-w-xs">
+                                        {s.theme || 'Session'} - {s.status}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Legend for this month */}
+                      {monthSessions.length > 0 && (
+                        <div className="text-xs text-muted-foreground pt-2 border-t border-border/50">
+                          <div className="flex items-center gap-1 justify-center">
+                            <span className="font-semibold">{monthSessions.length}</span>
+                            <span>session{monthSessions.length > 1 ? 's' : ''}</span>
                           </div>
-                        )}
-                        {statusCounts.in_progress > 0 && (
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-                            <span className="text-muted-foreground">
-                              {statusCounts.in_progress} en cours
-                            </span>
-                          </div>
-                        )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
                         {statusCounts.completed > 0 && (
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
