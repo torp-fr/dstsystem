@@ -64,7 +64,7 @@ export default function QuoteTemplate({
           <div className="space-y-8 flex-1">
             {/* Header - Logo Left, DEVIS Center, Client Info Top Right */}
             <div className="border-b pb-6 relative">
-              <div className="flex gap-8 justify-center items-start mb-6">
+              <div className="flex gap-8 items-start mb-6">
                 {/* Logo + Company Info - Left */}
                 <div className="flex flex-col items-start print:w-32 flex-shrink-0">
                   <img
@@ -83,13 +83,13 @@ export default function QuoteTemplate({
                 </div>
 
                 {/* DEVIS Title - Center */}
-                <div className="text-center flex-shrink-0">
+                <div className="flex-1 text-center">
                   <h1 className="text-4xl font-bold text-primary">DEVIS</h1>
                 </div>
               </div>
 
-              {/* Client Info - Absolutely positioned top right, no flex interference */}
-              <div className="absolute top-0 right-0 text-right" style={{ width: '340px', paddingRight: '0px' }}>
+              {/* Client Info - Absolutely positioned at 2/3 right with margin from border */}
+              <div className="absolute text-right" style={{ top: '200px', right: '30px', width: '340px' }}>
                 <h3 className="font-semibold mb-3 text-base">Destinataire:</h3>
                 <div className="space-y-1 text-base">
                   <p className="font-semibold">
