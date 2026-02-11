@@ -16,6 +16,7 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import ClientsPage from "./pages/dashboard/ClientsPage";
 import ClientFormPage from "./pages/dashboard/ClientFormPage";
+import ClientDetailPage from "./pages/dashboard/ClientDetailPage";
 import OperatorsPage from "./pages/dashboard/OperatorsPage";
 import OperatorFormPage from "./pages/dashboard/OperatorFormPage";
 import CostStructuresPage from "./pages/dashboard/CostStructuresPage";
@@ -74,6 +75,7 @@ const AppRoutes = () => {
         <Route index element={<DashboardPage />} />
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<ClientFormPage />} />
+        <Route path="clients/:id" element={<ClientDetailPage />} />
         <Route path="clients/:id/edit" element={<ClientFormPage />} />
         <Route path="operators" element={<OperatorsPage />} />
         <Route path="operators/initialize" element={<OperatorInitializationPage />} />
