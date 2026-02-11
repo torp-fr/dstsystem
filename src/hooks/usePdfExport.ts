@@ -70,10 +70,10 @@ export const usePdfExport = () => {
 
       const pageWidth = pdf.internal.pageSize.getWidth(); // 210mm
       const pageHeight = pdf.internal.pageSize.getHeight(); // 297mm
-      const marginTop = 10;
-      const marginBottom = 10;
-      const marginLeft = 10;
-      const marginRight = 10;
+      const marginTop = 5;
+      const marginBottom = 5;
+      const marginLeft = 5;
+      const marginRight = 5;
       const availableWidth = pageWidth - marginLeft - marginRight;
       const availableHeight = pageHeight - marginTop - marginBottom;
 
