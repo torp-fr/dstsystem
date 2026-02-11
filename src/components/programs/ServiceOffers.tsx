@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const institutionalOffers = [
   {
@@ -124,9 +125,13 @@ const otherOffers = [
   },
 ];
 
-const ServiceOffers = () => (
-  <>
-    {/* Approach */}
+const ServiceOffers = () => {
+  const { user } = useAuth();
+  const isConnected = !!user;
+
+  return (
+    <>
+      {/* Approach */}
     <section className="py-16 bg-card border-b border-border-border">
       <div className="container mx-auto px-4">
         <AnimatedSection>
@@ -276,32 +281,34 @@ const ServiceOffers = () => (
       </div>
     </section>
 
-    {/* Key takeaways */}
-    <section className="py-16">
-      <div className="container mx-auto px-4">
-        <AnimatedSection>
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold mb-8 text-center">À retenir</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                "Les programmes avec engagement offrent les conditions les plus avantageuses",
-                "Chaque offre est personnalisable selon vos besoins et votre budget",
-                "DST-System fixe le cadre, la jauge et les contenus",
-                "Les collectivités gèrent la répartition et la mutualisation",
-              ].map((text) => (
-                <div
-                  key={text}
-                  className="flex items-start gap-3 p-4 rounded-xl bg-card border-border border-border-border"
-                >
-                  <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <p className="text-sm">{text}</p>
-                </div>
-              ))}
+    {/* Key takeaways - Only for authenticated clients */}
+    {isConnected && (
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl font-bold mb-8 text-center">À retenir</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  "Les programmes avec engagement offrent les conditions les plus avantageuses",
+                  "Chaque offre est personnalisable selon vos besoins et votre budget",
+                  "DST-System fixe le cadre, la jauge et les contenus",
+                  "Les collectivités gèrent la répartition et la mutualisation",
+                ].map((text) => (
+                  <div
+                    key={text}
+                    className="flex items-start gap-3 p-4 rounded-xl bg-card border-border border-border-border"
+                  >
+                    <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <p className="text-sm">{text}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </AnimatedSection>
-      </div>
-    </section>
+          </AnimatedSection>
+        </div>
+      </section>
+    )}
 
     {/* CTA */}
     <section className="py-20 bg-card border-t border-border-border">
@@ -328,7 +335,8 @@ const ServiceOffers = () => (
         </AnimatedSection>
       </div>
     </section>
-  </>
-);
+    </>
+  );
+};
 
 export default ServiceOffers;
