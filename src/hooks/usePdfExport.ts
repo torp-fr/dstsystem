@@ -55,11 +55,20 @@ export const usePdfExport = () => {
 
       forceBlackText(clonedElement);
 
+      // Force width on cloned element to maximize content width
+      clonedElement.style.width = '100%';
+      clonedElement.style.maxWidth = 'none';
+      clonedElement.style.margin = '0';
+      clonedElement.style.padding = '0';
+
       // Temporarily add the cloned element to the DOM for canvas capture
       const tempContainer = document.createElement('div');
       tempContainer.style.position = 'absolute';
       tempContainer.style.left = '-9999px';
       tempContainer.style.top = '-9999px';
+      tempContainer.style.width = '800px'; // Force a wide container
+      tempContainer.style.margin = '0';
+      tempContainer.style.padding = '0';
       tempContainer.appendChild(clonedElement);
       document.body.appendChild(tempContainer);
 
