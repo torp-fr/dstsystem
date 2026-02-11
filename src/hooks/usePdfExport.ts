@@ -27,29 +27,37 @@ export const usePdfExport = () => {
       // Clone the element to avoid modifying the original
       const clonedElement = element.cloneNode(true) as HTMLElement;
 
-      // Force all text to black and reduce padding for PDF export
-      const forceBlackText = (el: HTMLElement, depth: number = 0) => {
+      // Force all text to black and aggressively reduce spacing for PDF export
+      const forceBlackText = (el: HTMLElement) => {
         // Set text color to black for all elements
         el.style.color = 'black';
         el.style.backgroundColor = 'white';
 
-        // Reduce padding for container elements (first few levels only)
-        if (depth <= 2) {
-          const computedStyle = window.getComputedStyle(el);
-          const paddingTop = parseFloat(computedStyle.paddingTop);
-          const paddingBottom = parseFloat(computedStyle.paddingBottom);
-          const paddingLeft = parseFloat(computedStyle.paddingLeft);
-          const paddingRight = parseFloat(computedStyle.paddingRight);
+        // Get computed styles
+        const computedStyle = window.getComputedStyle(el);
 
-          // Reduce padding by 50% for container elements to maximize width
-          if (paddingTop > 10 || paddingBottom > 10 || paddingLeft > 10 || paddingRight > 10) {
-            el.style.padding = `${paddingTop / 2}px ${paddingRight / 2}px ${paddingBottom / 2}px ${paddingLeft / 2}px`;
-          }
+        // Reduce padding by 70% to maximize width
+        const paddingTop = parseFloat(computedStyle.paddingTop);
+        const paddingBottom = parseFloat(computedStyle.paddingBottom);
+        const paddingLeft = parseFloat(computedStyle.paddingLeft);
+        const paddingRight = parseFloat(computedStyle.paddingRight);
+
+        if (paddingLeft > 0 || paddingRight > 0 || paddingTop > 0 || paddingBottom > 0) {
+          el.style.padding = `${paddingTop * 0.2}px ${paddingRight * 0.2}px ${paddingBottom * 0.2}px ${paddingLeft * 0.2}px`;
+        }
+
+        // Reduce horizontal margins by 70%
+        const marginLeft = parseFloat(computedStyle.marginLeft);
+        const marginRight = parseFloat(computedStyle.marginRight);
+
+        if (marginLeft > 0 || marginRight > 0) {
+          el.style.marginLeft = `${marginLeft * 0.2}px`;
+          el.style.marginRight = `${marginRight * 0.2}px`;
         }
 
         // Process all child elements
         Array.from(el.children).forEach((child) => {
-          forceBlackText(child as HTMLElement, depth + 1);
+          forceBlackText(child as HTMLElement);
         });
       };
 
@@ -66,7 +74,7 @@ export const usePdfExport = () => {
       tempContainer.style.position = 'absolute';
       tempContainer.style.left = '-9999px';
       tempContainer.style.top = '-9999px';
-      tempContainer.style.width = '800px'; // Force a wide container
+      tempContainer.style.width = '1200px'; // Force a wider container for better width utilization
       tempContainer.style.margin = '0';
       tempContainer.style.padding = '0';
       tempContainer.appendChild(clonedElement);
