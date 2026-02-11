@@ -31,6 +31,8 @@ import DepositsPage from "./pages/dashboard/DepositsPage";
 import DepositFormPage from "./pages/dashboard/DepositFormPage";
 import InvoicesPage from "./pages/dashboard/InvoicesPage";
 import InvoiceDetailPage from "./pages/dashboard/InvoiceDetailPage";
+import OffersPage from "./pages/dashboard/OffersPage";
+import OfferFormPage from "./pages/dashboard/OfferFormPage";
 import CostInitializationPage from "./pages/dashboard/CostInitializationPage";
 import OperatorInitializationPage from "./pages/dashboard/OperatorInitializationPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
@@ -97,7 +99,9 @@ const AppRoutes = () => {
         <Route path="invoices" element={<InvoicesPage />} />
         <Route path="invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
-        <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
+        <Route path="offers" element={<OffersPage />} />
+        <Route path="offers/new" element={<OfferFormPage />} />
+        <Route path="offers/:id/edit" element={<OfferFormPage />} />
         <Route path="finances" element={<FinancesPage />} />
         <Route path="settings" element={<div>Paramètres - À venir</div>} />
       </Route>
