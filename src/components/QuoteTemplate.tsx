@@ -60,7 +60,7 @@ export default function QuoteTemplate({
 
       {/* Main Quote Card - Use flexbox for footer positioning */}
       <Card id={elementId} className="print:shadow-none print:border-none print:bg-white flex flex-col" style={{ background: 'var(--card)' }}>
-        <CardContent className="p-8 print:p-0 print:bg-white flex-1 flex flex-col relative" style={{ background: 'var(--card)', display: 'flex', flexDirection: 'column', minHeight: '1300px', paddingBottom: '140px', position: 'relative' }}>
+        <CardContent className="p-8 print:p-0 print:bg-white flex-1 flex flex-col relative" style={{ background: 'var(--card)', display: 'flex', flexDirection: 'column', minHeight: '1550px', paddingBottom: '140px', position: 'relative' }}>
           <div className="space-y-8 flex-1">
             {/* Header - Logo Left, DEVIS Center, Client Info Top Right */}
             <div className="border-b pb-6 relative">
