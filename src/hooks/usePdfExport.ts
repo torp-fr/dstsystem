@@ -70,15 +70,15 @@ export const usePdfExport = () => {
 
       const pageWidth = pdf.internal.pageSize.getWidth(); // 210mm
       const pageHeight = pdf.internal.pageSize.getHeight(); // 297mm
-      const marginTop = 5;
-      const marginBottom = 5;
-      const marginLeft = 5;
-      const marginRight = 5;
+      const marginTop = 2;
+      const marginBottom = 2;
+      const marginLeft = 2;
+      const marginRight = 2;
       const availableWidth = pageWidth - marginLeft - marginRight;
       const availableHeight = pageHeight - marginTop - marginBottom;
 
-      // Calculate dimensions - single page only
-      let imgWidth = availableWidth;
+      // Calculate dimensions - single page only, maximize width usage
+      let imgWidth = availableWidth; // Use full width (206mm on A4)
       let imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       // If content exceeds one page, scale it down to fit
@@ -88,11 +88,11 @@ export const usePdfExport = () => {
         imgHeight = availableHeight;
       }
 
-      // Center the image horizontally if it's smaller than available width
-      const xPosition = marginLeft + (availableWidth - imgWidth) / 2;
+      // Position at margins without centering - use full width
+      const xPosition = marginLeft;
       const yPosition = marginTop;
 
-      // Add single image to single page
+      // Add single image to single page - full width
       pdf.addImage(imgData, 'PNG', xPosition, yPosition, imgWidth, imgHeight);
 
       // Save the PDF
