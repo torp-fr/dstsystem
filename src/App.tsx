@@ -29,6 +29,8 @@ import AmendmentsPage from "./pages/dashboard/AmendmentsPage";
 import AmendmentFormPage from "./pages/dashboard/AmendmentFormPage";
 import DepositsPage from "./pages/dashboard/DepositsPage";
 import DepositFormPage from "./pages/dashboard/DepositFormPage";
+import InvoicesPage from "./pages/dashboard/InvoicesPage";
+import InvoiceDetailPage from "./pages/dashboard/InvoiceDetailPage";
 import CostInitializationPage from "./pages/dashboard/CostInitializationPage";
 import OperatorInitializationPage from "./pages/dashboard/OperatorInitializationPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
@@ -92,6 +94,8 @@ const AppRoutes = () => {
         <Route path="deposits" element={<DepositsPage />} />
         <Route path="deposits/new" element={<DepositFormPage />} />
         <Route path="deposits/:id/edit" element={<DepositFormPage />} />
+        <Route path="invoices" element={<InvoicesPage />} />
+        <Route path="invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
         <Route path="finances" element={<FinancesPage />} />

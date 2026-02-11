@@ -17,6 +17,7 @@ import {
   FileText,
   Receipt,
   CreditCard,
+  FileCheck,
 } from 'lucide-react';
 
 interface DashboardSidebarProps {
@@ -36,6 +37,7 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
     { icon: Calculator, label: 'Coûts', path: '/dashboard/costs' },
     { icon: Calendar, label: 'Calendrier', path: '/dashboard/calendar' },
     { icon: FileText, label: 'Devis', path: '/dashboard/quotes' },
+    { icon: FileCheck, label: 'Factures', path: '/dashboard/invoices' },
     { icon: Receipt, label: 'Avenants', path: '/dashboard/amendments' },
     { icon: CreditCard, label: 'Acomptes', path: '/dashboard/deposits' },
     { icon: TrendingUp, label: 'Analytics', path: '/dashboard/analytics' },
