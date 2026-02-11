@@ -13,17 +13,24 @@ export const usePageVisits = () => {
           .order('visited_at', { ascending: false });
 
         if (error) {
-          console.error('[Analytics] Error fetching page_visits:', error);
+          console.warn('[Analytics] Error fetching page_visits from Supabase:', error.message);
+          // Fallback to localStorage
+          const localData = localStorage.getItem('dst-page-visits');
+          if (localData) {
+            console.log('[Analytics] Using localStorage page visits');
+            return JSON.parse(localData);
+          }
           throw error;
         }
-        console.log('[Analytics] Page visits loaded:', data?.length || 0);
+        console.log('[Analytics] Page visits loaded from Supabase:', data?.length || 0);
         return data || [];
       } catch (error) {
-        console.error('[Analytics] Failed to fetch page_visits:', error);
-        throw error;
+        console.warn('[Analytics] Failed to fetch page_visits, trying localStorage:', error);
+        const localData = localStorage.getItem('dst-page-visits');
+        return localData ? JSON.parse(localData) : [];
       }
     },
-    retry: 2,
+    retry: 1,
     staleTime: 1000 * 30,
   });
 };
@@ -40,17 +47,24 @@ export const useSessions = () => {
           .order('started_at', { ascending: false });
 
         if (error) {
-          console.error('[Analytics] Error fetching sessions:', error);
+          console.warn('[Analytics] Error fetching sessions from Supabase:', error.message);
+          // Fallback to localStorage
+          const localData = localStorage.getItem('dst-sessions');
+          if (localData) {
+            console.log('[Analytics] Using localStorage sessions');
+            return JSON.parse(localData);
+          }
           throw error;
         }
-        console.log('[Analytics] Sessions loaded:', data?.length || 0);
+        console.log('[Analytics] Sessions loaded from Supabase:', data?.length || 0);
         return data || [];
       } catch (error) {
-        console.error('[Analytics] Failed to fetch sessions:', error);
-        throw error;
+        console.warn('[Analytics] Failed to fetch sessions, trying localStorage:', error);
+        const localData = localStorage.getItem('dst-sessions');
+        return localData ? JSON.parse(localData) : [];
       }
     },
-    retry: 2,
+    retry: 1,
     staleTime: 1000 * 30,
   });
 };
