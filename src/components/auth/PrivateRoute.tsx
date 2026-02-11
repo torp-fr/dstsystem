@@ -4,6 +4,14 @@ import { useAuth } from '@/context/AuthContext';
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
 
+  // TODO: Re-enable authentication after construction phase
+  // For development/construction, allow direct access to dashboard
+  const DISABLE_AUTH_FOR_CONSTRUCTION = true;
+
+  if (DISABLE_AUTH_FOR_CONSTRUCTION) {
+    return <>{children}</>;
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
