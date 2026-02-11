@@ -59,18 +59,18 @@ export default function QuoteTemplate({
       </div>
 
       {/* Main Quote Card */}
-      <Card id={elementId} className="print:shadow-none print:border-none">
-        <CardContent className="p-8 print:p-0">
+      <Card id={elementId} className="print:shadow-none print:border-none print:bg-white">
+        <CardContent className="p-8 print:p-0 print:bg-white">
           <div className="space-y-8">
             {/* Header */}
             <div className="border-b pb-6">
               <div className="flex gap-8 mb-6">
                 {/* Logo + Company Info - Left */}
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-start print:w-32">
                   <img
                     src="/favicon.png"
                     alt="Logo"
-                    className="h-48 w-48 object-contain mb-4"
+                    className="h-48 w-48 print:h-32 print:w-32 object-contain mb-4"
                   />
                   <div className="space-y-1 text-sm">
                     <h2 className="text-lg font-bold">{company.name}</h2>
@@ -90,28 +90,7 @@ export default function QuoteTemplate({
                     <p><span className="font-semibold">Date:</span> {quoteDate.toLocaleDateString('fr-FR')}</p>
                     <p>
                       <span className="font-semibold">Valide jusqu'au:</span>{' '}
-                      <Badge variant="outline">{validUntil.toLocaleDateString('fr-FR')}</Badge>
-                    </p>
-                    <p className="pt-2">
-                      <Badge
-                        className={
-                          quote.status === 'draft'
-                            ? 'bg-amber-100 text-amber-800'
-                            : quote.status === 'sent'
-                            ? 'bg-blue-100 text-blue-800'
-                            : quote.status === 'accepted'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                        }
-                      >
-                        {quote.status === 'draft'
-                          ? 'Brouillon'
-                          : quote.status === 'sent'
-                          ? 'Envoyé'
-                          : quote.status === 'accepted'
-                          ? 'Accepté'
-                          : 'Refusé'}
-                      </Badge>
+                      {validUntil.toLocaleDateString('fr-FR')}
                     </p>
                   </div>
                 </div>
@@ -144,7 +123,6 @@ export default function QuoteTemplate({
               <div>
                 <h3 className="font-semibold mb-3">Informations de contact:</h3>
                 <div className="space-y-1 text-sm text-muted-foreground">
-                  <p><span className="font-semibold text-foreground">Statut:</span> {client.status === 'prospect' ? 'Prospect' : client.status === 'active' ? 'Actif' : 'Inactif'}</p>
                   {client.learner_count && (
                     <p><span className="font-semibold text-foreground">Apprenants:</span> {client.learner_count}</p>
                   )}
