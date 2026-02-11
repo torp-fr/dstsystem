@@ -87,8 +87,8 @@ export default function QuoteTemplate({
                   <h1 className="text-4xl font-bold text-primary">DEVIS</h1>
                 </div>
 
-                {/* Client Info - Top Right */}
-                <div className="text-right flex-shrink-0 w-48">
+                {/* Client Info - Aligned with company info */}
+                <div className="text-right flex-shrink-0 w-48 mt-12">
                   <h3 className="font-semibold mb-3 text-sm">Destinataire:</h3>
                   <div className="space-y-1 text-xs">
                     <p className="font-semibold">
