@@ -159,7 +159,17 @@ export default function OperatorsPage() {
         <div className="grid gap-4">
           {filteredOperators.map((operator) => (
             <div key={operator.id} className="bg-card p-4 rounded-lg border-border hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-4">
+                {/* Avatar */}
+                {(operator as any).avatar_url && (
+                  <div className="flex-shrink-0">
+                    <img
+                      src={(operator as any).avatar_url}
+                      alt={`${operator.first_name} ${operator.last_name}`}
+                      className="w-14 h-14 rounded-full object-cover border-2 border-border"
+                    />
+                  </div>
+                )}
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="font-semibold text-lg">
