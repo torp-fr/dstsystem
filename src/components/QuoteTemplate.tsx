@@ -59,8 +59,8 @@ export default function QuoteTemplate({
       </div>
 
       {/* Main Quote Card */}
-      <Card id={elementId} className="print:shadow-none print:border-none print:bg-white">
-        <CardContent className="p-8 print:p-0 print:bg-white">
+      <Card id={elementId} className="print:shadow-none print:border-none print:bg-white" style={{ background: 'white' }}>
+        <CardContent className="p-8 print:p-0 print:bg-white" style={{ background: 'white' }}>
           <div className="space-y-8">
             {/* Header */}
             <div className="border-b pb-6">
@@ -120,17 +120,19 @@ export default function QuoteTemplate({
                 </div>
               </div>
 
-              <div>
-                <h3 className="font-semibold mb-3">Informations de contact:</h3>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  {client.learner_count && (
-                    <p><span className="font-semibold text-foreground">Apprenants:</span> {client.learner_count}</p>
-                  )}
-                  {client.industry && (
-                    <p><span className="font-semibold text-foreground">Secteur:</span> {client.industry}</p>
-                  )}
+              {(client.learner_count || client.industry) && (
+                <div>
+                  <h3 className="font-semibold mb-3">Informations de contact:</h3>
+                  <div className="space-y-1 text-sm text-muted-foreground">
+                    {client.learner_count && (
+                      <p><span className="font-semibold text-foreground">Apprenants:</span> {client.learner_count}</p>
+                    )}
+                    {client.industry && (
+                      <p><span className="font-semibold text-foreground">Secteur:</span> {client.industry}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Line Items */}

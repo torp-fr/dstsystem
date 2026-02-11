@@ -82,8 +82,8 @@
 
   /* Optimize page layout */
   body {
-    background: white;
-    color: black;
+    background: white !important;
+    color: black !important;
   }
 
   /* Remove cards shadow and background */
@@ -95,13 +95,31 @@
     border: none !important;
   }
 
+  .print\:bg-white {
+    background: white !important;
+    background-color: white !important;
+  }
+
   .print\:p-0 {
     padding: 0 !important;
   }
 
+  /* Remove all backgrounds from all elements */
+  * {
+    background: transparent !important;
+    background-color: transparent !important !important;
+    box-shadow: none !important;
+  }
+
+  /* Force white on specific elements */
+  body, html, main, [id] {
+    background: white !important;
+    background-color: white !important;
+  }
+
   /* Ensure links are visible */
   a {
-    color: black;
+    color: black !important;
     text-decoration: underline;
   }
 
@@ -110,22 +128,46 @@
     page-break-before: always !important;
   }
 
-  /* Ensure all content is visible on print */
-  * {
-    background: transparent !important;
-    box-shadow: none !important;
-  }
-
   /* Optimize spacing */
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
+    color: black !important;
   }
 
   p {
     page-break-inside: avoid;
+    color: black !important;
   }
 
   table {
-    width: 100%;
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  th, td {
+    border: 1px solid #000 !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Remove colored boxes and backgrounds */
+  .bg-primary\/5,
+  .bg-blue-50,
+  .bg-muted\/30,
+  .bg-amber-50,
+  .bg-red-600,
+  .bg-muted\/50 {
+    background: white !important;
+    background-color: white !important;
+    border: 1px solid #999 !important;
+  }
+
+  /* Ensure text is black */
+  .text-primary {
+    color: black !important;
+  }
+
+  .text-muted-foreground {
+    color: #333 !important;
   }
 }
