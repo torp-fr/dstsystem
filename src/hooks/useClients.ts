@@ -63,21 +63,15 @@ export const useClientById = (id: string | null) => {
 
 export const useCreateClient = () => {
   const queryClient = useQueryClient();
-  const { user } = useAuth();
 
   return useMutation({
     mutationFn: async (client: Client) => {
-      // Remove fields that might not exist in the schema
+      // Remove fields that might not exist in the schema or cause FK issues
       const { learner_count, structure_type, ...clientData } = client as any;
-
-      const cleanedClient = {
-        ...clientData,
-        created_by: user?.id,
-      };
 
       const { data, error } = await supabase
         .from('clients')
-        .insert([cleanedClient])
+        .insert([clientData])
         .select()
         .single();
 
