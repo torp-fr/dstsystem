@@ -33,6 +33,8 @@ const ClientFormPage = () => {
     postal_code: '',
     website: '',
     notes: '',
+    learner_count: 0,
+    structure_type: 'autre',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -262,6 +264,49 @@ const ClientFormPage = () => {
                     className="bg-background border-border"
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section: Formation et Structure */}
+          <div>
+            <h2 className="text-xl font-bold mb-6">Formation et Structure</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="learner_count">Nombre d'apprenants</Label>
+                <Input
+                  id="learner_count"
+                  name="learner_count"
+                  type="number"
+                  min="0"
+                  value={formData.learner_count}
+                  onChange={handleChange}
+                  placeholder="ex. 25"
+                  className="bg-background border-border"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Jauge max: 20 tireurs. Pour plus: 2+ jours
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="structure_type">Type de structure</Label>
+                <select
+                  id="structure_type"
+                  name="structure_type"
+                  value={formData.structure_type}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground"
+                >
+                  <option value="police">Police Nationale</option>
+                  <option value="gendarme">Gendarmerie</option>
+                  <option value="mairie">Mairie</option>
+                  <option value="pompiers">Pompiers</option>
+                  <option value="militaire">Militaire</option>
+                  <option value="particulier">Particulier</option>
+                  <option value="entreprise">Entreprise</option>
+                  <option value="association">Association</option>
+                  <option value="autre">Autre</option>
+                </select>
               </div>
             </div>
           </div>

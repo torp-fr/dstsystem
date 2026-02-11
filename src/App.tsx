@@ -16,8 +16,10 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import ClientsPage from "./pages/dashboard/ClientsPage";
 import ClientFormPage from "./pages/dashboard/ClientFormPage";
+import ClientDetailPage from "./pages/dashboard/ClientDetailPage";
 import OperatorsPage from "./pages/dashboard/OperatorsPage";
 import OperatorFormPage from "./pages/dashboard/OperatorFormPage";
+import OperatorCostAnalysisPage from "./pages/dashboard/OperatorCostAnalysisPage";
 import CostStructuresPage from "./pages/dashboard/CostStructuresPage";
 import CostStructureFormPage from "./pages/dashboard/CostStructureFormPage";
 import CalendarPage from "./pages/dashboard/CalendarPage";
@@ -25,6 +27,14 @@ import SessionFormPage from "./pages/dashboard/SessionFormPage";
 import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
 import QuotesPage from "./pages/dashboard/QuotesPage";
 import QuoteFormPage from "./pages/dashboard/QuoteFormPage";
+import AmendmentsPage from "./pages/dashboard/AmendmentsPage";
+import AmendmentFormPage from "./pages/dashboard/AmendmentFormPage";
+import DepositsPage from "./pages/dashboard/DepositsPage";
+import DepositFormPage from "./pages/dashboard/DepositFormPage";
+import InvoicesPage from "./pages/dashboard/InvoicesPage";
+import InvoiceDetailPage from "./pages/dashboard/InvoiceDetailPage";
+import OffersPage from "./pages/dashboard/OffersPage";
+import OfferFormPage from "./pages/dashboard/OfferFormPage";
 import CostInitializationPage from "./pages/dashboard/CostInitializationPage";
 import OperatorInitializationPage from "./pages/dashboard/OperatorInitializationPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
@@ -66,11 +76,13 @@ const AppRoutes = () => {
         <Route index element={<DashboardPage />} />
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<ClientFormPage />} />
+        <Route path="clients/:id" element={<ClientDetailPage />} />
         <Route path="clients/:id/edit" element={<ClientFormPage />} />
         <Route path="operators" element={<OperatorsPage />} />
         <Route path="operators/initialize" element={<OperatorInitializationPage />} />
         <Route path="operators/new" element={<OperatorFormPage />} />
         <Route path="operators/:id/edit" element={<OperatorFormPage />} />
+        <Route path="operators/analysis" element={<OperatorCostAnalysisPage />} />
         <Route path="costs" element={<CostStructuresPage />} />
         <Route path="costs/initialize" element={<CostInitializationPage />} />
         <Route path="costs/new" element={<CostStructureFormPage />} />
@@ -82,8 +94,18 @@ const AppRoutes = () => {
         <Route path="quotes" element={<QuotesPage />} />
         <Route path="quotes/new" element={<QuoteFormPage />} />
         <Route path="quotes/:id/edit" element={<QuoteFormPage />} />
+        <Route path="amendments" element={<AmendmentsPage />} />
+        <Route path="amendments/new" element={<AmendmentFormPage />} />
+        <Route path="amendments/:id/edit" element={<AmendmentFormPage />} />
+        <Route path="deposits" element={<DepositsPage />} />
+        <Route path="deposits/new" element={<DepositFormPage />} />
+        <Route path="deposits/:id/edit" element={<DepositFormPage />} />
+        <Route path="invoices" element={<InvoicesPage />} />
+        <Route path="invoices/:id" element={<InvoiceDetailPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
-        <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
+        <Route path="offers" element={<OffersPage />} />
+        <Route path="offers/new" element={<OfferFormPage />} />
+        <Route path="offers/:id/edit" element={<OfferFormPage />} />
         <Route path="finances" element={<FinancesPage />} />
         <Route path="settings" element={<div>Paramètres - À venir</div>} />
       </Route>

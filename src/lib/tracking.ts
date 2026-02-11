@@ -100,7 +100,12 @@ export const trackSessionStart = async () => {
     ]);
 
     if (error) {
-      console.error('[Tracking] Session insert error:', error);
+      // Ignore duplicate key errors (session already exists)
+      if (error.code === '23505') {
+        console.log('[Tracking] Session already exists, skipping insert');
+      } else {
+        console.error('[Tracking] Session insert error:', error);
+      }
     } else {
       console.log('[Tracking] Session started successfully');
     }

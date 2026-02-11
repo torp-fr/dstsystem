@@ -306,7 +306,6 @@ export default function SessionFormPage() {
                     <SelectValue placeholder="Sélectionner un client" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Aucun client</SelectItem>
                     {clients.map((client) => (
                       <SelectItem key={client.id} value={client.id}>
                         {client.first_name} {client.last_name}

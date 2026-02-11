@@ -57,6 +57,7 @@ export default function QuoteFormPage() {
     subtotal: '',
     tax_amount: '',
     total_amount: '',
+    tva_rate: '20',
     valid_from: new Date().toISOString().split('T')[0],
     valid_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
       .toISOString()
@@ -75,6 +76,7 @@ export default function QuoteFormPage() {
         subtotal: quote.subtotal.toString(),
         tax_amount: quote.tax_amount.toString(),
         total_amount: quote.total_amount.toString(),
+        tva_rate: (quote.tva_rate || 20).toString(),
         valid_from: quote.valid_from,
         valid_until: quote.valid_until,
         status: quote.status,
@@ -100,16 +102,21 @@ export default function QuoteFormPage() {
     }));
   };
 
-  // Auto-calculate total
+  // Auto-calculate TVA and total
   useEffect(() => {
     const subtotal = parseFloat(formData.subtotal) || 0;
-    const tax = parseFloat(formData.tax_amount) || 0;
-    const total = subtotal + tax;
+    const tvaRate = parseFloat(formData.tva_rate) || 0;
+
+    // Calculate TVA automatically based on subtotal and rate
+    const calculatedTax = (subtotal * tvaRate) / 100;
+    const total = subtotal + calculatedTax;
+
     setFormData((prev) => ({
       ...prev,
-      total_amount: total.toString(),
+      tax_amount: calculatedTax.toFixed(2),
+      total_amount: total.toFixed(2),
     }));
-  }, [formData.subtotal, formData.tax_amount]);
+  }, [formData.subtotal, formData.tva_rate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -252,7 +259,6 @@ export default function QuoteFormPage() {
                     <SelectValue placeholder="Associer à une session" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Aucune session</SelectItem>
                     {sessions.map((session: any) => (
                       <SelectItem key={session.id} value={session.id}>
                         {new Date(session.session_date).toLocaleDateString('fr-FR')} -{' '}
@@ -263,7 +269,7 @@ export default function QuoteFormPage() {
                 </Select>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="text-sm font-medium">Sous-total (€)*</label>
                   <Input
@@ -276,25 +282,42 @@ export default function QuoteFormPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">TVA (€)</label>
+                  <label className="text-sm font-medium">Taux TVA (%)</label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    max="100"
+                    name="tva_rate"
+                    value={formData.tva_rate}
+                    onChange={handleInputChange}
+                    placeholder="20"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="text-sm font-medium">TVA (€) - Calculée</label>
                   <Input
                     type="number"
                     step="0.01"
                     name="tax_amount"
                     value={formData.tax_amount}
-                    onChange={handleInputChange}
-                    placeholder="0.00"
+                    disabled
+                    className="bg-gray-100 font-semibold"
                   />
                 </div>
+                <div></div>
                 <div>
-                  <label className="text-sm font-medium">Total (€)</label>
+                  <label className="text-sm font-medium">Total TTC (€)</label>
                   <Input
                     type="number"
                     step="0.01"
                     name="total_amount"
                     value={formData.total_amount}
                     disabled
-                    className="bg-gray-50 font-bold"
+                    className="bg-primary/10 font-bold text-lg"
                   />
                 </div>
               </div>
