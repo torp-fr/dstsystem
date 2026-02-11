@@ -126,12 +126,11 @@ const DashboardPage = () => {
       </div>
 
       {/* Operational Alerts Section */}
-      {(upcomingSessions.length === 0 || activeClients === 0) && (
+      {upcomingSessions.length === 0 && activeClients > 0 && (
         <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-500/10">
           <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
           <AlertDescription className="text-amber-800 dark:text-amber-300 text-sm">
-            {upcomingSessions.length === 0 && activeClients > 0 && "⚠️ Aucune session prévue cette semaine. "}
-            {activeClients === 0 && "📋 Commencez par ajouter des clients pour créer des sessions."}
+            ⚠️ Aucune session prévue cette semaine.
           </AlertDescription>
         </Alert>
       )}
@@ -283,29 +282,36 @@ const DashboardPage = () => {
           )}
         </div>
 
-        {/* Financial Summary */}
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-500/10 dark:to-emerald-500/10 rounded-lg border-border border-green-200 dark:border-green-500/30 p-4">
+      </div>
+
+      {/* Financial Summary - Two Cards with Visual Impact */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Revenue Card - Green Impact */}
+        <div className="bg-card rounded-lg border-2 border-green-500/60 dark:border-green-500/50 p-4 shadow-lg shadow-green-500/10">
           <div className="flex items-center gap-2 mb-3">
-            <Zap className="h-5 w-5 text-green-600 dark:text-green-400" />
-            <h2 className="text-base font-bold">Résumé financier</h2>
-          </div>
-          <div className="space-y-2">
-            <div>
-              <p className="text-xs font-medium text-muted-foreground uppercase">Chiffre d'affaires</p>
-              <p className="text-lg font-bold text-green-600 dark:text-green-400">
-                {recentQuotes.reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0).toFixed(0)}€
-              </p>
-              <p className="text-xs text-muted-foreground">{recentQuotes.length} devis</p>
+            <div className="p-2 rounded-lg bg-green-500/10 dark:bg-green-500/15">
+              <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
             </div>
-            <div className="h-px bg-border-border opacity-50" />
-            <div>
-              <p className="text-xs font-medium text-muted-foreground uppercase">Coûts mensuels</p>
-              <p className="text-lg font-bold text-red-600 dark:text-red-400">
-                {totalMonthlyCosts.toFixed(0)}€
-              </p>
-              <p className="text-xs text-muted-foreground">Opérateurs et structure</p>
-            </div>
+            <h2 className="text-base font-bold">Chiffre d'affaires</h2>
           </div>
+          <p className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
+            {recentQuotes.reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0).toFixed(0)}€
+          </p>
+          <p className="text-xs text-muted-foreground">{recentQuotes.length} devis en cours</p>
+        </div>
+
+        {/* Costs Card - Red Impact */}
+        <div className="bg-card rounded-lg border-2 border-red-500/60 dark:border-red-500/50 p-4 shadow-lg shadow-red-500/10">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="p-2 rounded-lg bg-red-500/10 dark:bg-red-500/15">
+              <Calculator className="h-5 w-5 text-red-600 dark:text-red-400" />
+            </div>
+            <h2 className="text-base font-bold">Coûts mensuels</h2>
+          </div>
+          <p className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">
+            {totalMonthlyCosts.toFixed(0)}€
+          </p>
+          <p className="text-xs text-muted-foreground">Opérateurs et structure</p>
         </div>
       </div>
 

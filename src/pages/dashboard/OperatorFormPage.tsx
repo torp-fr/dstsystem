@@ -499,7 +499,7 @@ export default function OperatorFormPage() {
                   rates.map((rate) => (
                     <div
                       key={rate.id}
-                      className="bg-gray-50 p-3 rounded-lg flex items-center justify-between"
+                      className="bg-card p-3 rounded-lg border-border flex items-center justify-between"
                     >
                       <div className="text-sm">
                         <Badge variant="outline" className="mb-1">
