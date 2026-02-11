@@ -67,7 +67,7 @@ export default function QuoteTemplate({
                   <img
                     src="/favicon.png"
                     alt="Logo"
-                    className="h-24 w-24 object-contain"
+                    className="h-48 w-48 object-contain"
                   />
                 </div>
 

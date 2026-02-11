@@ -64,6 +64,9 @@ export default function QuoteFormPage() {
       .split('T')[0],
     status: 'draft' as const,
     notes: '',
+    discount_percentage: '',
+    discount_amount: '',
+    discount_reason: '',
   });
 
   const [converting, setConverting] = useState(false);
@@ -81,6 +84,9 @@ export default function QuoteFormPage() {
         valid_until: quote.valid_until,
         status: quote.status,
         notes: quote.notes || '',
+        discount_percentage: (quote.discount_percentage || '').toString(),
+        discount_amount: (quote.discount_amount || '').toString(),
+        discount_reason: quote.discount_reason || '',
       });
     }
   }, [quote]);
@@ -141,6 +147,9 @@ export default function QuoteFormPage() {
         valid_until: formData.valid_until,
         status: formData.status,
         notes: formData.notes || null,
+        discount_percentage: formData.discount_percentage ? parseFloat(formData.discount_percentage) : null,
+        discount_amount: formData.discount_amount ? parseFloat(formData.discount_amount) : null,
+        discount_reason: formData.discount_reason || null,
       };
 
       if (isEditing) {
@@ -318,6 +327,49 @@ export default function QuoteFormPage() {
                     value={formData.total_amount}
                     disabled
                     className="bg-primary/10 font-bold text-lg"
+                  />
+                </div>
+              </div>
+
+              {/* Réductions */}
+              <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-lg p-4">
+                <h3 className="font-semibold text-sm mb-4 text-amber-900 dark:text-amber-100">Réductions</h3>
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="text-sm font-medium">Réduction (%)</label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      max="100"
+                      name="discount_percentage"
+                      value={formData.discount_percentage}
+                      onChange={handleInputChange}
+                      placeholder="0"
+                      className="bg-background"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">Montant réduction (€)</label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      name="discount_amount"
+                      value={formData.discount_amount}
+                      onChange={handleInputChange}
+                      placeholder="0.00"
+                      className="bg-background"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Motif de la réduction</label>
+                  <Input
+                    name="discount_reason"
+                    value={formData.discount_reason}
+                    onChange={handleInputChange}
+                    placeholder="Ex: Fidélité client, Volume important..."
+                    className="bg-background"
                   />
                 </div>
               </div>

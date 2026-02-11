@@ -122,6 +122,7 @@ const ClientsPage = () => {
             <table className="w-full">
               <thead className="bg-secondary/30 border-b border-border-border">
                 <tr>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">N° Client</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">Nom</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">Email</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">Téléphone</th>
@@ -137,6 +138,11 @@ const ClientsPage = () => {
                     className="hover:bg-secondary/20 transition-colors cursor-pointer"
                     onClick={() => navigate(`/dashboard/clients/${client.id}`)}
                   >
+                    <td className="px-6 py-4">
+                      <p className="font-mono font-semibold text-primary">
+                        N°{client.customer_number || '-'}
+                      </p>
+                    </td>
                     <td className="px-6 py-4">
                       <p className="font-medium">
                         {client.first_name} {client.last_name}
