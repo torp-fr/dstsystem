@@ -25,6 +25,10 @@ import SessionFormPage from "./pages/dashboard/SessionFormPage";
 import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
 import QuotesPage from "./pages/dashboard/QuotesPage";
 import QuoteFormPage from "./pages/dashboard/QuoteFormPage";
+import AmendmentsPage from "./pages/dashboard/AmendmentsPage";
+import AmendmentFormPage from "./pages/dashboard/AmendmentFormPage";
+import DepositsPage from "./pages/dashboard/DepositsPage";
+import DepositFormPage from "./pages/dashboard/DepositFormPage";
 import CostInitializationPage from "./pages/dashboard/CostInitializationPage";
 import OperatorInitializationPage from "./pages/dashboard/OperatorInitializationPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
@@ -82,6 +86,12 @@ const AppRoutes = () => {
         <Route path="quotes" element={<QuotesPage />} />
         <Route path="quotes/new" element={<QuoteFormPage />} />
         <Route path="quotes/:id/edit" element={<QuoteFormPage />} />
+        <Route path="amendments" element={<AmendmentsPage />} />
+        <Route path="amendments/new" element={<AmendmentFormPage />} />
+        <Route path="amendments/:id/edit" element={<AmendmentFormPage />} />
+        <Route path="deposits" element={<DepositsPage />} />
+        <Route path="deposits/new" element={<DepositFormPage />} />
+        <Route path="deposits/:id/edit" element={<DepositFormPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="offers" element={<div>Gestion Offres - À venir</div>} />
         <Route path="finances" element={<FinancesPage />} />
