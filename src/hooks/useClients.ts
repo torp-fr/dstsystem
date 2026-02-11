@@ -68,15 +68,25 @@ export const useCreateClient = () => {
 
   return useMutation({
     mutationFn: async (client: Client) => {
-      // Remove fields that might not exist in the schema or cause FK issues
-      const { learner_count, structure_type, ...clientData } = client as any;
-
       // Auto-generate customer number if not provided
-      const customerNumber = clientData.customer_number || generateCustomerNumber();
+      const customerNumber = client.customer_number || generateCustomerNumber();
+
+      const clientData = {
+        ...client,
+        customer_number: customerNumber,
+        // Ensure these fields are included if they exist
+        learner_count: client.learner_count || null,
+        structure_type: client.structure_type || null,
+      };
+
+      // Remove undefined values that could cause issues
+      Object.keys(clientData).forEach(key =>
+        clientData[key] === undefined && delete clientData[key]
+      );
 
       const { data, error } = await supabase
         .from('clients')
-        .insert([{ ...clientData, customer_number: customerNumber }])
+        .insert([clientData])
         .select()
         .single();
 
@@ -84,6 +94,7 @@ export const useCreateClient = () => {
         console.error('Client create error:', error);
         throw error;
       }
+      console.log('Client créé avec le numéro:', customerNumber);
       return data;
     },
     onSuccess: () => {

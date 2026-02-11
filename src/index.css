@@ -72,3 +72,60 @@
     background-size: 50px 50px;
   }
 }
+
+/* Print Styles */
+@media print {
+  /* Hide unnecessary elements */
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Optimize page layout */
+  body {
+    background: white;
+    color: black;
+  }
+
+  /* Remove cards shadow and background */
+  .print\:shadow-none {
+    box-shadow: none !important;
+  }
+
+  .print\:border-none {
+    border: none !important;
+  }
+
+  .print\:p-0 {
+    padding: 0 !important;
+  }
+
+  /* Ensure links are visible */
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+
+  /* Page breaks */
+  .print\:page-break-before {
+    page-break-before: always !important;
+  }
+
+  /* Ensure all content is visible on print */
+  * {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Optimize spacing */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  p {
+    page-break-inside: avoid;
+  }
+
+  table {
+    width: 100%;
+  }
+}

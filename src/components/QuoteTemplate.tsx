@@ -39,8 +39,8 @@ export default function QuoteTemplate({
 
   return (
     <div className="space-y-6">
-      {/* Action Buttons */}
-      <div className="flex gap-2 justify-end">
+      {/* Action Buttons - Hidden on Print */}
+      <div className="flex gap-2 justify-end print:hidden">
         <Button variant="outline" size="sm" onClick={onPrint} className="gap-2">
           <Printer className="h-4 w-4" />
           Imprimer
@@ -56,26 +56,21 @@ export default function QuoteTemplate({
       </div>
 
       {/* Main Quote Card */}
-      <Card className="print:shadow-none">
-        <CardContent className="p-8">
+      <Card className="print:shadow-none print:border-none">
+        <CardContent className="p-8 print:p-0">
           <div className="space-y-8">
             {/* Header */}
             <div className="border-b pb-6">
-              <div className="grid grid-cols-3 gap-8 mb-6">
-                {/* Logo - Left */}
-                <div className="flex items-center justify-center">
+              <div className="flex gap-8 mb-6">
+                {/* Logo + Company Info - Left */}
+                <div className="flex flex-col items-start">
                   <img
                     src="/favicon.png"
                     alt="Logo"
-                    className="h-48 w-48 object-contain"
+                    className="h-24 w-24 object-contain mb-4"
                   />
-                </div>
-
-                {/* Company Info - Center */}
-                <div>
-                  <h2 className="text-2xl font-bold mb-1">{company.name}</h2>
-                  <p className="text-sm text-muted-foreground mb-4">Gestion d'entreprise</p>
                   <div className="space-y-1 text-sm">
+                    <h2 className="text-lg font-bold">{company.name}</h2>
                     {company.siret && <p><span className="font-semibold">SIRET:</span> {company.siret}</p>}
                     {company.address && <p>{company.address}</p>}
                     {company.phone && <p>{company.phone}</p>}
@@ -85,10 +80,10 @@ export default function QuoteTemplate({
                 </div>
 
                 {/* Quote Info - Right */}
-                <div className="text-right">
-                  <h1 className="text-4xl font-bold text-primary mb-2">DEVIS</h1>
+                <div className="text-right flex-1">
+                  <h1 className="text-5xl font-bold text-primary mb-4">DEVIS</h1>
                   <p className="text-sm text-muted-foreground mb-4">{quote.quote_number}</p>
-                  <div className="space-y-1 text-sm">
+                  <div className="space-y-2 text-sm">
                     <p><span className="font-semibold">Date:</span> {quoteDate.toLocaleDateString('fr-FR')}</p>
                     <p>
                       <span className="font-semibold">Valide jusqu'au:</span>{' '}
