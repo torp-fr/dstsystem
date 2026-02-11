@@ -46,22 +46,3 @@ WHERE customer_number IS NULL;
 
 -- Create index on customer_number for fast lookups
 CREATE INDEX IF NOT EXISTS idx_clients_customer_number ON public.clients(customer_number);
-
--- Add RLS policy for customers_number if not already exists
-ALTER TABLE public.clients ENABLE ROW LEVEL SECURITY;
-
--- Allow authenticated users to read all clients
-CREATE POLICY IF NOT EXISTS "Allow read clients" ON public.clients
-FOR SELECT USING (true);
-
--- Allow authenticated users to create clients
-CREATE POLICY IF NOT EXISTS "Allow create clients" ON public.clients
-FOR INSERT WITH CHECK (true);
-
--- Allow authenticated users to update clients
-CREATE POLICY IF NOT EXISTS "Allow update clients" ON public.clients
-FOR UPDATE USING (true) WITH CHECK (true);
-
--- Allow authenticated users to delete clients
-CREATE POLICY IF NOT EXISTS "Allow delete clients" ON public.clients
-FOR DELETE USING (true);
