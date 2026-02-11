@@ -60,7 +60,7 @@ export default function QuoteTemplate({
 
       {/* Main Quote Card - Use flexbox for footer positioning */}
       <Card id={elementId} className="print:shadow-none print:border-none print:bg-white flex flex-col" style={{ background: 'var(--card)' }}>
-        <CardContent className="p-8 print:p-0 print:bg-white flex-1 flex flex-col relative" style={{ background: 'var(--card)', display: 'flex', flexDirection: 'column', minHeight: '1000px', paddingBottom: '120px' }}>
+        <CardContent className="p-8 print:p-0 print:bg-white flex-1 flex flex-col relative" style={{ background: 'var(--card)', display: 'flex', flexDirection: 'column', minHeight: '1000px', paddingBottom: '140px', position: 'relative' }}>
           <div className="space-y-8 flex-1">
             {/* Header - Logo Left, DEVIS Center, Client Info Top Right */}
             <div className="border-b pb-6 relative">
@@ -239,8 +239,8 @@ export default function QuoteTemplate({
             )}
           </div>
 
-          {/* Footer - Fixed to bottom */}
-          <div className="pt-6 border-t text-center text-xs text-muted-foreground space-y-2 flex-shrink-0 absolute bottom-0 left-0 right-0" style={{ padding: '24px 32px' }}>
+          {/* Footer - Truly fixed to bottom of page */}
+          <div className="text-center text-xs text-muted-foreground space-y-2" style={{ position: 'absolute', bottom: '0', left: '0', right: '0', padding: '24px 32px', width: '100%', boxSizing: 'border-box', borderTop: '1px solid var(--border)' }}>
             <p>Merci de votre confiance</p>
             <p>Pour toute question, veuillez contacter {company.email}</p>
             <p className="pt-4">--- Fin du devis ---</p>
