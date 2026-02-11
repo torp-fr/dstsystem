@@ -63,8 +63,8 @@ export default function QuoteTemplate({
         <CardContent className="p-8 print:p-0 print:bg-white flex-1 flex flex-col relative" style={{ background: 'var(--card)', display: 'flex', flexDirection: 'column', minHeight: '1000px', paddingBottom: '120px' }}>
           <div className="space-y-8 flex-1">
             {/* Header - Logo Left, DEVIS Center, Client Info Top Right */}
-            <div className="border-b pb-6">
-              <div className="flex gap-8 justify-between items-start mb-6">
+            <div className="border-b pb-6 relative">
+              <div className="flex gap-8 justify-center items-start mb-6">
                 {/* Logo + Company Info - Left */}
                 <div className="flex flex-col items-start print:w-32 flex-shrink-0">
                   <img
@@ -83,45 +83,45 @@ export default function QuoteTemplate({
                 </div>
 
                 {/* DEVIS Title - Center */}
-                <div className="flex-1 text-center">
+                <div className="text-center flex-shrink-0">
                   <h1 className="text-4xl font-bold text-primary">DEVIS</h1>
                 </div>
+              </div>
 
-                {/* Client Info - Aligned with company info, positioned 2/3 right with margin */}
-                <div className="text-right" style={{ marginTop: '200px', width: '320px', marginLeft: '60px' }}>
-                  <h3 className="font-semibold mb-3 text-base">Destinataire:</h3>
-                  <div className="space-y-1 text-base">
-                    <p className="font-semibold">
-                      {client.first_name} {client.last_name}
-                      {client.customer_number && (
-                        <span className="text-muted-foreground font-normal ml-1">({client.customer_number})</span>
-                      )}
+              {/* Client Info - Absolutely positioned top right, no flex interference */}
+              <div className="absolute top-0 right-0 text-right" style={{ width: '340px', paddingRight: '0px' }}>
+                <h3 className="font-semibold mb-3 text-base">Destinataire:</h3>
+                <div className="space-y-1 text-base">
+                  <p className="font-semibold">
+                    {client.first_name} {client.last_name}
+                    {client.customer_number && (
+                      <span className="text-muted-foreground font-normal ml-1">({client.customer_number})</span>
+                    )}
+                  </p>
+                  {client.company_name && <p>{client.company_name}</p>}
+                  {client.address && <p>{client.address}</p>}
+                  {client.postal_code || client.city ? (
+                    <p>
+                      {client.postal_code} {client.city}
                     </p>
-                    {client.company_name && <p>{client.company_name}</p>}
-                    {client.address && <p>{client.address}</p>}
-                    {client.postal_code || client.city ? (
-                      <p>
-                        {client.postal_code} {client.city}
-                      </p>
-                    ) : null}
-                    {client.email && <p>{client.email}</p>}
-                    {client.phone && <p>{client.phone}</p>}
-                  </div>
-
-                  {(client.learner_count || client.industry) && (
-                    <div className="mt-3">
-                      <h4 className="font-semibold mb-1 text-base">Infos:</h4>
-                      <div className="space-y-0.5 text-base text-muted-foreground">
-                        {client.learner_count && (
-                          <p><span className="font-semibold text-foreground">Apprenants:</span> {client.learner_count}</p>
-                        )}
-                        {client.industry && (
-                          <p><span className="font-semibold text-foreground">Secteur:</span> {client.industry}</p>
-                        )}
-                      </div>
-                    </div>
-                  )}
+                  ) : null}
+                  {client.email && <p>{client.email}</p>}
+                  {client.phone && <p>{client.phone}</p>}
                 </div>
+
+                {(client.learner_count || client.industry) && (
+                  <div className="mt-3">
+                    <h4 className="font-semibold mb-1 text-base">Infos:</h4>
+                    <div className="space-y-0.5 text-base text-muted-foreground">
+                      {client.learner_count && (
+                        <p><span className="font-semibold text-foreground">Apprenants:</span> {client.learner_count}</p>
+                      )}
+                      {client.industry && (
+                        <p><span className="font-semibold text-foreground">Secteur:</span> {client.industry}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Quote Details - Under Left Section */}
