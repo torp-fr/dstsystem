@@ -45,7 +45,7 @@ export default function OffersPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
-  const [offerTypeFilter, setOfferTypeFilter] = useState<string>('');
+  const [offerTypeFilter, setOfferTypeFilter] = useState<string>('all');
   const [showActiveOnly, setShowActiveOnly] = useState(true);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
@@ -58,7 +58,7 @@ export default function OffersPage() {
   // Filter offers
   const filteredOffers = offers.filter((offer: any) => {
     const matchesSearch = offer.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = !offerTypeFilter || offer.offer_type === offerTypeFilter;
+    const matchesType = offerTypeFilter === 'all' || offer.offer_type === offerTypeFilter;
     return matchesSearch && matchesType;
   });
 
@@ -159,7 +159,7 @@ export default function OffersPage() {
             <SelectValue placeholder="Tous les types" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Tous les types</SelectItem>
+            <SelectItem value="all">Tous les types</SelectItem>
             <SelectItem value="single_session">Session unique</SelectItem>
             <SelectItem value="subscription">Abonnement</SelectItem>
             <SelectItem value="package">Forfait</SelectItem>

@@ -252,7 +252,6 @@ export default function QuoteFormPage() {
                     <SelectValue placeholder="Associer à une session" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Aucune session</SelectItem>
                     {sessions.map((session: any) => (
                       <SelectItem key={session.id} value={session.id}>
                         {new Date(session.session_date).toLocaleDateString('fr-FR')} -{' '}

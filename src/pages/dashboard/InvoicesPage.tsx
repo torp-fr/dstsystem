@@ -45,7 +45,7 @@ export default function InvoicesPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
 
   const { data: clients = [] } = useClients();
   const { data: quotesData = [] } = useQuotes();
@@ -64,7 +64,7 @@ export default function InvoicesPage() {
       invoice.invoice_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
       getClientName(invoice.client_id).toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = !statusFilter || invoice.status === statusFilter;
+    const matchesStatus = statusFilter === 'all' || invoice.status === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
@@ -179,7 +179,7 @@ export default function InvoicesPage() {
             <SelectValue placeholder="Tous les statuts" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Tous les statuts</SelectItem>
+            <SelectItem value="all">Tous les statuts</SelectItem>
             <SelectItem value="pending">En attente</SelectItem>
             <SelectItem value="paid">Payée</SelectItem>
             <SelectItem value="partial">Partiellement payée</SelectItem>

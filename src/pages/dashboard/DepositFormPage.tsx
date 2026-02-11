@@ -211,7 +211,6 @@ export default function DepositFormPage() {
                   <SelectValue placeholder="Associer à un devis" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Aucun devis</SelectItem>
                   {quotes.map((quote: any) => (
                     <SelectItem key={quote.id} value={quote.id}>
                       {quote.quote_number} - {getClientName(quote.client_id)}
