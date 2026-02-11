@@ -310,14 +310,14 @@ export default function SessionFormPage() {
               <div>
                 <label className="text-sm font-medium">Type de durée</label>
                 <Select
-                  value={formData.duration_type || ''}
-                  onValueChange={(value) => handleSelectChange('duration_type', value)}
+                  value={formData.duration_type || 'custom'}
+                  onValueChange={(value) => handleSelectChange('duration_type', value === 'custom' ? null : value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Sélectionner une durée" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Personnalisée</SelectItem>
+                    <SelectItem value="custom">Personnalisée</SelectItem>
                     <SelectItem value="half_day">1/2 journée (4h)</SelectItem>
                     <SelectItem value="full_day">Journée complète (8h)</SelectItem>
                   </SelectContent>
@@ -524,7 +524,7 @@ export default function SessionFormPage() {
                     return (
                       <div
                         key={so.id}
-                        className="bg-gray-50 p-3 rounded-lg flex items-center justify-between"
+                        className="bg-card p-3 rounded-lg flex items-center justify-between"
                       >
                         <div className="text-sm">
                           <p className="font-medium">

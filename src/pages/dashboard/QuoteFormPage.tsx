@@ -305,7 +305,7 @@ export default function QuoteFormPage() {
                     name="tax_amount"
                     value={formData.tax_amount}
                     disabled
-                    className="bg-gray-100 font-semibold"
+                    className="bg-card font-semibold"
                   />
                 </div>
                 <div></div>

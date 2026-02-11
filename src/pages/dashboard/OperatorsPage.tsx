@@ -75,7 +75,7 @@ export default function OperatorsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold">Opérateurs</h1>
-          <p className="text-gray-600">Gestion des animateurs de sessions de tir</p>
+          <p className="text-muted-foreground">Gestion des animateurs de sessions de tir</p>
         </div>
         <Button onClick={() => navigate('/dashboard/operators/new')} className="gap-2">
           <Plus className="h-4 w-4" />
@@ -86,17 +86,17 @@ export default function OperatorsPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-card p-4 rounded-lg border-border">
-          <p className="text-sm text-gray-600">Total opérateurs</p>
+          <p className="text-sm text-muted-foreground">Total opérateurs</p>
           <p className="text-2xl font-bold">{operators.length}</p>
         </div>
         <div className="bg-card p-4 rounded-lg border-border">
-          <p className="text-sm text-gray-600">Salariés</p>
+          <p className="text-sm text-muted-foreground">Salariés</p>
           <p className="text-2xl font-bold text-blue-600">
             {operators.filter((o) => o.employment_type === 'salary').length}
           </p>
         </div>
         <div className="bg-card p-4 rounded-lg border-border">
-          <p className="text-sm text-gray-600">Freelances</p>
+          <p className="text-sm text-muted-foreground">Freelances</p>
           <p className="text-2xl font-bold text-green-600">
             {operators.filter((o) => o.employment_type === 'freelance').length}
           </p>
@@ -139,8 +139,8 @@ export default function OperatorsPage() {
           <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
         </div>
       ) : operators.length === 0 ? (
-        <div className="text-center p-8 bg-gray-50 rounded-lg space-y-4">
-          <p className="text-gray-600">Aucun opérateur défini</p>
+        <div className="text-center p-8 bg-card rounded-lg space-y-4">
+          <p className="text-muted-foreground">Aucun opérateur défini</p>
           <div className="flex gap-3 justify-center">
             <Button onClick={() => navigate('/dashboard/operators/initialize')} className="gap-2">
               <Plus className="h-4 w-4" />
@@ -152,8 +152,8 @@ export default function OperatorsPage() {
           </div>
         </div>
       ) : filteredOperators.length === 0 ? (
-        <div className="text-center p-8 bg-gray-50 rounded-lg">
-          <p className="text-gray-600">Aucun opérateur trouvé</p>
+        <div className="text-center p-8 bg-card rounded-lg">
+          <p className="text-muted-foreground">Aucun opérateur trouvé</p>
         </div>
       ) : (
         <div className="grid gap-4">
@@ -182,7 +182,7 @@ export default function OperatorsPage() {
                       {operator.employment_type === 'salary' ? 'Salarié' : 'Freelance'}
                     </Badge>
                   </div>
-                  <div className="flex flex-col gap-1 text-sm text-gray-600">
+                  <div className="flex flex-col gap-1 text-sm text-muted-foreground">
                     {operator.email && (
                       <div className="flex items-center gap-2">
                         <Mail className="h-4 w-4" />

@@ -11,7 +11,12 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useClients } from '@/hooks/useClients';
 import { useQuotes, useAmendments, useDeposits } from '@/hooks/useQuotes';
-import { ArrowLeft, FileText, Receipt, CreditCard, DollarSign, Users } from 'lucide-react';
+import { ArrowLeft, FileText, Receipt, CreditCard, DollarSign, Users, Settings, Zap } from 'lucide-react';
+import ClientFinancialSummary from '@/components/ClientFinancialSummary';
+import ClientSubscriptionManager from '@/components/ClientSubscriptionManager';
+import ClientAdminInfo from '@/components/client/ClientAdminInfo';
+import ClientCommercialPlan from '@/components/client/ClientCommercialPlan';
+import ClientPaymentTracking from '@/components/client/ClientPaymentTracking';
 
 export default function ClientDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -179,26 +184,73 @@ export default function ClientDetailPage() {
         </CardContent>
       </Card>
 
-      {/* Documents Tabs */}
-      <Tabs defaultValue="quotes" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="quotes" className="gap-2">
-            <FileText className="h-4 w-4" />
-            Devis
+      {/* Main Tabs */}
+      <Tabs defaultValue="profile" className="w-full">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="profile" className="gap-2">
+            <Settings className="h-4 w-4" />
+            Profil
           </TabsTrigger>
-          <TabsTrigger value="invoices" className="gap-2">
+          <TabsTrigger value="commercial" className="gap-2">
+            <Zap className="h-4 w-4" />
+            Formule
+          </TabsTrigger>
+          <TabsTrigger value="payments" className="gap-2">
             <DollarSign className="h-4 w-4" />
-            Factures
+            Paiements
           </TabsTrigger>
-          <TabsTrigger value="amendments" className="gap-2">
-            <Receipt className="h-4 w-4" />
-            Avenants
+          <TabsTrigger value="analytics" className="gap-2">
+            <Users className="h-4 w-4" />
+            Analyses
           </TabsTrigger>
-          <TabsTrigger value="deposits" className="gap-2">
-            <CreditCard className="h-4 w-4" />
-            Acomptes
+          <TabsTrigger value="documents" className="gap-2">
+            <FileText className="h-4 w-4" />
+            Documents
           </TabsTrigger>
         </TabsList>
+
+        {/* Profile Tab */}
+        <TabsContent value="profile" className="space-y-4">
+          <ClientAdminInfo client={client} />
+          <ClientSubscriptionManager clientId={id!} />
+        </TabsContent>
+
+        {/* Commercial Plan Tab */}
+        <TabsContent value="commercial">
+          <ClientCommercialPlan clientId={id!} />
+        </TabsContent>
+
+        {/* Payments Tab */}
+        <TabsContent value="payments">
+          <ClientPaymentTracking clientId={id!} />
+        </TabsContent>
+
+        {/* Analytics Tab */}
+        <TabsContent value="analytics">
+          <ClientFinancialSummary clientId={id!} />
+        </TabsContent>
+
+        {/* Documents Tab */}
+        <TabsContent value="documents">
+          <Tabs defaultValue="quotes" className="w-full">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="quotes" className="gap-2">
+                <FileText className="h-4 w-4" />
+                Devis
+              </TabsTrigger>
+              <TabsTrigger value="invoices" className="gap-2">
+                <DollarSign className="h-4 w-4" />
+                Factures
+              </TabsTrigger>
+              <TabsTrigger value="amendments" className="gap-2">
+                <Receipt className="h-4 w-4" />
+                Avenants
+              </TabsTrigger>
+              <TabsTrigger value="deposits" className="gap-2">
+                <CreditCard className="h-4 w-4" />
+                Acomptes
+              </TabsTrigger>
+            </TabsList>
 
         {/* Quotes Tab */}
         <TabsContent value="quotes">
@@ -339,6 +391,8 @@ export default function ClientDetailPage() {
               ))}
             </div>
           )}
+        </TabsContent>
+      </Tabs>
         </TabsContent>
       </Tabs>
     </div>
