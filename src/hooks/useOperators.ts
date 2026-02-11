@@ -10,6 +10,7 @@ export interface Operator {
   employment_type: 'salary' | 'freelance';
   status: 'active' | 'inactive';
   notes: string | null;
+  avatar_url?: string;
   created_by: string | null;
   created_at: string;
   updated_at: string;
@@ -137,9 +138,17 @@ export const useUpdateOperator = () => {
   return useMutation({
     mutationFn: async ({ id, ...operator }: Partial<Operator> & { id: string }) => {
       try {
+        // Filter out avatar_url if it's empty or if column doesn't exist yet
+        const { avatar_url, created_at, updated_at, ...cleanedOperator } = operator as any;
+
+        // Only include avatar_url if it has a value
+        if (avatar_url) {
+          (cleanedOperator as any).avatar_url = avatar_url;
+        }
+
         const { data, error } = await supabase
           .from('operators')
-          .update(operator)
+          .update(cleanedOperator)
           .eq('id', id)
           .select()
           .single();

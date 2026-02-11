@@ -340,25 +340,6 @@ export default function OffersPage() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Info Box */}
-      <Card className="mt-6 bg-blue-50 border-blue-200">
-        <CardContent className="pt-6">
-          <div className="text-sm space-y-2">
-            <p>
-              <strong>🎯 Offres flexibles:</strong> Créez des offres pour sessions uniques, abonnements ou forfaits
-            </p>
-            <p>
-              <strong>💰 Prix personnalisé:</strong> Définissez des prix différents selon le type d'offre
-            </p>
-            <p>
-              <strong>🎁 Réductions:</strong> Appliquez des réductions en pourcentage pour les forfaits et abonnements
-            </p>
-            <p>
-              <strong>👥 Participants min:</strong> Pour les sessions uniques, définissez un nombre minimum de participants
-            </p>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

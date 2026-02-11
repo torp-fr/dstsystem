@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
+import AvatarSelector from '@/components/AvatarSelector';
 import {
   useOperatorById,
   useCreateOperator,
@@ -63,6 +64,7 @@ export default function OperatorFormPage() {
     employment_type: 'freelance' as const,
     status: 'active' as const,
     notes: '',
+    avatar_url: '',
     created_by: null,
   });
 
@@ -86,6 +88,7 @@ export default function OperatorFormPage() {
         employment_type: operator.employment_type,
         status: operator.status,
         notes: operator.notes || '',
+        avatar_url: (operator as any).avatar_url || '',
         created_by: operator.created_by,
       });
     }
@@ -282,6 +285,16 @@ export default function OperatorFormPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Avatar Section */}
+              <div className="pb-4 border-b">
+                <label className="text-sm font-medium block mb-3">Avatar</label>
+                <AvatarSelector
+                  value={formData.avatar_url}
+                  onChange={(url) => setFormData(prev => ({ ...prev, avatar_url: url }))}
+                  showPreview={true}
+                />
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium">Prénom*</label>

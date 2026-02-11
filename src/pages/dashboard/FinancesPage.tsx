@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { DollarSign, TrendingUp, TrendingDown, Users, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +17,44 @@ const FinancesPage = () => {
   const { data: sessions = [] } = useShootingSessions();
   const invoices = []; // Mock for now - can be connected to Supabase later
 
+  // Load settings from localStorage with defaults
+  const [settings, setSettings] = useState({
+    employeeChargesPercent: 42,
+    employerChargesPercent: 45,
+  });
+
+  // Watch for changes in localStorage and update dynamically
+  useEffect(() => {
+    const loadSettings = () => {
+      const saved = localStorage.getItem('dst-system-settings');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setSettings({
+            employeeChargesPercent: parsed.employeeChargesPercent || 42,
+            employerChargesPercent: parsed.employerChargesPercent || 45,
+          });
+        } catch (error) {
+          console.error('Error loading settings:', error);
+        }
+      }
+    };
+
+    // Load on mount
+    loadSettings();
+
+    // Listen for storage changes (from other tabs/windows)
+    window.addEventListener('storage', loadSettings);
+
+    // Poll for changes every 2 seconds to catch local updates
+    const interval = setInterval(loadSettings, 2000);
+
+    return () => {
+      window.removeEventListener('storage', loadSettings);
+      clearInterval(interval);
+    };
+  }, []);
+
   // Calculate metrics
   const totalMonthlyCosts = costs
     .filter((c: any) => c.is_active)
@@ -29,9 +68,8 @@ const FinancesPage = () => {
   const netProfit = totalRevenue - totalMonthlyCosts;
   const profitMargin = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) : 0;
 
-  // Calculate salary costs
+  // Calculate salary costs using dynamic settings
   const activeOperators = operators.filter((o: any) => o.status === 'active').length;
-  const operatorChargesPercent = 42; // Employee charges (France)
 
   return (
     <div className="space-y-3 h-full overflow-y-auto">
@@ -92,18 +130,21 @@ const FinancesPage = () => {
               <span className="font-medium">{activeOperators}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Charges patronales (45%):</span>
-              <span className="font-medium text-red-600">À calculer</span>
+              <span className="text-muted-foreground">Charges patronales ({settings.employerChargesPercent}%):</span>
+              <span className="font-medium text-red-600">Inclus dans coûts</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Charges salariées (42%):</span>
-              <span className="font-medium text-red-600">À calculer</span>
+              <span className="text-muted-foreground">Charges salariées ({settings.employeeChargesPercent}%):</span>
+              <span className="font-medium text-red-600">Inclus dans coûts</span>
             </div>
             <div className="h-px bg-border my-1" />
             <div className="flex justify-between font-semibold">
               <span>Coût total opérateurs:</span>
               <span className="text-red-600">{totalMonthlyCosts.toFixed(0)}€/mois</span>
             </div>
+            <p className="text-xs text-muted-foreground/70 mt-1 italic">
+              Taux synchronisés avec Paramètres
+            </p>
           </div>
         </div>
 
