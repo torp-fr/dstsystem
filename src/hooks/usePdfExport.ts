@@ -38,20 +38,29 @@ export const usePdfExport = () => {
         format: 'a4',
       });
 
-      const imgWidth = 210; // A4 width in mm
+      const pageWidth = pdf.internal.pageSize.getWidth(); // 210mm
+      const pageHeight = pdf.internal.pageSize.getHeight(); // 297mm
+      const marginTop = 10;
+      const marginBottom = 10;
+      const marginLeft = 10;
+      const marginRight = 10;
+      const availableWidth = pageWidth - marginLeft - marginRight;
+      const availableHeight = pageHeight - marginTop - marginBottom;
+
+      const imgWidth = availableWidth;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
-      let position = 0;
+      let position = marginTop;
 
       // Add image to PDF with page breaks
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= 297; // A4 height in mm
+      pdf.addImage(imgData, 'PNG', marginLeft, position, imgWidth, imgHeight);
+      heightLeft -= availableHeight;
 
       while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
+        position = heightLeft - imgHeight + marginTop;
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= 297;
+        pdf.addImage(imgData, 'PNG', marginLeft, position, imgWidth, imgHeight);
+        heightLeft -= availableHeight;
       }
 
       // Save the PDF

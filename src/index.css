@@ -75,15 +75,29 @@
 
 /* Print Styles */
 @media print {
+  /* Page setup - A4 format */
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
   /* Hide unnecessary elements */
   .print\:hidden {
     display: none !important;
   }
 
   /* Optimize page layout */
+  html {
+    width: 210mm;
+    height: 297mm;
+  }
+
   body {
     background: white !important;
     color: black !important;
+    width: 210mm;
+    margin: 0;
+    padding: 10mm;
   }
 
   /* Remove cards shadow and background */
@@ -115,7 +129,7 @@
     border: 1px solid #ccc !important;
   }
 
-  /* Ensure text is visible and readable */
+  /* FORCE ALL TEXT TO BLACK - VERY IMPORTANT */
   * {
     color: black !important;
     background-color: transparent !important;
@@ -123,12 +137,13 @@
   }
 
   /* Force white background on root containers */
-  html, body {
+  html, body, main, [id] {
     background: white !important;
     background-color: white !important;
+    color: black !important;
   }
 
-  /* Ensure specific text colors are black */
+  /* FORCE TEXT COLORS - ALL BLACK */
   .text-primary {
     color: black !important;
   }
@@ -148,9 +163,19 @@
 
   .text-blue-800,
   .text-blue-900,
+  .text-blue-200,
+  .text-blue-100,
   .text-amber-800,
   .text-amber-900,
-  .text-red-600 {
+  .text-amber-100,
+  .text-red-600,
+  .dark\:text-blue-100,
+  .dark\:text-amber-100 {
+    color: black !important;
+  }
+
+  /* Ensure all text elements are black */
+  h1, h2, h3, h4, h5, h6, p, span, a, li, td, th, div, label {
     color: black !important;
   }
 
@@ -191,16 +216,30 @@
 
   th {
     background: #f5f5f5 !important;
-    font-weight: bold;
+    font-weight: bold !important;
+    color: black !important;
   }
 
-  /* Ensure badges are readable */
+  /* Ensure badges and buttons are readable */
   span {
     color: black !important;
   }
 
+  button {
+    display: none !important;
+  }
+
   /* Section headers */
   .font-semibold {
+    color: black !important;
+  }
+
+  .font-bold {
+    color: black !important;
+  }
+
+  /* Override any inline styles */
+  [style*="color"] {
     color: black !important;
   }
 }
