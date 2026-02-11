@@ -138,6 +138,19 @@ export default function OperatorsPage() {
         <div className="flex items-center justify-center p-8">
           <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
         </div>
+      ) : operators.length === 0 ? (
+        <div className="text-center p-8 bg-gray-50 rounded-lg space-y-4">
+          <p className="text-gray-600">Aucun opérateur défini</p>
+          <div className="flex gap-3 justify-center">
+            <Button onClick={() => navigate('/dashboard/operators/initialize')} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Initialiser avec opérateurs standards
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/dashboard/operators/new')}>
+              Ajouter manuellement
+            </Button>
+          </div>
+        </div>
       ) : filteredOperators.length === 0 ? (
         <div className="text-center p-8 bg-gray-50 rounded-lg">
           <p className="text-gray-600">Aucun opérateur trouvé</p>
