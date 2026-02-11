@@ -88,7 +88,7 @@ export default function QuoteTemplate({
                 </div>
 
                 {/* Client Info - Aligned with company info, positioned 2/3 right with margin */}
-                <div className="text-right" style={{ marginTop: '200px', width: '280px', marginLeft: '80px' }}>
+                <div className="text-right" style={{ marginTop: '200px', width: '320px', marginLeft: '60px' }}>
                   <h3 className="font-semibold mb-3 text-base">Destinataire:</h3>
                   <div className="space-y-1 text-base">
                     <p className="font-semibold">
@@ -215,7 +215,7 @@ export default function QuoteTemplate({
                   <span className="text-muted-foreground">TVA (20%):</span>
                   <span className="font-semibold">{quote.tax_amount?.toFixed(2)}€</span>
                 </div>
-                <div className="flex justify-between py-3 bg-primary/5 px-4 rounded-lg">
+                <div className="flex justify-between py-3 bg-primary/5 px-4 rounded-lg pb-6">
                   <span className="font-bold">TOTAL TTC:</span>
                   <span className="font-bold text-lg text-primary">{quote.total_amount?.toFixed(2)}€</span>
                 </div>
