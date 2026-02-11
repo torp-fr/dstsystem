@@ -252,7 +252,9 @@ export default function CalendarPage() {
                             <div
                               key={session.id}
                               onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
-                              className="text-xs bg-blue-100 dark:bg-blue-900 p-0.5 rounded cursor-pointer hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors truncate"
+                              className={`text-xs p-0.5 rounded cursor-pointer transition-all hover:shadow-md ${
+                                statusColors[session.status] || 'bg-blue-600/20 text-blue-700 dark:text-blue-300'
+                              } truncate`}
                             >
                               <div className="font-medium truncate text-xs">
                                 {session.theme || 'S.'}
