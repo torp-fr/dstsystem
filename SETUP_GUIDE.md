@@ -2,18 +2,23 @@
 
 ## ⚡ Étapes Initiales Critiques
 
-### 1️⃣ Exécuter le Schema SQL dans Supabase
+### 1️⃣ Exécuter le Schema SQL Phase 2 dans Supabase
 
-**IMPORTANT**: Les tables n'existent pas encore! Vous DEVEZ exécuter le SQL.
+**IMPORTANT**: Les tables Phase 2 n'existent pas encore! Vous DEVEZ exécuter le SQL.
 
 1. Ouvrez https://app.supabase.com/
 2. Allez dans votre projet DST-System
 3. Cliquez sur **SQL Editor** (barre latérale gauche)
 4. Créez une **Nouvelle Query**
-5. Copiez-collez TOUT le contenu de `/supabase-schema.sql`
+5. Copiez-collez TOUT le contenu de **`supabase-schema-phase2-only.sql`** (NON le fichier complet!)
 6. Cliquez sur **Run** (bouton bleu)
 
 ✅ Attendez que l'exécution se termine (pas d'erreurs)
+
+**Pourquoi phase2-only?**
+- Les tables Phase 1 existent déjà (clients, invoices, etc.)
+- Ce fichier ajoute SEULEMENT les nouvelles tables de Phase 2
+- Évite les erreurs "relation already exists"
 
 ---
 
