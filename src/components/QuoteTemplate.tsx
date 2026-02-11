@@ -62,9 +62,9 @@ export default function QuoteTemplate({
       <Card id={elementId} className="print:shadow-none print:border-none print:bg-white flex flex-col" style={{ background: 'var(--card)' }}>
         <CardContent className="p-8 print:p-0 print:bg-white flex-1 flex flex-col" style={{ background: 'var(--card)', display: 'flex', flexDirection: 'column', minHeight: '1000px' }}>
           <div className="space-y-8 flex-1">
-            {/* Header - Logo Left, DEVIS + Client Right */}
+            {/* Header - Logo Left, DEVIS Title Right */}
             <div className="border-b pb-6">
-              <div className="flex gap-8 justify-between">
+              <div className="flex gap-8 justify-between items-start">
                 {/* Logo + Company Info - Left */}
                 <div className="flex flex-col items-start print:w-32 flex-shrink-0">
                   <img
@@ -82,59 +82,58 @@ export default function QuoteTemplate({
                   </div>
                 </div>
 
-                {/* DEVIS Header + Client Info - Right */}
-                <div className="flex-1 overflow-hidden">
-                  <div className="text-right mb-6">
-                    <h1 className="text-4xl font-bold text-primary mb-2 overflow-hidden text-ellipsis">DEVIS</h1>
-                    <p className="text-sm text-muted-foreground mb-2">{quote.quote_number}</p>
-                    {quote.status && (
-                      <Badge className="float-right mb-2">{quote.status}</Badge>
-                    )}
-                    <div className="space-y-1 text-sm clear-both">
-                      <p><span className="font-semibold">Date:</span> {quoteDate.toLocaleDateString('fr-FR')}</p>
-                      <p>
-                        <span className="font-semibold">Valide jusqu'au:</span>{' '}
-                        {validUntil.toLocaleDateString('fr-FR')}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Destinataire - Under DEVIS header */}
-                  <div className="text-right">
-                    <h3 className="font-semibold mb-3">Destinataire:</h3>
-                    <div className="space-y-1 text-sm">
-                      <p className="font-semibold">
-                        {client.first_name} {client.last_name}
-                        {client.customer_number && (
-                          <span className="text-muted-foreground font-normal ml-2">({client.customer_number})</span>
-                        )}
-                      </p>
-                      {client.company_name && <p>{client.company_name}</p>}
-                      {client.address && <p>{client.address}</p>}
-                      {client.postal_code || client.city ? (
-                        <p>
-                          {client.postal_code} {client.city}
-                        </p>
-                      ) : null}
-                      {client.email && <p>{client.email}</p>}
-                      {client.phone && <p>{client.phone}</p>}
-                    </div>
-
-                    {(client.learner_count || client.industry) && (
-                      <div className="mt-4">
-                        <h4 className="font-semibold mb-2 text-sm">Informations:</h4>
-                        <div className="space-y-1 text-sm text-muted-foreground">
-                          {client.learner_count && (
-                            <p><span className="font-semibold text-foreground">Apprenants:</span> {client.learner_count}</p>
-                          )}
-                          {client.industry && (
-                            <p><span className="font-semibold text-foreground">Secteur:</span> {client.industry}</p>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                {/* DEVIS Title - Right, Large and Clear */}
+                <div className="text-right flex-1">
+                  <h1 className="text-4xl font-bold text-primary">DEVIS</h1>
                 </div>
+              </div>
+            </div>
+
+            {/* Quote Info + Client Info - Below main header */}
+            <div className="grid grid-cols-2 gap-8 py-6 border-b">
+              {/* Left Column - Quote Details */}
+              <div>
+                <div className="space-y-2 text-sm">
+                  <p className="font-mono font-semibold">{quote.quote_number}</p>
+                  <p><span className="font-semibold">Date:</span> {quoteDate.toLocaleDateString('fr-FR')}</p>
+                  <p><span className="font-semibold">Valide jusqu'au:</span> {validUntil.toLocaleDateString('fr-FR')}</p>
+                </div>
+              </div>
+
+              {/* Right Column - Destinataire */}
+              <div className="text-right">
+                <h3 className="font-semibold mb-3">Destinataire:</h3>
+                <div className="space-y-1 text-sm">
+                  <p className="font-semibold">
+                    {client.first_name} {client.last_name}
+                    {client.customer_number && (
+                      <span className="text-muted-foreground font-normal ml-2">({client.customer_number})</span>
+                    )}
+                  </p>
+                  {client.company_name && <p>{client.company_name}</p>}
+                  {client.address && <p>{client.address}</p>}
+                  {client.postal_code || client.city ? (
+                    <p>
+                      {client.postal_code} {client.city}
+                    </p>
+                  ) : null}
+                  {client.email && <p>{client.email}</p>}
+                  {client.phone && <p>{client.phone}</p>}
+                </div>
+
+                {(client.learner_count || client.industry) && (
+                  <div className="mt-4">
+                    <h4 className="font-semibold mb-2 text-sm">Informations:</h4>
+                    <div className="space-y-1 text-sm text-muted-foreground">
+                      {client.learner_count && (
+                        <p><span className="font-semibold text-foreground">Apprenants:</span> {client.learner_count}</p>
+                      )}
+                      {client.industry && (
+                        <p><span className="font-semibold text-foreground">Secteur:</span> {client.industry}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
