@@ -250,9 +250,9 @@ export default function OfferFormPage() {
 
               {/* Single Session */}
               <TabsContent value="single_session" className="space-y-4 border-t pt-4">
-                <div className="bg-blue-50 p-4 rounded-lg border-border border-blue-200 mb-4">
-                  <p className="text-sm font-medium text-blue-900">Session unique</p>
-                  <p className="text-sm text-blue-700">
+                <div className="bg-card p-4 rounded-lg border-border border mb-4">
+                  <p className="text-sm font-medium">Session unique</p>
+                  <p className="text-sm text-muted-foreground">
                     Idéale pour une séance ponctuelle avec tarif fixe
                   </p>
                 </div>
@@ -408,23 +408,6 @@ export default function OfferFormPage() {
               </Button>
             </div>
           </form>
-        </CardContent>
-      </Card>
-
-      {/* Info Box */}
-      <Card className="mt-6 bg-blue-50 border-blue-200">
-        <CardContent className="pt-6">
-          <div className="text-sm space-y-2">
-            <p>
-              <strong>💡 Conseil:</strong> Utilisez les réductions (%) plutôt que les prix fixes pour les forfaits et abonnements
-            </p>
-            <p>
-              <strong>📊 Prix par session:</strong> Pour les forfaits, le prix par session est calculé automatiquement
-            </p>
-            <p>
-              <strong>✅ Statut:</strong> Les offres inactives ne s'affichent pas aux clients
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
