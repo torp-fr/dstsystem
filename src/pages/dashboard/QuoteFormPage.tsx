@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useClients } from '@/hooks/useClients';
-import { useShootingSessions } from '@/hooks/useShootingSessions';
+import { useOffers } from '@/hooks/useOffers';
 import {
   useQuoteById,
   useCreateQuote,
@@ -45,7 +45,7 @@ export default function QuoteFormPage() {
 
   const { data: quote, isLoading: quoteLoading } = useQuoteById(id);
   const { data: clients = [] } = useClients();
-  const { data: sessions = [] } = useShootingSessions();
+  const { data: offers = [] } = useOffers();
 
   const createQuote = useCreateQuote();
   const updateQuote = useUpdateQuote();
@@ -53,7 +53,7 @@ export default function QuoteFormPage() {
 
   const [formData, setFormData] = useState({
     client_id: '',
-    session_id: '',
+    offer_id: '',
     subtotal: '',
     tax_amount: '',
     total_amount: '',
@@ -75,7 +75,7 @@ export default function QuoteFormPage() {
     if (quote) {
       setFormData({
         client_id: quote.client_id,
-        session_id: quote.session_id || '',
+        offer_id: quote.offer_id || '',
         subtotal: quote.subtotal.toString(),
         tax_amount: quote.tax_amount.toString(),
         total_amount: quote.total_amount.toString(),
@@ -139,7 +139,7 @@ export default function QuoteFormPage() {
     try {
       const data = {
         client_id: formData.client_id,
-        session_id: formData.session_id || null,
+        offer_id: formData.offer_id || null,
         subtotal: parseFloat(formData.subtotal) || 0,
         tax_amount: parseFloat(formData.tax_amount) || 0,
         total_amount: parseFloat(formData.total_amount) || 0,
@@ -259,19 +259,28 @@ export default function QuoteFormPage() {
               </div>
 
               <div>
-                <label className="text-sm font-medium">Session (optionnel)</label>
+                <label className="text-sm font-medium">Offre (optionnel)</label>
                 <Select
-                  value={formData.session_id}
-                  onValueChange={(value) => handleSelectChange('session_id', value)}
+                  value={formData.offer_id}
+                  onValueChange={(value) => {
+                    handleSelectChange('offer_id', value);
+                    // Auto-fill subtotal with offer price
+                    const selectedOffer = offers.find((o: any) => o.id === value);
+                    if (selectedOffer) {
+                      setFormData(prev => ({
+                        ...prev,
+                        subtotal: selectedOffer.price.toString()
+                      }));
+                    }
+                  }}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Associer à une session" />
+                    <SelectValue placeholder="Sélectionner une offre" />
                   </SelectTrigger>
                   <SelectContent>
-                    {sessions.map((session: any) => (
-                      <SelectItem key={session.id} value={session.id}>
-                        {new Date(session.session_date).toLocaleDateString('fr-FR')} -{' '}
-                        {session.theme || 'Sans thème'}
+                    {offers.map((offer: any) => (
+                      <SelectItem key={offer.id} value={offer.id}>
+                        {offer.name} - {offer.price.toFixed(2)}€
                       </SelectItem>
                     ))}
                   </SelectContent>
