@@ -6,6 +6,7 @@ export interface Quote {
   quote_number: string;
   client_id: string;
   session_id: string | null;
+  offer_id: string | null;
   subtotal: number;
   tax_amount: number;
   total_amount: number;
@@ -58,7 +59,8 @@ export const useQuotes = (filters?: { client_id?: string; status?: string }) => 
       try {
         let query = supabase.from('quotes').select(`
           *,
-          client:clients(id, first_name, last_name, company_name)
+          client:clients(id, first_name, last_name, company_name),
+          offer:offers(id, name, price, offer_type)
         `);
 
         if (filters?.client_id) {
@@ -93,7 +95,8 @@ export const useQuoteById = (id: string | undefined) => {
           .select(`
             *,
             client:clients(id, first_name, last_name, company_name, email, phone, address, city, postal_code),
-            session:shooting_sessions(id, session_date, theme)
+            session:shooting_sessions(id, session_date, theme),
+            offer:offers(id, name, price, offer_type)
           `)
           .eq('id', id)
           .single();
