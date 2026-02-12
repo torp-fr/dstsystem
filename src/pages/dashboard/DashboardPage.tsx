@@ -197,7 +197,7 @@ const DashboardPage = () => {
               {clients.slice(0, 4).map((client: any) => (
                 <div
                   key={client.id}
-                  className="p-2 rounded-lg bg-blue-50/50 dark:bg-blue-500/10 hover:bg-blue-100 dark:hover:bg-blue-500/20 transition-colors cursor-pointer text-xs"
+                  className="p-2 rounded-lg border border-blue-200/60 dark:border-blue-400/40 hover:border-blue-300/80 dark:hover:border-blue-400/60 transition-colors cursor-pointer text-xs"
                   onClick={() => navigate(`/dashboard/clients/${client.id}`)}
                 >
                   <p className="font-medium text-sm">{client.first_name} {client.last_name}</p>
@@ -242,7 +242,7 @@ const DashboardPage = () => {
               {recentQuotes.slice(0, 2).map((quote: any) => (
                 <div
                   key={quote.id}
-                  className="p-2 rounded-lg bg-purple-50/50 dark:bg-purple-500/10 hover:bg-purple-100 dark:hover:bg-purple-500/20 transition-colors cursor-pointer"
+                  className="p-2 rounded-lg border border-purple-200/60 dark:border-purple-400/40 hover:border-purple-300/80 dark:hover:border-purple-400/60 transition-colors cursor-pointer"
                   onClick={() => navigate(`/dashboard/quotes/${quote.id}/edit`)}
                 >
                   <div className="flex items-center justify-between">
