@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -228,7 +227,6 @@ const About = () => (
         </div>
       </section>
     </main>
-    <Footer />
   </div>
 );
 

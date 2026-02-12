@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 import { Crosshair, Target, Users, Zap, Moon, UserCheck, Settings, CheckCircle, ArrowRight, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -238,7 +237,6 @@ const Solutions = () => (
         </div>
       </section>
     </main>
-    <Footer />
   </div>
 );
 
