@@ -182,7 +182,7 @@ export default function CostStructureFormPage() {
                   value={formData.category}
                   onValueChange={(value) => handleSelectChange('category', value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -222,6 +222,7 @@ export default function CostStructureFormPage() {
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="ex. Loyer bureau"
+                className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
               />
             </div>
 
@@ -233,6 +234,7 @@ export default function CostStructureFormPage() {
                 onChange={handleInputChange}
                 placeholder="Détails du coût..."
                 rows={3}
+                className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
               />
             </div>
 
@@ -246,6 +248,7 @@ export default function CostStructureFormPage() {
                   value={formData.monthly_amount}
                   onChange={handleInputChange}
                   placeholder="0.00"
+                  className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
               </div>
               <div>
@@ -257,6 +260,7 @@ export default function CostStructureFormPage() {
                   value={formData.annual_amount}
                   onChange={handleInputChange}
                   placeholder="0.00"
+                  className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
               </div>
             </div>
@@ -268,6 +272,7 @@ export default function CostStructureFormPage() {
                 value={formData.expense_account}
                 onChange={handleInputChange}
                 placeholder="ex. 60100"
+                className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
               />
             </div>
 

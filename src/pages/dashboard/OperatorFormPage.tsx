@@ -315,6 +315,7 @@ export default function OperatorFormPage() {
                     value={formData.first_name}
                     onChange={handleInputChange}
                     placeholder="Jean"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
                 <div>
@@ -324,6 +325,7 @@ export default function OperatorFormPage() {
                     value={formData.last_name}
                     onChange={handleInputChange}
                     placeholder="Dupont"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
               </div>
@@ -336,6 +338,7 @@ export default function OperatorFormPage() {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="jean@example.com"
+                  className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
               </div>
 
@@ -346,6 +349,7 @@ export default function OperatorFormPage() {
                   value={formData.phone}
                   onChange={handleInputChange}
                   placeholder="+33 6 12 34 56 78"
+                  className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
               </div>
 
@@ -358,7 +362,7 @@ export default function OperatorFormPage() {
                       handleSelectChange('employment_type', value)
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -373,7 +377,7 @@ export default function OperatorFormPage() {
                     value={formData.status}
                     onValueChange={(value) => handleSelectChange('status', value)}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -392,6 +396,7 @@ export default function OperatorFormPage() {
                   onChange={handleInputChange}
                   placeholder="Informations supplémentaires..."
                   rows={3}
+                  className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
               </div>
 
@@ -438,7 +443,7 @@ export default function OperatorFormPage() {
                       handleRateSelectChange('rate_type', value)
                     }
                   >
-                    <SelectTrigger className="text-sm">
+                    <SelectTrigger className="text-sm border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -459,7 +464,7 @@ export default function OperatorFormPage() {
                     value={rateForm.rate_amount}
                     onChange={handleRateInputChange}
                     placeholder="0.00"
-                    className="text-sm"
+                    className="text-sm border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
 
@@ -470,7 +475,7 @@ export default function OperatorFormPage() {
                     name="effective_from"
                     value={rateForm.effective_from}
                     onChange={handleRateInputChange}
-                    className="text-sm"
+                    className="text-sm border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
 
@@ -481,7 +486,7 @@ export default function OperatorFormPage() {
                     name="effective_to"
                     value={rateForm.effective_to}
                     onChange={handleRateInputChange}
-                    className="text-sm"
+                    className="text-sm border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
 
