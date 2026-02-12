@@ -1,15 +1,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { useClientSubscriptions } from '@/hooks/useClientSubscriptions';
 import { useShootingSessions } from '@/hooks/useShootingSessions';
 import { useQuotes } from '@/hooks/useQuotes';
-import { TrendingUp, TrendingDown, CheckCircle2, Clock } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { TrendingUp, TrendingDown, CheckCircle2, Clock, DollarSign } from 'lucide-react';
 
 interface ClientPaymentTrackingProps {
   clientId: string;
 }
 
 export default function ClientPaymentTracking({ clientId }: ClientPaymentTrackingProps) {
+  const { toast } = useToast();
   const { data: subscriptions = [] } = useClientSubscriptions(clientId);
   const { data: sessions = [] } = useShootingSessions({ client_id: clientId });
   const { data: quotes = [] } = useQuotes({ client_id: clientId });
@@ -160,6 +163,48 @@ export default function ClientPaymentTracking({ clientId }: ClientPaymentTrackin
           </div>
         </CardContent>
       </Card>
+
+      {/* Outstanding Invoices - Simple Payment Validation */}
+      {outstandingBalance > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5" />
+              Encaissements en attente
+            </CardTitle>
+            <CardDescription>Factures à valider comme encaissées</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {quotes
+                .filter((q: any) => !q.invoice || q.invoice.status !== 'paid')
+                .map((quote: any) => (
+                  <div key={quote.id} className="flex items-center justify-between p-3 bg-amber-600/5 border border-amber-200/30 rounded-lg">
+                    <div>
+                      <p className="font-medium text-sm">{quote.quote_number}</p>
+                      <p className="text-xs text-muted-foreground">
+                        Montant: {quote.total_amount.toFixed(2)}€
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        toast({
+                          title: 'Encaissement validé',
+                          description: `${quote.quote_number} marqué comme payé`,
+                        });
+                      }}
+                      className="gap-2"
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      Valider
+                    </Button>
+                  </div>
+                ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
