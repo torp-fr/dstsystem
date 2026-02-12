@@ -95,7 +95,7 @@ export default function SettingsPage() {
           type={type === 'number' ? 'text' : 'text'}
           value={value}
           onChange={handleInput}
-          className="h-8 text-sm"
+          className="h-8 text-sm border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
           placeholder="0"
           inputMode={type === 'number' ? 'decimal' : 'text'}
         />
@@ -208,7 +208,7 @@ export default function SettingsPage() {
                 type="text"
                 value={settings.companyName}
                 onChange={(e) => handleChange('companyName', e.target.value)}
-                className="h-8 text-sm mt-1"
+                className="h-8 text-sm mt-1 border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
               />
             </div>
             <div>
@@ -219,7 +219,7 @@ export default function SettingsPage() {
                 placeholder="14 ou 9 chiffres"
                 value={settings.companyRegistration}
                 onChange={(e) => handleChange('companyRegistration', e.target.value)}
-                className="h-8 text-sm mt-1"
+                className="h-8 text-sm mt-1 border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
               />
             </div>
           </div>

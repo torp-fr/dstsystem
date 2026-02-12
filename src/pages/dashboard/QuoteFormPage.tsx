@@ -244,7 +244,7 @@ export default function QuoteFormPage() {
                   value={formData.client_id}
                   onValueChange={(value) => handleSelectChange('client_id', value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                     <SelectValue placeholder="Sélectionner un client" />
                   </SelectTrigger>
                   <SelectContent>
@@ -274,7 +274,7 @@ export default function QuoteFormPage() {
                     }
                   }}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                     <SelectValue placeholder="Sélectionner une offre" />
                   </SelectTrigger>
                   <SelectContent>
@@ -297,6 +297,7 @@ export default function QuoteFormPage() {
                     value={formData.subtotal}
                     onChange={handleInputChange}
                     placeholder="0.00"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
                 <div>
@@ -310,6 +311,7 @@ export default function QuoteFormPage() {
                     value={formData.tva_rate}
                     onChange={handleInputChange}
                     placeholder="20"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
               </div>
@@ -355,7 +357,7 @@ export default function QuoteFormPage() {
                       value={formData.discount_percentage}
                       onChange={handleInputChange}
                       placeholder="0"
-                      className="bg-card"
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                     />
                   </div>
                   <div>
@@ -367,7 +369,7 @@ export default function QuoteFormPage() {
                       value={formData.discount_amount}
                       onChange={handleInputChange}
                       placeholder="0.00"
-                      className="bg-card"
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                     />
                   </div>
                 </div>
@@ -378,7 +380,7 @@ export default function QuoteFormPage() {
                     value={formData.discount_reason}
                     onChange={handleInputChange}
                     placeholder="Ex: Fidélité client, Volume important..."
-                    className="bg-card"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
               </div>
@@ -391,6 +393,7 @@ export default function QuoteFormPage() {
                     name="valid_from"
                     value={formData.valid_from}
                     onChange={handleInputChange}
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
                 <div>
@@ -400,6 +403,7 @@ export default function QuoteFormPage() {
                     name="valid_until"
                     value={formData.valid_until}
                     onChange={handleInputChange}
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
               </div>
@@ -410,7 +414,7 @@ export default function QuoteFormPage() {
                   value={formData.status}
                   onValueChange={(value) => handleSelectChange('status', value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -430,6 +434,7 @@ export default function QuoteFormPage() {
                   onChange={handleInputChange}
                   placeholder="Notes additionnelles..."
                   rows={3}
+                  className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
               </div>
 
