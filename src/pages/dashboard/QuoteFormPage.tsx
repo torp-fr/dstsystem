@@ -332,8 +332,8 @@ export default function QuoteFormPage() {
               </div>
 
               {/* Réductions */}
-              <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-lg p-4">
-                <h3 className="font-semibold text-sm mb-4 text-amber-900 dark:text-amber-100">Réductions</h3>
+              <div className="bg-card border border-border rounded-lg p-4">
+                <h3 className="font-semibold text-sm mb-4">Réductions</h3>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="text-sm font-medium">Réduction (%)</label>
