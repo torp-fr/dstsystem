@@ -9,9 +9,18 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { useClients } from '@/hooks/useClients';
-import { useQuotes, useAmendments, useDeposits } from '@/hooks/useQuotes';
-import { ArrowLeft, FileText, Receipt, CreditCard, DollarSign, Users, Settings, Zap } from 'lucide-react';
+import { useQuotes, useDeleteQuote, useAmendments, useDeposits } from '@/hooks/useQuotes';
+import { ArrowLeft, FileText, Receipt, CreditCard, DollarSign, Users, Settings, Zap, Trash2, Edit2 } from 'lucide-react';
 import ClientFinancialSummary from '@/components/ClientFinancialSummary';
 import ClientSubscriptionManager from '@/components/ClientSubscriptionManager';
 import ClientAdminInfo from '@/components/client/ClientAdminInfo';
@@ -26,6 +35,7 @@ export default function ClientDetailPage() {
   const { data: quotesData = [] } = useQuotes({ client_id: id });
   const { data: amendments = [] } = useAmendments({ client_id: id });
   const { data: deposits = [] } = useDeposits({ client_id: id });
+  const deleteQuote = useDeleteQuote();
 
   const client = clientsData.find((c) => c.id === id);
   const clientQuotes = quotesData || [];
@@ -258,7 +268,7 @@ export default function ClientDetailPage() {
             <Card>
               <CardContent className="pt-6 text-center py-8">
                 <p className="text-muted-foreground mb-4">Aucun devis pour ce client</p>
-                <Button onClick={() => navigate('/dashboard/quotes/new')}>
+                <Button onClick={() => navigate('/dashboard/quotes/new', { state: { client_id: id } })}>
                   Créer un devis
                 </Button>
               </CardContent>
@@ -266,23 +276,65 @@ export default function ClientDetailPage() {
           ) : (
             <div className="space-y-3">
               {clientQuotes.map((quote: any) => (
-                <Card key={quote.id}>
+                <Card key={quote.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigate(`/dashboard/quotes/${quote.id}`)}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="font-semibold">{quote.quote_number}</h4>
+                      <div className="flex-1">
+                        <h4 className="font-semibold hover:text-primary">{quote.quote_number}</h4>
                         <p className="text-sm text-muted-foreground">
                           {new Date(quote.created_at).toLocaleDateString('fr-FR')}
                         </p>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right mr-4">
                         <p className="font-mono font-semibold">{quote.total_amount.toFixed(2)}€</p>
                         <Badge>{quote.status}</Badge>
+                      </div>
+                      <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => navigate(`/dashboard/quotes/${quote.id}/edit`)}
+                          className="gap-2"
+                        >
+                          <Edit2 className="h-4 w-4" />
+                          Modifier
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="gap-2 text-red-600 hover:text-red-700"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                              Supprimer
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogTitle>Supprimer ce devis?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Cette action est irréversible. Le devis {quote.quote_number} sera supprimé.
+                            </AlertDialogDescription>
+                            <div className="flex justify-end gap-3">
+                              <AlertDialogCancel>Annuler</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => deleteQuote.mutate(quote.id)}
+                                className="bg-red-600 hover:bg-red-700"
+                              >
+                                Supprimer
+                              </AlertDialogAction>
+                            </div>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               ))}
+              <Button onClick={() => navigate('/dashboard/quotes/new', { state: { client_id: id } })} variant="outline" className="w-full gap-2">
+                <FileText className="h-4 w-4" />
+                Créer un nouveau devis
+              </Button>
             </div>
           )}
         </TabsContent>

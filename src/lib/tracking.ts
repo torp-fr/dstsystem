@@ -49,27 +49,35 @@ export const trackPageVisit = async (pageUrl: string, pageTitle?: string) => {
     const sessionId = getOrCreateSessionId();
     const geoData = await getGeoLocation();
 
-    console.log('[Tracking] Tracking page visit:', { pageUrl, sessionId, geoData });
+    const pageVisitData = {
+      page_url: pageUrl,
+      page_title: pageTitle || document.title,
+      session_id: sessionId,
+      user_agent: navigator.userAgent,
+      ip_address: geoData.ip,
+      country: geoData.country,
+      city: geoData.city,
+      latitude: geoData.latitude,
+      longitude: geoData.longitude,
+      referrer: document.referrer || null,
+      visited_at: new Date().toISOString(),
+    };
 
-    const { error } = await supabase.from('page_visits').insert([
-      {
-        page_url: pageUrl,
-        page_title: pageTitle || document.title,
-        session_id: sessionId,
-        user_agent: navigator.userAgent,
-        ip_address: geoData.ip,
-        country: geoData.country,
-        city: geoData.city,
-        latitude: geoData.latitude,
-        longitude: geoData.longitude,
-        referrer: document.referrer || null,
-      },
-    ]);
+    console.log('[Tracking] Tracking page visit:', pageVisitData);
+
+    // Save to localStorage (always works)
+    const localVisits = JSON.parse(localStorage.getItem('dst-page-visits') || '[]');
+    localVisits.push(pageVisitData);
+    localStorage.setItem('dst-page-visits', JSON.stringify(localVisits));
+    console.log('[Tracking] Page visit saved to localStorage');
+
+    // Try to save to Supabase (non-blocking)
+    const { error } = await supabase.from('page_visits').insert([pageVisitData]);
 
     if (error) {
-      console.error('[Tracking] Insert error:', error);
+      console.warn('[Tracking] Supabase insert error:', error);
     } else {
-      console.log('[Tracking] Page visit tracked successfully');
+      console.log('[Tracking] Page visit tracked to Supabase successfully');
     }
   } catch (error) {
     console.error('[Tracking] Track page visit error:', error);
@@ -82,32 +90,43 @@ export const trackSessionStart = async () => {
     const sessionId = getOrCreateSessionId();
     const geoData = await getGeoLocation();
 
-    console.log('[Tracking] Starting session:', { sessionId, geoData });
+    const sessionData = {
+      session_id: sessionId,
+      ip_address: geoData.ip,
+      country: geoData.country,
+      city: geoData.city,
+      latitude: geoData.latitude,
+      longitude: geoData.longitude,
+      user_agent: navigator.userAgent,
+      device_type: getDeviceType(),
+      browser: getBrowserName(),
+      os: getOSName(),
+      started_at: new Date().toISOString(),
+    };
 
-    const { error } = await supabase.from('sessions').insert([
-      {
-        session_id: sessionId,
-        ip_address: geoData.ip,
-        country: geoData.country,
-        city: geoData.city,
-        latitude: geoData.latitude,
-        longitude: geoData.longitude,
-        user_agent: navigator.userAgent,
-        device_type: getDeviceType(),
-        browser: getBrowserName(),
-        os: getOSName(),
-      },
-    ]);
+    console.log('[Tracking] Starting session:', sessionData);
+
+    // Save to localStorage (always works)
+    const localSessions = JSON.parse(localStorage.getItem('dst-sessions') || '[]');
+    const existingSession = localSessions.find((s: any) => s.session_id === sessionId);
+    if (!existingSession) {
+      localSessions.push(sessionData);
+      localStorage.setItem('dst-sessions', JSON.stringify(localSessions));
+      console.log('[Tracking] Session saved to localStorage');
+    }
+
+    // Try to save to Supabase (non-blocking)
+    const { error } = await supabase.from('sessions').insert([sessionData]);
 
     if (error) {
       // Ignore duplicate key errors (session already exists)
       if (error.code === '23505') {
         console.log('[Tracking] Session already exists, skipping insert');
       } else {
-        console.error('[Tracking] Session insert error:', error);
+        console.warn('[Tracking] Session insert error:', error);
       }
     } else {
-      console.log('[Tracking] Session started successfully');
+      console.log('[Tracking] Session started successfully in Supabase');
     }
   } catch (error) {
     console.error('[Tracking] Track session error:', error);

@@ -3,11 +3,10 @@ import { useOperators } from '@/hooks/useOperators';
 import { useCostStructures } from '@/hooks/useCostStructures';
 import { useShootingSessions } from '@/hooks/useShootingSessions';
 import { useQuotes } from '@/hooks/useQuotes';
-import { Users, TrendingUp, Package, DollarSign, Crosshair, Calculator, Calendar, FileText, AlertCircle, ArrowUpRight, ArrowDownRight, Zap } from 'lucide-react';
+import { Users, TrendingUp, Package, DollarSign, Crosshair, Calculator, Calendar, FileText, ArrowUpRight, ArrowDownRight, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const StatCard = ({ icon: Icon, label, value, color, trend }: any) => (
   <div className="bg-card rounded-lg border-border border-border-border p-4 hover:border-primary/30 transition-colors">
@@ -124,16 +123,6 @@ const DashboardPage = () => {
           color="bg-purple-500/10 text-purple-600 dark:text-purple-400"
         />
       </div>
-
-      {/* Operational Alerts Section */}
-      {upcomingSessions.length === 0 && activeClients > 0 && (
-        <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-500/10">
-          <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-          <AlertDescription className="text-amber-800 dark:text-amber-300 text-sm">
-            ⚠️ Aucune session prévue cette semaine.
-          </AlertDescription>
-        </Alert>
-      )}
 
       {/* Main Content Grid - 16:9 Optimized */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

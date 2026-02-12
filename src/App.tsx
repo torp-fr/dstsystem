@@ -27,6 +27,7 @@ import SessionFormPage from "./pages/dashboard/SessionFormPage";
 import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
 import QuotesPage from "./pages/dashboard/QuotesPage";
 import QuoteFormPage from "./pages/dashboard/QuoteFormPage";
+import QuoteDetailPage from "./pages/dashboard/QuoteDetailPage";
 import AmendmentsPage from "./pages/dashboard/AmendmentsPage";
 import AmendmentFormPage from "./pages/dashboard/AmendmentFormPage";
 import DepositsPage from "./pages/dashboard/DepositsPage";
@@ -94,6 +95,7 @@ const AppRoutes = () => {
         <Route path="sessions/:id" element={<SessionDetailPage />} />
         <Route path="quotes" element={<QuotesPage />} />
         <Route path="quotes/new" element={<QuoteFormPage />} />
+        <Route path="quotes/:id" element={<QuoteDetailPage />} />
         <Route path="quotes/:id/edit" element={<QuoteFormPage />} />
         <Route path="amendments" element={<AmendmentsPage />} />
         <Route path="amendments/new" element={<AmendmentFormPage />} />

@@ -141,17 +141,29 @@ export default function OperatorFormPage() {
     }
 
     try {
+      // Clean data - remove created_by and avatar_url if empty
+      const cleanedData = {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email || null,
+        phone: formData.phone || null,
+        employment_type: formData.employment_type,
+        status: formData.status,
+        notes: formData.notes || null,
+        ...(formData.avatar_url && { avatar_url: formData.avatar_url }),
+      };
+
       if (isEditing) {
         await updateOperator.mutateAsync({
           id: id!,
-          ...formData,
+          ...cleanedData,
         });
         toast({
           title: 'Succès',
           description: 'Opérateur mis à jour',
         });
       } else {
-        await createOperator.mutateAsync(formData);
+        await createOperator.mutateAsync(cleanedData as any);
         toast({
           title: 'Succès',
           description: 'Opérateur créé avec succès',

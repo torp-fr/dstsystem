@@ -1,9 +1,16 @@
-import { useSessions, useAnalyticsStats } from '@/hooks/useAnalytics';
+import { useSessions, usePageVisits, useAnalyticsStats } from '@/hooks/useAnalytics';
 import { Globe, MapPin, Users, Eye } from 'lucide-react';
 
 const AnalyticsPage = () => {
-  const { data: sessions = [], isLoading } = useSessions();
+  const { data: sessions = [], isLoading: sessionsLoading } = useSessions();
+  const { data: pageVisits = [], isLoading: pageVisitsLoading } = usePageVisits();
   const stats = useAnalyticsStats();
+
+  console.log('[AnalyticsPage] Sessions:', sessions.length, sessions);
+  console.log('[AnalyticsPage] Page Visits:', pageVisits.length, pageVisits);
+  console.log('[AnalyticsPage] Stats:', stats);
+
+  const isLoading = sessionsLoading || pageVisitsLoading;
 
   if (isLoading) {
     return (
@@ -18,6 +25,8 @@ const AnalyticsPage = () => {
     );
   }
 
+  const hasData = sessions.length > 0 || pageVisits.length > 0 || stats.totalPageVisits > 0;
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -25,6 +34,23 @@ const AnalyticsPage = () => {
         <h1 className="text-4xl font-bold">Analytics</h1>
         <p className="text-muted-foreground mt-2">Suivi des visites et de l'activité du site</p>
       </div>
+
+      {/* Empty State Message */}
+      {!hasData && (
+        <div className="bg-card border-border border rounded-lg p-8 mb-6">
+          <div className="flex items-center gap-4">
+            <div className="flex-shrink-0">
+              <Eye className="h-8 w-8 text-muted-foreground opacity-50" />
+            </div>
+            <div>
+              <h3 className="font-semibold mb-1">Données de tracking en attente</h3>
+              <p className="text-sm text-muted-foreground">
+                Les données analytiques apparaîtront à mesure que vous naviguez dans l'application. Chaque page visitée et chaque session est enregistrée automatiquement.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -24,12 +24,73 @@ export const usePdfExport = () => {
         throw new Error(`Element with id ${elementId} not found`);
       }
 
-      // Create canvas from the element
-      const canvas = await html2canvas(element, {
+      // Clone the element to avoid modifying the original
+      const clonedElement = element.cloneNode(true) as HTMLElement;
+
+      // Force all text to black and aggressively reduce spacing for PDF export
+      const forceBlackText = (el: HTMLElement) => {
+        // Set text color to black for all elements
+        el.style.color = 'black';
+        el.style.backgroundColor = 'white';
+
+        // Get computed styles
+        const computedStyle = window.getComputedStyle(el);
+
+        // Reduce padding by 70% to maximize width
+        const paddingTop = parseFloat(computedStyle.paddingTop);
+        const paddingBottom = parseFloat(computedStyle.paddingBottom);
+        const paddingLeft = parseFloat(computedStyle.paddingLeft);
+        const paddingRight = parseFloat(computedStyle.paddingRight);
+
+        if (paddingLeft > 0 || paddingRight > 0 || paddingTop > 0 || paddingBottom > 0) {
+          el.style.padding = `${paddingTop * 0.2}px ${paddingRight * 0.2}px ${paddingBottom * 0.2}px ${paddingLeft * 0.2}px`;
+        }
+
+        // Reduce horizontal margins by 70%
+        const marginLeft = parseFloat(computedStyle.marginLeft);
+        const marginRight = parseFloat(computedStyle.marginRight);
+
+        if (marginLeft > 0 || marginRight > 0) {
+          el.style.marginLeft = `${marginLeft * 0.2}px`;
+          el.style.marginRight = `${marginRight * 0.2}px`;
+        }
+
+        // Process all child elements
+        Array.from(el.children).forEach((child) => {
+          forceBlackText(child as HTMLElement);
+        });
+      };
+
+      forceBlackText(clonedElement);
+
+      // Force width on cloned element to maximize content width
+      clonedElement.style.width = '100%';
+      clonedElement.style.maxWidth = 'none';
+      clonedElement.style.margin = '0';
+      clonedElement.style.padding = '0';
+
+      // Temporarily add the cloned element to the DOM for canvas capture
+      const tempContainer = document.createElement('div');
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      tempContainer.style.top = '-9999px';
+      tempContainer.style.width = '1200px'; // Force a wider container for better width utilization
+      tempContainer.style.margin = '0';
+      tempContainer.style.padding = '0';
+      tempContainer.appendChild(clonedElement);
+      document.body.appendChild(tempContainer);
+
+      // Create canvas from the cloned element
+      const canvas = await html2canvas(clonedElement, {
         scale: 2,
         useCORS: true,
         backgroundColor: '#ffffff',
+        allowTaint: true,
+        logging: false,
       });
+
+      // Remove temporary container
+      document.body.removeChild(tempContainer);
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
@@ -38,21 +99,32 @@ export const usePdfExport = () => {
         format: 'a4',
       });
 
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
+      const pageWidth = pdf.internal.pageSize.getWidth(); // 210mm
+      const pageHeight = pdf.internal.pageSize.getHeight(); // 297mm
+      const marginTop = 2;
+      const marginBottom = 2;
+      const marginLeft = 2;
+      const marginRight = 2;
+      const availableWidth = pageWidth - marginLeft - marginRight;
+      const availableHeight = pageHeight - marginTop - marginBottom;
 
-      // Add image to PDF with page breaks
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= 297; // A4 height in mm
+      // Calculate dimensions - single page only, maximize width usage
+      let imgWidth = availableWidth; // Use full width (206mm on A4)
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= 297;
+      // If content exceeds one page, scale it down to fit
+      if (imgHeight > availableHeight) {
+        const scaleFactor = availableHeight / imgHeight;
+        imgWidth = imgWidth * scaleFactor;
+        imgHeight = availableHeight;
       }
+
+      // Position at margins without centering - use full width
+      const xPosition = marginLeft;
+      const yPosition = marginTop;
+
+      // Add single image to single page - full width
+      pdf.addImage(imgData, 'PNG', xPosition, yPosition, imgWidth, imgHeight);
 
       // Save the PDF
       pdf.save(options.filename);

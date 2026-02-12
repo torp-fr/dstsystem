@@ -52,21 +52,30 @@ export default function SettingsPage() {
     }
   };
 
-  const SettingField = ({ label, id, value, onChange, help }: any) => (
-    <div className="flex items-end gap-3 pb-2 border-b border-border/50">
-      <div className="flex-1 min-w-0">
+  const SettingField = ({ label, id, value, onChange, help, type = 'number' }: any) => {
+    const handleNumberInput = (e: any) => {
+      const val = e.target.value;
+      // Allow empty string, numbers (including decimals), and pass through as text
+      if (val === '' || /^\d*\.?\d*$/.test(val)) {
+        onChange(e);
+      }
+    };
+
+    return (
+      <div className="pb-3 border-b border-border/50">
         <Label htmlFor={id} className="text-xs font-medium">{label}</Label>
         <p className="text-xs text-muted-foreground mt-0.5">{help}</p>
+        <Input
+          id={id}
+          type="text"
+          value={value}
+          onChange={type === 'number' ? handleNumberInput : onChange}
+          className="mt-2 w-full"
+          placeholder="0"
+        />
       </div>
-      <Input
-        id={id}
-        type="number"
-        value={value}
-        onChange={onChange}
-        className="w-20 h-8 text-sm"
-      />
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="space-y-2 h-full overflow-y-auto">

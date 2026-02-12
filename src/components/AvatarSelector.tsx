@@ -43,7 +43,7 @@ export default function AvatarSelector({ value, onChange, showPreview = true }: 
               <button
                 key={avatar.id}
                 onClick={() => onChange(avatar.url)}
-                className={`relative h-16 rounded-lg border-2 overflow-hidden transition-all hover:border-primary ${
+                className={`relative h-24 w-24 rounded-lg border-2 overflow-hidden transition-all hover:border-primary flex-shrink-0 ${
                   value === avatar.url ? 'border-primary bg-primary/10' : 'border-border'
                 }`}
                 title={avatar.name}
@@ -61,7 +61,7 @@ export default function AvatarSelector({ value, onChange, showPreview = true }: 
               <button
                 key={avatar.id}
                 onClick={() => onChange(avatar.url)}
-                className={`relative h-16 rounded-lg border-2 overflow-hidden transition-all hover:border-primary ${
+                className={`relative h-24 w-24 rounded-lg border-2 overflow-hidden transition-all hover:border-primary flex-shrink-0 ${
                   value === avatar.url ? 'border-primary bg-primary/10' : 'border-border'
                 }`}
                 title={avatar.name}
@@ -79,7 +79,7 @@ export default function AvatarSelector({ value, onChange, showPreview = true }: 
               <button
                 key={avatar.id}
                 onClick={() => onChange(avatar.url)}
-                className={`relative h-16 rounded-lg border-2 overflow-hidden transition-all hover:border-primary ${
+                className={`relative h-24 w-24 rounded-lg border-2 overflow-hidden transition-all hover:border-primary flex-shrink-0 ${
                   value === avatar.url ? 'border-primary bg-primary/10' : 'border-border'
                 }`}
                 title={avatar.name}

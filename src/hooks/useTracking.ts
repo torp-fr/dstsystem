@@ -6,6 +6,11 @@ export const useTracking = () => {
   const location = useLocation();
   const sessionStarted = useRef(false);
 
+  // Check if current path is a public route (not dashboard)
+  const isPublicRoute = !location.pathname.startsWith('/dashboard') &&
+                        !location.pathname.startsWith('/login') &&
+                        !location.pathname.startsWith('/register');
+
   // Track session start ONLY once
   useEffect(() => {
     if (!sessionStarted.current) {
@@ -14,8 +19,13 @@ export const useTracking = () => {
     }
   }, []);
 
-  // Track page visits on route change
+  // Track page visits on route change (PUBLIC routes only)
   useEffect(() => {
-    trackPageVisit(location.pathname, document.title);
-  }, [location]);
+    if (isPublicRoute) {
+      trackPageVisit(location.pathname, document.title);
+      console.log('[Tracking] Tracked public page visit:', location.pathname);
+    } else {
+      console.log('[Tracking] Skipped tracking for dashboard/auth route:', location.pathname);
+    }
+  }, [location, isPublicRoute]);
 };

@@ -10,48 +10,88 @@ export const usePageVisits = () => {
         const { data, error } = await supabase
           .from('page_visits')
           .select('*')
-          .order('visited_at', { ascending: false });
+          .order('visited_at', { ascending: false })
+          .limit(1000);
 
-        if (error) {
-          console.error('[Analytics] Error fetching page_visits:', error);
-          throw error;
+        if (!error && data && data.length > 0) {
+          console.log('[Analytics] Page visits loaded from Supabase:', data.length);
+          return data;
         }
-        console.log('[Analytics] Page visits loaded:', data?.length || 0);
-        return data || [];
+
+        // Fallback to localStorage
+        console.log('[Analytics] Falling back to localStorage for page visits...');
+        const localData = localStorage.getItem('dst-page-visits');
+        if (localData) {
+          const parsed = JSON.parse(localData);
+          console.log('[Analytics] Loaded from localStorage:', parsed.length, 'page visits');
+          return parsed;
+        }
+
+        console.log('[Analytics] No page visits data found');
+        return [];
       } catch (error) {
-        console.error('[Analytics] Failed to fetch page_visits:', error);
-        throw error;
+        console.warn('[Analytics] Error fetching page_visits:', error);
+        // Try localStorage as last resort
+        const localData = localStorage.getItem('dst-page-visits');
+        if (localData) {
+          try {
+            return JSON.parse(localData);
+          } catch (parseError) {
+            console.error('[Analytics] Failed to parse localStorage page visits:', parseError);
+          }
+        }
+        return [];
       }
     },
-    retry: 2,
-    staleTime: 1000 * 30,
+    staleTime: 0,
+    refetchInterval: 5000,
   });
 };
 
 export const useSessions = () => {
   return useQuery({
-    queryKey: ['sessions'],
+    queryKey: ['analytics_sessions'],
     queryFn: async () => {
       try {
-        console.log('[Analytics] Fetching sessions...');
+        console.log('[Analytics] Fetching visitor sessions...');
         const { data, error } = await supabase
           .from('sessions')
           .select('*')
-          .order('started_at', { ascending: false });
+          .order('started_at', { ascending: false })
+          .limit(1000);
 
-        if (error) {
-          console.error('[Analytics] Error fetching sessions:', error);
-          throw error;
+        if (!error && data && data.length > 0) {
+          console.log('[Analytics] Sessions loaded from Supabase:', data.length);
+          return data;
         }
-        console.log('[Analytics] Sessions loaded:', data?.length || 0);
-        return data || [];
+
+        // Fallback to localStorage
+        console.log('[Analytics] Falling back to localStorage for sessions...');
+        const localData = localStorage.getItem('dst-sessions');
+        if (localData) {
+          const parsed = JSON.parse(localData);
+          console.log('[Analytics] Loaded from localStorage:', parsed.length, 'sessions');
+          return parsed;
+        }
+
+        console.log('[Analytics] No sessions data found');
+        return [];
       } catch (error) {
-        console.error('[Analytics] Failed to fetch sessions:', error);
-        throw error;
+        console.warn('[Analytics] Error fetching sessions:', error);
+        // Try localStorage as last resort
+        const localData = localStorage.getItem('dst-sessions');
+        if (localData) {
+          try {
+            return JSON.parse(localData);
+          } catch (parseError) {
+            console.error('[Analytics] Failed to parse localStorage sessions:', parseError);
+          }
+        }
+        return [];
       }
     },
-    retry: 2,
-    staleTime: 1000 * 30,
+    staleTime: 0,
+    refetchInterval: 5000,
   });
 };
 

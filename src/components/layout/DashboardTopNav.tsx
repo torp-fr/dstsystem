@@ -1,7 +1,8 @@
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, Bell, User, LogOut } from 'lucide-react';
+import { Menu, User, LogOut } from 'lucide-react';
+import NotificationBell from '@/components/NotificationBell';
 
 interface DashboardTopNavProps {
   toggleSidebar: () => void;
@@ -37,10 +38,7 @@ const DashboardTopNav = ({ toggleSidebar, sidebarOpen }: DashboardTopNavProps) =
       {/* Right Section */}
       <div className="flex items-center gap-4">
         {/* Notifications */}
-        <button className="p-2 hover:bg-secondary/30 rounded-lg transition-colors relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1 right-1 h-2 w-2 bg-destructive rounded-full" />
-        </button>
+        <NotificationBell />
 
         {/* User Menu */}
         <div className="flex items-center gap-3 pl-4 border-l border-border-border">
