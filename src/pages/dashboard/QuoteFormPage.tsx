@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useClients } from '@/hooks/useClients';
-import { useShootingSessions } from '@/hooks/useShootingSessions';
+import { useOffers } from '@/hooks/useOffers';
 import {
   useQuoteById,
   useCreateQuote,
@@ -45,7 +45,7 @@ export default function QuoteFormPage() {
 
   const { data: quote, isLoading: quoteLoading } = useQuoteById(id);
   const { data: clients = [] } = useClients();
-  const { data: sessions = [] } = useShootingSessions();
+  const { data: offers = [] } = useOffers();
 
   const createQuote = useCreateQuote();
   const updateQuote = useUpdateQuote();
@@ -53,7 +53,7 @@ export default function QuoteFormPage() {
 
   const [formData, setFormData] = useState({
     client_id: '',
-    session_id: '',
+    offer_id: '',
     subtotal: '',
     tax_amount: '',
     total_amount: '',
@@ -75,7 +75,7 @@ export default function QuoteFormPage() {
     if (quote) {
       setFormData({
         client_id: quote.client_id,
-        session_id: quote.session_id || '',
+        offer_id: quote.offer_id || '',
         subtotal: quote.subtotal.toString(),
         tax_amount: quote.tax_amount.toString(),
         total_amount: quote.total_amount.toString(),
@@ -139,7 +139,7 @@ export default function QuoteFormPage() {
     try {
       const data = {
         client_id: formData.client_id,
-        session_id: formData.session_id || null,
+        offer_id: formData.offer_id || null,
         subtotal: parseFloat(formData.subtotal) || 0,
         tax_amount: parseFloat(formData.tax_amount) || 0,
         total_amount: parseFloat(formData.total_amount) || 0,
@@ -244,7 +244,7 @@ export default function QuoteFormPage() {
                   value={formData.client_id}
                   onValueChange={(value) => handleSelectChange('client_id', value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                     <SelectValue placeholder="Sélectionner un client" />
                   </SelectTrigger>
                   <SelectContent>
@@ -259,19 +259,28 @@ export default function QuoteFormPage() {
               </div>
 
               <div>
-                <label className="text-sm font-medium">Session (optionnel)</label>
+                <label className="text-sm font-medium">Offre (optionnel)</label>
                 <Select
-                  value={formData.session_id}
-                  onValueChange={(value) => handleSelectChange('session_id', value)}
+                  value={formData.offer_id}
+                  onValueChange={(value) => {
+                    handleSelectChange('offer_id', value);
+                    // Auto-fill subtotal with offer price
+                    const selectedOffer = offers.find((o: any) => o.id === value);
+                    if (selectedOffer) {
+                      setFormData(prev => ({
+                        ...prev,
+                        subtotal: selectedOffer.price.toString()
+                      }));
+                    }
+                  }}
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Associer à une session" />
+                  <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
+                    <SelectValue placeholder="Sélectionner une offre" />
                   </SelectTrigger>
                   <SelectContent>
-                    {sessions.map((session: any) => (
-                      <SelectItem key={session.id} value={session.id}>
-                        {new Date(session.session_date).toLocaleDateString('fr-FR')} -{' '}
-                        {session.theme || 'Sans thème'}
+                    {offers.map((offer: any) => (
+                      <SelectItem key={offer.id} value={offer.id}>
+                        {offer.name} - {offer.price.toFixed(2)}€
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -288,6 +297,7 @@ export default function QuoteFormPage() {
                     value={formData.subtotal}
                     onChange={handleInputChange}
                     placeholder="0.00"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
                 <div>
@@ -301,6 +311,7 @@ export default function QuoteFormPage() {
                     value={formData.tva_rate}
                     onChange={handleInputChange}
                     placeholder="20"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
               </div>
@@ -332,8 +343,8 @@ export default function QuoteFormPage() {
               </div>
 
               {/* Réductions */}
-              <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-lg p-4">
-                <h3 className="font-semibold text-sm mb-4 text-amber-900 dark:text-amber-100">Réductions</h3>
+              <div className="bg-card border border-border rounded-lg p-4">
+                <h3 className="font-semibold text-sm mb-4">Réductions</h3>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="text-sm font-medium">Réduction (%)</label>
@@ -346,7 +357,7 @@ export default function QuoteFormPage() {
                       value={formData.discount_percentage}
                       onChange={handleInputChange}
                       placeholder="0"
-                      className="bg-card"
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                     />
                   </div>
                   <div>
@@ -358,7 +369,7 @@ export default function QuoteFormPage() {
                       value={formData.discount_amount}
                       onChange={handleInputChange}
                       placeholder="0.00"
-                      className="bg-card"
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                     />
                   </div>
                 </div>
@@ -369,7 +380,7 @@ export default function QuoteFormPage() {
                     value={formData.discount_reason}
                     onChange={handleInputChange}
                     placeholder="Ex: Fidélité client, Volume important..."
-                    className="bg-card"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
               </div>
@@ -382,6 +393,7 @@ export default function QuoteFormPage() {
                     name="valid_from"
                     value={formData.valid_from}
                     onChange={handleInputChange}
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
                 <div>
@@ -391,6 +403,7 @@ export default function QuoteFormPage() {
                     name="valid_until"
                     value={formData.valid_until}
                     onChange={handleInputChange}
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
               </div>
@@ -401,7 +414,7 @@ export default function QuoteFormPage() {
                   value={formData.status}
                   onValueChange={(value) => handleSelectChange('status', value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -421,6 +434,7 @@ export default function QuoteFormPage() {
                   onChange={handleInputChange}
                   placeholder="Notes additionnelles..."
                   rows={3}
+                  className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
               </div>
 

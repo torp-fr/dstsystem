@@ -12,7 +12,7 @@ export default function SettingsPage() {
   // Load from localStorage or defaults
   const [settings, setSettings] = useState(() => {
     const saved = localStorage.getItem('dst-system-settings');
-    return saved ? JSON.parse(saved) : {
+    const defaults = {
       employeeChargesPercent: 42,
       employerChargesPercent: 45,
       passCeiling: 47100,
@@ -24,19 +24,40 @@ export default function SettingsPage() {
       targetMarginPercent: 15,
       minSessionPrice: 0,
     };
+    if (!saved) return defaults;
+    const parsed = JSON.parse(saved);
+    // Ensure all values are strings for proper input handling
+    return Object.keys(defaults).reduce((acc: any, key: string) => {
+      acc[key] = String(parsed[key] || defaults[key as keyof typeof defaults]);
+      return acc;
+    }, {});
   });
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: string) => {
+    // Keep value as string in state for input, validate on save
     setSettings(prev => ({
       ...prev,
-      [field]: typeof value === 'string' ? parseFloat(value) || value : value
+      [field]: value
     }));
   };
 
   const handleSave = () => {
     setIsSaving(true);
     try {
-      localStorage.setItem('dst-system-settings', JSON.stringify(settings));
+      // Convert string values to numbers for numeric fields on save
+      const settingsToSave = Object.keys(settings).reduce((acc: any, key: string) => {
+        const value = settings[key as keyof typeof settings];
+        // Parse numeric fields
+        if (['employeeChargesPercent', 'employerChargesPercent', 'passCeiling', 'defaultVATRate',
+              'hoursPerDay', 'daysPerMonth', 'targetMarginPercent', 'minSessionPrice'].includes(key)) {
+          acc[key] = parseFloat(value as string) || 0;
+        } else {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+
+      localStorage.setItem('dst-system-settings', JSON.stringify(settingsToSave));
       toast({
         title: 'Succès',
         description: 'Paramètres sauvegardés',
@@ -53,44 +74,49 @@ export default function SettingsPage() {
   };
 
   const SettingField = ({ label, id, value, onChange, help, type = 'number' }: any) => {
-    const handleNumberInput = (e: any) => {
+    const handleInput = (e: any) => {
       const val = e.target.value;
-      // Allow empty string, numbers (including decimals), and pass through as text
-      if (val === '' || /^\d*\.?\d*$/.test(val)) {
+      // For number fields, only allow digits and decimal point
+      if (type === 'number') {
+        if (val === '' || /^\d*\.?\d*$/.test(val)) {
+          onChange(e);
+        }
+      } else {
         onChange(e);
       }
     };
 
     return (
-      <div className="pb-3 border-b border-border/50">
+      <div className="space-y-1">
         <Label htmlFor={id} className="text-xs font-medium">{label}</Label>
-        <p className="text-xs text-muted-foreground mt-0.5">{help}</p>
+        <p className="text-xs text-muted-foreground">{help}</p>
         <Input
           id={id}
-          type="text"
+          type={type === 'number' ? 'text' : 'text'}
           value={value}
-          onChange={type === 'number' ? handleNumberInput : onChange}
-          className="mt-2 w-full"
+          onChange={handleInput}
+          className="h-8 text-sm border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
           placeholder="0"
+          inputMode={type === 'number' ? 'decimal' : 'text'}
         />
       </div>
     );
   };
 
   return (
-    <div className="space-y-2 h-full overflow-y-auto">
+    <div className="space-y-3">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold">Paramètres</h1>
+        <h1 className="text-xl font-bold">Paramètres</h1>
         <p className="text-xs text-muted-foreground">Configuration DST-System</p>
       </div>
 
       {/* Settings Sections */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         {/* French Social Charges */}
-        <div className="bg-card rounded-lg border-border border p-3">
-          <h3 className="font-semibold text-sm mb-2">Charges sociales</h3>
-          <div className="space-y-2">
+        <div className="bg-card rounded-lg border-border border p-2">
+          <h3 className="font-semibold text-xs mb-2">Charges sociales</h3>
+          <div className="space-y-1">
             <SettingField
               label="Charges salariales"
               id="employeeCharges"
@@ -109,9 +135,9 @@ export default function SettingsPage() {
         </div>
 
         {/* Fiscal Parameters */}
-        <div className="bg-card rounded-lg border-border border p-3">
-          <h3 className="font-semibold text-sm mb-2">Fiscal</h3>
-          <div className="space-y-2">
+        <div className="bg-card rounded-lg border-border border p-2">
+          <h3 className="font-semibold text-xs mb-2">Fiscal</h3>
+          <div className="space-y-1">
             <SettingField
               label="PASS"
               id="passCeiling"
@@ -130,9 +156,9 @@ export default function SettingsPage() {
         </div>
 
         {/* Operational - Part 1 */}
-        <div className="bg-card rounded-lg border-border border p-3">
-          <h3 className="font-semibold text-sm mb-2">Opérationnel</h3>
-          <div className="space-y-2">
+        <div className="bg-card rounded-lg border-border border p-2">
+          <h3 className="font-semibold text-xs mb-2">Opérationnel</h3>
+          <div className="space-y-1">
             <SettingField
               label="Heures/jour"
               id="hoursPerDay"
@@ -151,9 +177,9 @@ export default function SettingsPage() {
         </div>
 
         {/* Operational - Part 2 */}
-        <div className="bg-card rounded-lg border-border border p-3">
-          <h3 className="font-semibold text-sm mb-2">Rentabilité</h3>
-          <div className="space-y-2">
+        <div className="bg-card rounded-lg border-border border p-2">
+          <h3 className="font-semibold text-xs mb-2">Rentabilité</h3>
+          <div className="space-y-1">
             <SettingField
               label="Marge cible"
               id="targetMargin"
@@ -172,8 +198,8 @@ export default function SettingsPage() {
         </div>
 
         {/* Company Information */}
-        <div className="bg-card rounded-lg border-border border p-3 lg:col-span-2">
-          <h3 className="font-semibold text-sm mb-2">Entreprise</h3>
+        <div className="bg-card rounded-lg border-border border p-2 lg:col-span-2">
+          <h3 className="font-semibold text-xs mb-2">Entreprise</h3>
           <div className="grid grid-cols-2 gap-2">
             <div>
               <Label htmlFor="companyName" className="text-xs font-medium">Raison sociale</Label>
@@ -182,7 +208,7 @@ export default function SettingsPage() {
                 type="text"
                 value={settings.companyName}
                 onChange={(e) => handleChange('companyName', e.target.value)}
-                className="h-8 text-sm mt-1"
+                className="h-8 text-sm mt-1 border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
               />
             </div>
             <div>
@@ -193,7 +219,7 @@ export default function SettingsPage() {
                 placeholder="14 ou 9 chiffres"
                 value={settings.companyRegistration}
                 onChange={(e) => handleChange('companyRegistration', e.target.value)}
-                className="h-8 text-sm mt-1"
+                className="h-8 text-sm mt-1 border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
               />
             </div>
           </div>
@@ -201,15 +227,15 @@ export default function SettingsPage() {
       </div>
 
       {/* Save Button */}
-      <div className="flex justify-end pt-2">
+      <div className="flex justify-end pt-1">
         <Button
           onClick={handleSave}
           disabled={isSaving}
           size="sm"
-          className="gap-2"
+          className="gap-1 h-8"
         >
           <Save className="h-3 w-3" />
-          {isSaving ? 'Sauvegarde...' : 'Enregistrer'}
+          <span className="text-xs">Enregistrer</span>
         </Button>
       </div>
     </div>

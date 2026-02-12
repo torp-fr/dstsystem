@@ -175,6 +175,7 @@ export default function OfferFormPage() {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="ex. Session découverte, Abonnement annuel..."
+                  className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
               </div>
 
@@ -186,6 +187,7 @@ export default function OfferFormPage() {
                   onChange={handleInputChange}
                   placeholder="Décrivez votre offre..."
                   rows={3}
+                  className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
               </div>
 
@@ -200,6 +202,7 @@ export default function OfferFormPage() {
                     value={formData.price}
                     onChange={handleInputChange}
                     placeholder="ex. 150.00"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
 
@@ -211,7 +214,7 @@ export default function OfferFormPage() {
                       handleSelectChange('offer_type', value)
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -229,7 +232,7 @@ export default function OfferFormPage() {
                   value={formData.is_active.toString()}
                   onValueChange={(value) => handleSelectChange('is_active', value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -250,9 +253,9 @@ export default function OfferFormPage() {
 
               {/* Single Session */}
               <TabsContent value="single_session" className="space-y-4 border-t pt-4">
-                <div className="bg-blue-50 p-4 rounded-lg border-border border-blue-200 mb-4">
-                  <p className="text-sm font-medium text-blue-900">Session unique</p>
-                  <p className="text-sm text-blue-700">
+                <div className="bg-card p-4 rounded-lg border-border border mb-4">
+                  <p className="text-sm font-medium">Session unique</p>
+                  <p className="text-sm text-muted-foreground">
                     Idéale pour une séance ponctuelle avec tarif fixe
                   </p>
                 </div>
@@ -266,6 +269,7 @@ export default function OfferFormPage() {
                     value={formData.min_participants}
                     onChange={handleInputChange}
                     placeholder="ex. 2"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                   <p className="text-xs text-muted-foreground mt-1">
                     Laisser vide si aucune limite
@@ -292,6 +296,7 @@ export default function OfferFormPage() {
                       value={formData.subscription_duration_months}
                       onChange={handleInputChange}
                       placeholder="ex. 12"
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                     />
                   </div>
 
@@ -304,6 +309,7 @@ export default function OfferFormPage() {
                       value={formData.sessions_included}
                       onChange={handleInputChange}
                       placeholder="ex. 4"
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                     />
                   </div>
                 </div>
@@ -319,6 +325,7 @@ export default function OfferFormPage() {
                     value={formData.discount_percentage}
                     onChange={handleInputChange}
                     placeholder="ex. 15"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
               </TabsContent>
@@ -342,6 +349,7 @@ export default function OfferFormPage() {
                       value={formData.sessions_included}
                       onChange={handleInputChange}
                       placeholder="ex. 5"
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                     />
                   </div>
 
@@ -376,6 +384,7 @@ export default function OfferFormPage() {
                     value={formData.discount_percentage}
                     onChange={handleInputChange}
                     placeholder="ex. 20"
+                    className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                   />
                 </div>
               </TabsContent>
@@ -408,23 +417,6 @@ export default function OfferFormPage() {
               </Button>
             </div>
           </form>
-        </CardContent>
-      </Card>
-
-      {/* Info Box */}
-      <Card className="mt-6 bg-blue-50 border-blue-200">
-        <CardContent className="pt-6">
-          <div className="text-sm space-y-2">
-            <p>
-              <strong>💡 Conseil:</strong> Utilisez les réductions (%) plutôt que les prix fixes pour les forfaits et abonnements
-            </p>
-            <p>
-              <strong>📊 Prix par session:</strong> Pour les forfaits, le prix par session est calculé automatiquement
-            </p>
-            <p>
-              <strong>✅ Statut:</strong> Les offres inactives ne s'affichent pas aux clients
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>

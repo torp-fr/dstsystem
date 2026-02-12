@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import KeyFigures from "@/components/home/KeyFigures";
 import SolutionsPreview from "@/components/home/SolutionsPreview";
@@ -16,7 +15,6 @@ const Index = () => (
       <AudiencesPreview />
       <CTASection />
     </main>
-    <Footer />
   </div>
 );
 

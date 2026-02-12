@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import ProgramsHero from "@/components/programs/ProgramsHero";
 import ProgramCards from "@/components/programs/ProgramCards";
 import CapacityInfo from "@/components/programs/CapacityInfo";
@@ -20,7 +19,6 @@ const Programs = () => (
       <CollateralSupport />
       <MutualisationCTA />
     </main>
-    <Footer />
   </div>
 );
 
