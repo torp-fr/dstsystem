@@ -13,6 +13,9 @@ const Workflows = {
   // === MISSION ENTRAINEMENT (PHASE 2) ===
   Mission: MissionWorkflow,
 
+  // === MARCHÉ OPÉRATEURS ===
+  OperatorMarketplace: OperatorMarketplaceWorkflow,
+
   // === CAPACITÉ TERRAIN ===
   Capacity: CapacityWorkflow,
 
