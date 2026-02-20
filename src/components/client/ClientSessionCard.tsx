@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import StatusBadge from '@/components/common/StatusBadge';
 
 /**
  * ClientSessionCard — Client's Session Display
@@ -82,9 +83,7 @@ export default function ClientSessionCard({ session }: ClientSessionCardProps) {
 
         <div className="flex flex-col gap-2 items-end">
           {/* Status Badge */}
-          <span className={`text-xs font-medium px-2 py-1 rounded ${getStatusColor(session.status)}`}>
-            {getStatusLabel(session.status)}
-          </span>
+          <StatusBadge status={session.status} type="session" size="sm" />
 
           {/* Marketplace Badge */}
           {session.marketplaceVisible && (

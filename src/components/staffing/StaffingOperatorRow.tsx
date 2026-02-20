@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import StaffingStatusBadge from './StaffingStatusBadge';
+import StatusBadge from '@/components/common/StatusBadge';
 
 /**
  * StaffingOperatorRow — Individual Operator Application
@@ -119,7 +119,7 @@ export default function StaffingOperatorRow({
         </div>
 
         <div className="flex-shrink-0">
-          <StaffingStatusBadge status={operator.status} />
+          <StatusBadge status={operator.status} type="staffing" size="sm" />
         </div>
       </div>
 

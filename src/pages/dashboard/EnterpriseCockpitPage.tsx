@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PlanningSessionCard from '@/components/planning/PlanningSessionCard';
+import SkeletonCard from '@/components/common/SkeletonCard';
 
 /**
  * EnterpriseCockpitPage — Enterprise Operations Overview
@@ -151,8 +152,15 @@ export default function EnterpriseCockpitPage() {
 
       {/* LOADING STATE */}
       {loading && (
-        <div className="text-center py-8 text-gray-500">
-          Loading sessions...
+        <div className="flex flex-col gap-12">
+          {Array.from({ length: 3 }).map((_, idx) => (
+            <div key={idx} className="flex flex-col gap-4">
+              <div className="bg-muted animate-pulse rounded-lg border p-4 h-16" />
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <SkeletonCard count={3} />
+              </div>
+            </div>
+          ))}
         </div>
       )}
 

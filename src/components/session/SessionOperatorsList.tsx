@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import StatusBadge from '@/components/common/StatusBadge';
 
 /**
  * SessionOperatorsList — Operator Applications List
@@ -42,6 +44,7 @@ export default function SessionOperatorsList({
   isEnterprise,
   onAction
 }: SessionOperatorsListProps) {
+  const { toast } = useToast();
   const [loadingActions, setLoadingActions] = useState<{
     [key: string]: boolean;
   }>({});
@@ -68,11 +71,21 @@ export default function SessionOperatorsList({
       );
 
       if (result && result.success) {
+        toast({
+          title: 'Opérateur accepté',
+          description: 'L\'opérateur a été accepté avec succès.',
+          variant: 'default'
+        });
         if (onAction) {
           onAction('accept', sessionId, operatorId);
         }
       } else {
         const errorMsg = result?.error || 'Failed to accept operator';
+        toast({
+          title: 'Erreur',
+          description: errorMsg,
+          variant: 'destructive'
+        });
         setErrors(prev => ({
           ...prev,
           [operatorId]: errorMsg
@@ -80,6 +93,11 @@ export default function SessionOperatorsList({
       }
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+      toast({
+        title: 'Erreur',
+        description: errorMsg,
+        variant: 'destructive'
+      });
       setErrors(prev => ({
         ...prev,
         [operatorId]: errorMsg
@@ -109,11 +127,21 @@ export default function SessionOperatorsList({
       );
 
       if (result && result.success) {
+        toast({
+          title: 'Opérateur rejeté',
+          description: 'L\'opérateur a été rejeté avec succès.',
+          variant: 'default'
+        });
         if (onAction) {
           onAction('reject', sessionId, operatorId);
         }
       } else {
         const errorMsg = result?.error || 'Failed to reject operator';
+        toast({
+          title: 'Erreur',
+          description: errorMsg,
+          variant: 'destructive'
+        });
         setErrors(prev => ({
           ...prev,
           [operatorId]: errorMsg
@@ -121,6 +149,11 @@ export default function SessionOperatorsList({
       }
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+      toast({
+        title: 'Erreur',
+        description: errorMsg,
+        variant: 'destructive'
+      });
       setErrors(prev => ({
         ...prev,
         [operatorId]: errorMsg
@@ -200,13 +233,7 @@ export default function SessionOperatorsList({
               </div>
             )}
             <div className="flex items-center gap-2 mt-2">
-              <span
-                className={`inline-block text-xs font-medium px-2 py-1 rounded ${
-                  statusBadgeColors[status]
-                }`}
-              >
-                {statusLabels[status]}
-              </span>
+              <StatusBadge status={status} type="staffing" size="sm" />
               <span className="text-xs text-gray-500">
                 {formatDate(dateField[status])}
               </span>

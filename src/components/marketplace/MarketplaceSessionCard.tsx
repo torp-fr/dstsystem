@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 import MarketplaceApplicationBadge from './MarketplaceApplicationBadge';
 
 /**
@@ -40,6 +41,7 @@ export default function MarketplaceSessionCard({
   onApply
 }: MarketplaceSessionCardProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [hasApplied, setHasApplied] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState<'pending' | 'accepted' | 'rejected' | null>(null);
   const [isApplying, setIsApplying] = useState(false);
@@ -91,12 +93,29 @@ export default function MarketplaceSessionCard({
       if (result && result.success) {
         setHasApplied(true);
         setApplicationStatus('pending');
+        toast({
+          title: 'Application submitted',
+          description: 'Your application has been submitted successfully.',
+          variant: 'default'
+        });
         onApply(session.id);
       } else {
-        setError(result?.error || 'Failed to apply to session');
+        const errorMsg = result?.error || 'Failed to apply to session';
+        setError(errorMsg);
+        toast({
+          title: 'Error',
+          description: errorMsg,
+          variant: 'destructive'
+        });
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+      setError(errorMsg);
+      toast({
+        title: 'Error',
+        description: errorMsg,
+        variant: 'destructive'
+      });
     } finally {
       setIsApplying(false);
     }
