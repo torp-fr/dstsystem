@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import StatusBadge from '@/components/common/StatusBadge';
 import MarketplaceApplicationBadge from './MarketplaceApplicationBadge';
 
 /**
@@ -182,9 +183,7 @@ export default function MarketplaceSessionCard({
 
         <div className="flex flex-col gap-2 items-end">
           {/* Status Badge */}
-          <span className={`text-xs font-medium px-2 py-1 rounded ${getStatusBadgeStyle(session.status)}`}>
-            {getStatusLabel(session.status)}
-          </span>
+          <StatusBadge status={session.status} type="session" size="sm" />
 
           {/* Marketplace Badge */}
           {session.marketplaceVisible && (
