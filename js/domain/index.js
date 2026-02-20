@@ -47,6 +47,9 @@ const Domain = {
   // Staffing Risk Analysis
   StaffingRiskEngine,
 
+  // Planning State Projection (READ-ONLY dashboard view)
+  PlanningStateService,
+
   // Helper: Get all services at once
   getServices() {
     return {
@@ -60,7 +63,8 @@ const Domain = {
       roleGuard: Domain.RoleGuardService,
       planningRealtime: Domain.PlanningRealtimeService,
       operatorAutoMatch: Domain.OperatorAutoMatchEngine,
-      staffingRisk: Domain.StaffingRiskEngine
+      staffingRisk: Domain.StaffingRiskEngine,
+      planningState: Domain.PlanningStateService
     };
   }
 };
