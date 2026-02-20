@@ -41,6 +41,9 @@ const Domain = {
   // Real-time Planning Engine
   PlanningRealtimeService,
 
+  // Operator Auto-Match Intelligence
+  OperatorAutoMatchEngine,
+
   // Helper: Get all services at once
   getServices() {
     return {
@@ -52,7 +55,8 @@ const Domain = {
       migration: Domain.SessionMigrationHelper,
       accounts: Domain.AccountRepository,
       roleGuard: Domain.RoleGuardService,
-      planningRealtime: Domain.PlanningRealtimeService
+      planningRealtime: Domain.PlanningRealtimeService,
+      operatorAutoMatch: Domain.OperatorAutoMatchEngine
     };
   }
 };
