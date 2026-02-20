@@ -22,11 +22,7 @@ const DashboardLayout = () => {
     const initializeRealtimeService = async () => {
       try {
         if (window.Domain?.PlanningRealtimeService?.initialize) {
-          console.log('[DashboardLayout] Initializing PlanningRealtimeService');
           await window.Domain.PlanningRealtimeService.initialize();
-          console.log('[DashboardLayout] PlanningRealtimeService initialized successfully');
-        } else {
-          console.warn('[DashboardLayout] PlanningRealtimeService not available');
         }
       } catch (error) {
         console.error('[DashboardLayout] Failed to initialize PlanningRealtimeService:', error);
@@ -39,7 +35,6 @@ const DashboardLayout = () => {
     return async () => {
       try {
         if (window.Domain?.PlanningRealtimeService?.cleanup) {
-          console.log('[DashboardLayout] Cleaning up PlanningRealtimeService');
           await window.Domain.PlanningRealtimeService.cleanup();
         }
       } catch (error) {

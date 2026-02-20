@@ -48,6 +48,7 @@ import FinancesPage from "./pages/dashboard/FinancesPage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PrivateRoute from "./components/auth/PrivateRoute";
+import AppErrorBoundary from "./components/common/AppErrorBoundary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -136,7 +137,9 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <BrowserRouter>
-          <AppRoutes />
+          <AppErrorBoundary>
+            <AppRoutes />
+          </AppErrorBoundary>
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>

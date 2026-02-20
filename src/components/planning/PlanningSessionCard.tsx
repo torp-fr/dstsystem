@@ -34,6 +34,11 @@ interface PlanningSessionCardProps {
 export default function PlanningSessionCard({ session }: PlanningSessionCardProps) {
   const navigate = useNavigate();
 
+  const handleNavigate = () => {
+    if (!session?.id) return;
+    navigate(`/dashboard/sessions/${session.id}`);
+  };
+
   // ============================================================
   // STATUS BADGE COLORS
   // ============================================================
@@ -74,7 +79,7 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
 
   return (
     <div
-      onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+      onClick={handleNavigate}
       className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
     >
       {/* HEADER */}
