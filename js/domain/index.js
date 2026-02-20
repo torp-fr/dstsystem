@@ -35,6 +35,9 @@ const Domain = {
   // Account Management
   AccountRepository,
 
+  // Access Control Layer
+  RoleGuardService,
+
   // Helper: Get all services at once
   getServices() {
     return {
@@ -44,7 +47,8 @@ const Domain = {
       capacity: Domain.ModuleCapacityService,
       sessionResource: Domain.SessionResourceService,
       migration: Domain.SessionMigrationHelper,
-      accounts: Domain.AccountRepository
+      accounts: Domain.AccountRepository,
+      roleGuard: Domain.RoleGuardService
     };
   }
 };
