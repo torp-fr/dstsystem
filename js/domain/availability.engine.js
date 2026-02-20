@@ -41,8 +41,17 @@ const AvailabilityEngine = (function() {
       // 3. Are active (not cancelled)
       return sessions.filter(session => {
         const sessionDate = session.date || session.scheduledDate;
+
+        // CRITICAL FIX: Handle both new (setupIds array) and legacy (setupId string) fields
+        const sessionSetupIds = session.setupIds || (session.setupId ? [session.setupId] : []);
+
+        // Check if session uses any setup in this region
+        const usesRegionSetup = sessionSetupIds.some(sessionSetupId =>
+          setupIds.includes(sessionSetupId)
+        );
+
         return sessionDate === date &&
-               setupIds.includes(session.setupId) &&
+               usesRegionSetup &&
                session.status !== 'cancelled';
       });
     } catch (error) {
@@ -58,8 +67,26 @@ const AvailabilityEngine = (function() {
    * @returns {number} Number of setups currently used
    */
   function _countUsedSetups(date, regionId) {
-    const sessions = _getSessionsOnDateInRegion(date, regionId);
-    return sessions.length;
+    try {
+      const sessions = _getSessionsOnDateInRegion(date, regionId);
+
+      // CRITICAL FIX: Count actual setups used, not sessions
+      // A session may use multiple setups
+      const usedSetupIds = new Set();
+
+      sessions.forEach(session => {
+        // Handle both new (setupIds array) and legacy (setupId string) fields
+        const sessionSetupIds = session.setupIds || (session.setupId ? [session.setupId] : []);
+        sessionSetupIds.forEach(setupId => {
+          usedSetupIds.add(setupId);
+        });
+      });
+
+      return usedSetupIds.size;
+    } catch (error) {
+      console.error('[AvailabilityEngine] Error in _countUsedSetups:', error);
+      return 0;
+    }
   }
 
   /**
@@ -145,12 +172,16 @@ const AvailabilityEngine = (function() {
       // Count used setups
       const usedSetups = _countUsedSetups(date, regionId);
 
-      // Calculate available
-      const availableSetups = Math.max(0, totalSetups - usedSetups);
+      // Calculate free setups
+      const freeSetups = Math.max(0, totalSetups - usedSetups);
 
       // Get operator availability
       const availableOperators = _getAvailableOperators(date);
       const operatorsAvailable = availableOperators.length;
+
+      // CRITICAL FIX: availableSetups = MIN(setupsFree, operatorsAvailable)
+      // This ensures we never book more setups than we have operators for
+      const availableSetups = Math.min(freeSetups, operatorsAvailable);
 
       // Get sessions using setups this day
       const sessionsUsing = _getSessionsOnDateInRegion(date, regionId);
@@ -161,15 +192,19 @@ const AvailabilityEngine = (function() {
         regionId,
         totalSetups,
         usedSetups,
+        freeSetups,
         availableSetups,
         operatorsAvailable,
-        isAvailable: availableSetups > 0 && operatorsAvailable > 0,
+        isAvailable: availableSetups > 0,
         details: {
-          usedBy: sessionsUsing.map(s => ({
-            sessionId: s.id,
-            clientId: s.clientId,
-            setupId: s.setupId
-          }))
+          usedBy: sessionsUsing.map(s => {
+            const sessionSetupIds = s.setupIds || (s.setupId ? [s.setupId] : []);
+            return {
+              sessionId: s.id,
+              clientId: s.clientId,
+              setupIds: sessionSetupIds
+            };
+          })
         }
       };
     } catch (error) {

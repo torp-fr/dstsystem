@@ -26,13 +26,29 @@ const Domain = {
   // Capacity Constraints
   ModuleCapacityService,
 
+  // Session ↔ Setup Resource Binding
+  SessionResourceService,
+
+  // Migration Helpers
+  SessionMigrationHelper,
+
+  // Account Management
+  AccountRepository,
+
+  // Access Control Layer
+  RoleGuardService,
+
   // Helper: Get all services at once
   getServices() {
     return {
       setups: Domain.SetupRepository,
       operatorAvailability: Domain.OperatorAvailabilityRepository,
       availability: Domain.AvailabilityEngine,
-      capacity: Domain.ModuleCapacityService
+      capacity: Domain.ModuleCapacityService,
+      sessionResource: Domain.SessionResourceService,
+      migration: Domain.SessionMigrationHelper,
+      accounts: Domain.AccountRepository,
+      roleGuard: Domain.RoleGuardService
     };
   }
 };
