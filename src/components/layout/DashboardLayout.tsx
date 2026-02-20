@@ -1,10 +1,52 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import DashboardSidebar from './DashboardSidebar';
 import DashboardTopNav from './DashboardTopNav';
 
+declare global {
+  interface Window {
+    Domain?: {
+      PlanningRealtimeService?: {
+        initialize: () => Promise<void>;
+        cleanup: () => Promise<void>;
+      };
+    };
+  }
+}
+
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // Initialize real-time planning service on dashboard load
+  useEffect(() => {
+    const initializeRealtimeService = async () => {
+      try {
+        if (window.Domain?.PlanningRealtimeService?.initialize) {
+          console.log('[DashboardLayout] Initializing PlanningRealtimeService');
+          await window.Domain.PlanningRealtimeService.initialize();
+          console.log('[DashboardLayout] PlanningRealtimeService initialized successfully');
+        } else {
+          console.warn('[DashboardLayout] PlanningRealtimeService not available');
+        }
+      } catch (error) {
+        console.error('[DashboardLayout] Failed to initialize PlanningRealtimeService:', error);
+      }
+    };
+
+    initializeRealtimeService();
+
+    // Cleanup when leaving dashboard
+    return async () => {
+      try {
+        if (window.Domain?.PlanningRealtimeService?.cleanup) {
+          console.log('[DashboardLayout] Cleaning up PlanningRealtimeService');
+          await window.Domain.PlanningRealtimeService.cleanup();
+        }
+      } catch (error) {
+        console.error('[DashboardLayout] Error cleaning up PlanningRealtimeService:', error);
+      }
+    };
+  }, []);
 
   return (
     <div className="flex h-screen bg-background">
