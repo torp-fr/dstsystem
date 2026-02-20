@@ -38,6 +38,18 @@ const Domain = {
   // Access Control Layer
   RoleGuardService,
 
+  // Real-time Planning Engine
+  PlanningRealtimeService,
+
+  // Operator Auto-Match Intelligence
+  OperatorAutoMatchEngine,
+
+  // Staffing Risk Analysis
+  StaffingRiskEngine,
+
+  // Planning State Projection (READ-ONLY dashboard view)
+  PlanningStateService,
+
   // Helper: Get all services at once
   getServices() {
     return {
@@ -48,7 +60,11 @@ const Domain = {
       sessionResource: Domain.SessionResourceService,
       migration: Domain.SessionMigrationHelper,
       accounts: Domain.AccountRepository,
-      roleGuard: Domain.RoleGuardService
+      roleGuard: Domain.RoleGuardService,
+      planningRealtime: Domain.PlanningRealtimeService,
+      operatorAutoMatch: Domain.OperatorAutoMatchEngine,
+      staffingRisk: Domain.StaffingRiskEngine,
+      planningState: Domain.PlanningStateService
     };
   }
 };

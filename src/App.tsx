@@ -23,6 +23,7 @@ import OperatorCostAnalysisPage from "./pages/dashboard/OperatorCostAnalysisPage
 import CostStructuresPage from "./pages/dashboard/CostStructuresPage";
 import CostStructureFormPage from "./pages/dashboard/CostStructureFormPage";
 import CalendarPage from "./pages/dashboard/CalendarPage";
+import PlanningPage from "./pages/dashboard/PlanningPage";
 import SessionFormPage from "./pages/dashboard/SessionFormPage";
 import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
 import QuotesPage from "./pages/dashboard/QuotesPage";
@@ -90,6 +91,7 @@ const AppRoutes = () => {
         <Route path="costs/new" element={<CostStructureFormPage />} />
         <Route path="costs/:id/edit" element={<CostStructureFormPage />} />
         <Route path="calendar" element={<CalendarPage />} />
+        <Route path="planning" element={<PlanningPage />} />
         <Route path="sessions/new" element={<SessionFormPage />} />
         <Route path="sessions/:id/edit" element={<SessionFormPage />} />
         <Route path="sessions/:id" element={<SessionDetailPage />} />
