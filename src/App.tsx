@@ -27,6 +27,7 @@ import PlanningPage from "./pages/dashboard/PlanningPage";
 import MarketplacePage from "./pages/dashboard/MarketplacePage";
 import StaffingPage from "./pages/dashboard/StaffingPage";
 import ClientPage from "./pages/dashboard/ClientPage";
+import EnterpriseCockpitPage from "./pages/dashboard/EnterpriseCockpitPage";
 import SessionFormPage from "./pages/dashboard/SessionFormPage";
 import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
 import QuotesPage from "./pages/dashboard/QuotesPage";
@@ -80,6 +81,7 @@ const AppRoutes = () => {
         }
       >
         <Route index element={<DashboardPage />} />
+        <Route path="cockpit" element={<EnterpriseCockpitPage />} />
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<ClientFormPage />} />
         <Route path="clients/:id" element={<ClientDetailPage />} />
