@@ -25,12 +25,19 @@
 
     <!-- Workflows Layer: Pure business logic orchestration -->
     <!-- These are loaded before the React app to be available globally -->
-    <!-- Order is critical: db → engine → workflows → views → app -->
+    <!-- Order is critical: db → engine → workflows → domain → views → app -->
     <script src="/js/workflows/mission.workflow.js"></script>
     <script src="/js/workflows/capacity.workflow.js"></script>
     <script src="/js/workflows/programme.workflow.js"></script>
     <script src="/js/workflows/doctrine.workflow.js"></script>
     <script src="/js/workflows/index.js"></script>
+
+    <!-- Domain Foundation Layer: Setup management, availability engine, capacity rules -->
+    <script src="/js/domain/setup.repository.js"></script>
+    <script src="/js/domain/operatorAvailability.repository.js"></script>
+    <script src="/js/domain/availability.engine.js"></script>
+    <script src="/js/domain/moduleCapacity.service.js"></script>
+    <script src="/js/domain/index.js"></script>
 
     <!-- React Application -->
     <script type="module" src="/src/main.tsx"></script>
