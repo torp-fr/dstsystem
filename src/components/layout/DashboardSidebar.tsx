@@ -36,6 +36,7 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
     { icon: Calendar, label: 'Calendrier', path: '/dashboard/calendar' },
     { icon: CalendarDays, label: 'Planning', path: '/dashboard/planning' },
     { icon: ShoppingCart, label: 'Marketplace', path: '/dashboard/marketplace' },
+    { icon: Users, label: 'Staffing', path: '/dashboard/staffing' },
     { icon: TrendingUp, label: 'Analytics', path: '/dashboard/analytics' },
     { icon: Package, label: 'Offres & Formules', path: '/dashboard/offers' },
     { icon: DollarSign, label: 'Finances', path: '/dashboard/finances' },
