@@ -38,6 +38,9 @@ const Domain = {
   // Access Control Layer
   RoleGuardService,
 
+  // Real-time Planning Engine
+  PlanningRealtimeService,
+
   // Helper: Get all services at once
   getServices() {
     return {
@@ -48,7 +51,8 @@ const Domain = {
       sessionResource: Domain.SessionResourceService,
       migration: Domain.SessionMigrationHelper,
       accounts: Domain.AccountRepository,
-      roleGuard: Domain.RoleGuardService
+      roleGuard: Domain.RoleGuardService,
+      planningRealtime: Domain.PlanningRealtimeService
     };
   }
 };
