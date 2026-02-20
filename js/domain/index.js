@@ -32,6 +32,9 @@ const Domain = {
   // Migration Helpers
   SessionMigrationHelper,
 
+  // Account Management
+  AccountRepository,
+
   // Helper: Get all services at once
   getServices() {
     return {
@@ -40,7 +43,8 @@ const Domain = {
       availability: Domain.AvailabilityEngine,
       capacity: Domain.ModuleCapacityService,
       sessionResource: Domain.SessionResourceService,
-      migration: Domain.SessionMigrationHelper
+      migration: Domain.SessionMigrationHelper,
+      accounts: Domain.AccountRepository
     };
   }
 };

@@ -19,6 +19,9 @@ const Workflows = {
   // === VALIDATION STAFFING ===
   Staffing: StaffingWorkflow,
 
+  // === GESTION DES COMPTES ===
+  Account: AccountWorkflow,
+
   // === CAPACITÉ TERRAIN ===
   Capacity: CapacityWorkflow,
 
