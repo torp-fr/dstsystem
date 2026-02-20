@@ -308,7 +308,25 @@ const BookingWorkflow = (function() {
         };
       }
 
-      // ===== STEP 3: Verify availability still valid =====
+      // ===== STEP 3: VALIDATE STAFFING (NEW) =====
+      // A session CANNOT be confirmed without operators
+      // Operators must be accepted via OperatorMarketplace workflow
+      if (typeof Workflows !== 'undefined' && Workflows.Staffing) {
+        const staffingCheck = Workflows.Staffing.canConfirmSession(sessionId);
+
+        if (!staffingCheck.canConfirm) {
+          return {
+            success: false,
+            error: 'STAFFING_INVALID',
+            message: 'Cannot confirm session: staffing requirements not met',
+            sessionId,
+            reasons: staffingCheck.reasons,
+            staffingDetails: staffingCheck.details
+          };
+        }
+      }
+
+      // ===== STEP 4: Verify availability still valid =====
       const availability = AvailabilityEngine.getAvailableSetups(
         session.date,
         session.regionId
@@ -333,7 +351,7 @@ const BookingWorkflow = (function() {
         };
       }
 
-      // ===== STEP 4: Get available setup =====
+      // ===== STEP 5: Get available setup =====
       const availableSetupIds = _getAvailableSetupIds(session.date, session.regionId);
 
       if (availableSetupIds.length === 0) {
@@ -347,7 +365,7 @@ const BookingWorkflow = (function() {
 
       const setupIdToAssign = availableSetupIds[0];
 
-      // ===== STEP 5: Assign setup via SessionResourceService =====
+      // ===== STEP 6: Assign setup via SessionResourceService =====
       if (typeof SessionResourceService === 'undefined') {
         throw new Error('SessionResourceService not available');
       }
@@ -366,7 +384,7 @@ const BookingWorkflow = (function() {
         };
       }
 
-      // ===== STEP 6: Update session status =====
+      // ===== STEP 7: Update session status =====
       const updatedSession = _getSession(sessionId);
 
       if (!updatedSession) {

@@ -16,6 +16,9 @@ const Workflows = {
   // === MARCHÉ OPÉRATEURS ===
   OperatorMarketplace: OperatorMarketplaceWorkflow,
 
+  // === VALIDATION STAFFING ===
+  Staffing: StaffingWorkflow,
+
   // === CAPACITÉ TERRAIN ===
   Capacity: CapacityWorkflow,
 
