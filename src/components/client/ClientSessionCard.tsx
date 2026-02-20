@@ -2,42 +2,33 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /**
- * PlanningSessionCard — Individual Session Display
+ * ClientSessionCard — Client's Session Display
  *
- * PURE UI LAYER:
- * - Displays session data from props
- * - Clickable card navigates to session detail
- * - NO business logic, NO mutations
+ * Shows session details and staffing status
+ * Clickable card navigates to session detail page
  */
 
-interface SessionStaffing {
-  minOperators: number;
-  acceptedOperators: number;
-  pendingApplications: number;
-  isOperational: boolean;
-}
-
-interface PlanningSessionCardProps {
+interface ClientSessionCardProps {
   session: {
-    id: string;
+    sessionId: string;
     date: string;
-    regionId: string;
-    clientId: string;
     status: string;
+    operatorCount: number;
+    minRequired: number;
+    isOperational: boolean;
+    pendingApplications: number;
     marketplaceVisible: boolean;
-    setupIds: string[];
-    staffing: SessionStaffing;
   };
 }
 
-export default function PlanningSessionCard({ session }: PlanningSessionCardProps) {
+export default function ClientSessionCard({ session }: ClientSessionCardProps) {
   const navigate = useNavigate();
 
   // ============================================================
-  // STATUS BADGE COLORS
+  // STATUS BADGE
   // ============================================================
 
-  const getStatusBadgeStyle = (status: string) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending_confirmation':
         return 'bg-gray-100 text-gray-700';
@@ -58,14 +49,14 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
   };
 
   // ============================================================
-  // OPERATIONAL BADGE
+  // OPERATIONAL STATUS
   // ============================================================
 
-  const isOperational = session.staffing.isOperational;
+  const isOperational = session.isOperational;
   const operationalStyle = isOperational
     ? 'bg-green-100 text-green-700'
     : 'bg-orange-100 text-orange-700';
-  const operationalLabel = isOperational ? 'OPERATIONAL' : 'AWAITING STAFFING';
+  const operationalLabel = isOperational ? '✓ OPÉRATIONNEL' : '⚠ EN ATTENTE';
 
   // ============================================================
   // RENDER
@@ -73,7 +64,7 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
 
   return (
     <div
-      onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+      onClick={() => navigate(`/dashboard/sessions/${session.sessionId}`)}
       className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
     >
       {/* HEADER */}
@@ -87,21 +78,18 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
               year: 'numeric'
             })}
           </div>
-          <div className="text-sm text-gray-600 mt-1 capitalize">
-            {session.regionId}
-          </div>
         </div>
 
         <div className="flex flex-col gap-2 items-end">
           {/* Status Badge */}
-          <span className={`text-xs font-medium px-2 py-1 rounded ${getStatusBadgeStyle(session.status)}`}>
+          <span className={`text-xs font-medium px-2 py-1 rounded ${getStatusColor(session.status)}`}>
             {getStatusLabel(session.status)}
           </span>
 
           {/* Marketplace Badge */}
           {session.marketplaceVisible && (
             <span className="text-xs font-medium px-2 py-1 rounded bg-purple-100 text-purple-700">
-              Marketplace
+              Public
             </span>
           )}
         </div>
@@ -110,38 +98,44 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
       {/* STAFFING BLOCK */}
       <div className="bg-gray-50 rounded-lg p-3 flex flex-col gap-2">
         <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Accepted Operators:</span>
+          <span className="text-gray-600">Opérateurs Requis:</span>
           <span className="font-semibold text-gray-800">
-            {session.staffing.acceptedOperators}
+            {session.minRequired}
           </span>
         </div>
 
         <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Pending Applications:</span>
-          <span className="font-semibold text-gray-800">
-            {session.staffing.pendingApplications}
+          <span className="text-gray-600">Acceptés:</span>
+          <span className="font-semibold text-green-700">
+            {session.operatorCount}
           </span>
         </div>
 
         <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Required Operators:</span>
-          <span className="font-semibold text-gray-800">
-            {session.staffing.minOperators}
+          <span className="text-gray-600">En Attente:</span>
+          <span className="font-semibold text-yellow-700">
+            {session.pendingApplications}
           </span>
         </div>
       </div>
 
-      {/* OPERATIONAL BADGE */}
+      {/* OPERATIONAL STATUS */}
       <div className={`text-center py-2 rounded-lg font-medium text-sm ${operationalStyle}`}>
         {operationalLabel}
       </div>
 
       {/* FOOTER */}
-      <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-        <div className="text-xs text-gray-500">
-          <div>Client: {session.clientId}</div>
-          <div className="text-gray-400 mt-1">{session.id}</div>
-        </div>
+      <div className="text-xs text-gray-500 pt-2 border-t border-gray-100">
+        <div>Session: {session.sessionId}</div>
+        {session.status === 'pending_confirmation' && (
+          <div className="text-gray-400 mt-1">En attente de confirmation</div>
+        )}
+        {session.status === 'confirmed' && !session.isOperational && (
+          <div className="text-gray-400 mt-1">Collecte des candidatures en cours</div>
+        )}
+        {session.isOperational && (
+          <div className="text-green-600 mt-1 font-medium">Staffing validé ✓</div>
+        )}
       </div>
     </div>
   );
