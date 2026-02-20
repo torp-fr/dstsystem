@@ -7,7 +7,10 @@
    ============================================================ */
 
 const Workflows = {
-  // === MISSION ENTRAINEMENT ===
+  // === RÉSERVATION CLIENT (PHASE 1) ===
+  Booking: BookingWorkflow,
+
+  // === MISSION ENTRAINEMENT (PHASE 2) ===
   Mission: MissionWorkflow,
 
   // === CAPACITÉ TERRAIN ===
@@ -22,6 +25,9 @@ const Workflows = {
 
 // Export centralisé
 // Utilisation dans Views:
+//   Workflows.Booking.createSessionBooking(data)
+//   Workflows.Booking.confirmSessionBooking(sessionId)
+//   Workflows.Booking.checkAvailability(regionId, date, moduleIds, participants)
 //   Workflows.Mission.completeMission(sessionId, newStatus)
 //   Workflows.Capacity.createOperatorWithCosting(data)
 //   Workflows.Programme.analyzeClientProfitability(clientId)
