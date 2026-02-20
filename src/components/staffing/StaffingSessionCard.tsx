@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import StaffingOperatorRow from './StaffingOperatorRow';
 
 /**
  * StaffingSessionCard — Individual Session with Operator Applications
  *
  * Displays:
- * - Session details
+ * - Session details (clickable → session detail page)
  * - Staffing state (required/accepted/pending)
  * - List of operators (accepted/pending/rejected)
  * - Operational status
@@ -46,6 +47,7 @@ export default function StaffingSessionCard({
   session,
   onAction
 }: StaffingSessionCardProps) {
+  const navigate = useNavigate();
   const [operators, setOperators] = useState<{
     accepted: Operator[];
     pending: Operator[];
@@ -101,7 +103,10 @@ export default function StaffingSessionCard({
   // ============================================================
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4">
+    <div
+      onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
+    >
       {/* HEADER */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">

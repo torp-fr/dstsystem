@@ -45,7 +45,8 @@ export default function StaffingOperatorRow({
   // HANDLE ACCEPT
   // ============================================================
 
-  const handleAccept = async () => {
+  const handleAccept = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsProcessing(true);
     setError(null);
 
@@ -72,7 +73,8 @@ export default function StaffingOperatorRow({
   // HANDLE REJECT
   // ============================================================
 
-  const handleReject = async () => {
+  const handleReject = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsProcessing(true);
     setError(null);
 

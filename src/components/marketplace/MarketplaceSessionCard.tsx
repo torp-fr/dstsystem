@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import MarketplaceApplicationBadge from './MarketplaceApplicationBadge';
 
@@ -7,6 +8,7 @@ import MarketplaceApplicationBadge from './MarketplaceApplicationBadge';
  *
  * PURE UI LAYER:
  * - Displays session data
+ * - Clickable card navigates to session detail
  * - Shows apply button if not applied
  * - Shows application status if already applied
  * - Handles apply action via MarketplaceController
@@ -37,6 +39,7 @@ export default function MarketplaceSessionCard({
   session,
   onApply
 }: MarketplaceSessionCardProps) {
+  const navigate = useNavigate();
   const [hasApplied, setHasApplied] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState<'pending' | 'accepted' | 'rejected' | null>(null);
   const [isApplying, setIsApplying] = useState(false);
@@ -67,7 +70,9 @@ export default function MarketplaceSessionCard({
   // HANDLE APPLY ACTION
   // ============================================================
 
-  const handleApply = async () => {
+  const handleApply = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
     if (!currentOperatorId) {
       setError('Operator ID not found');
       return;
@@ -136,7 +141,10 @@ export default function MarketplaceSessionCard({
   // ============================================================
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4">
+    <div
+      onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
+    >
       {/* HEADER */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">

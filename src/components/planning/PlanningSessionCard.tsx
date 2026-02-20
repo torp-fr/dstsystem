@@ -1,12 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * PlanningSessionCard — Individual Session Display
  *
  * PURE UI LAYER:
  * - Displays session data from props
- * - NO actions, NO buttons, NO mutations
- * - Read-only visualization only
+ * - Clickable card navigates to session detail
+ * - NO business logic, NO mutations
  */
 
 interface SessionStaffing {
@@ -30,6 +31,8 @@ interface PlanningSessionCardProps {
 }
 
 export default function PlanningSessionCard({ session }: PlanningSessionCardProps) {
+  const navigate = useNavigate();
+
   // ============================================================
   // STATUS BADGE COLORS
   // ============================================================
@@ -69,7 +72,10 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
   // ============================================================
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4">
+    <div
+      onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
+    >
       {/* HEADER */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">

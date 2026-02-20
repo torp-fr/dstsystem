@@ -1,10 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * ClientSessionCard — Client's Session Display
  *
  * Shows session details and staffing status
- * READ-ONLY display (no actions)
+ * Clickable card navigates to session detail page
  */
 
 interface ClientSessionCardProps {
@@ -21,6 +22,8 @@ interface ClientSessionCardProps {
 }
 
 export default function ClientSessionCard({ session }: ClientSessionCardProps) {
+  const navigate = useNavigate();
+
   // ============================================================
   // STATUS BADGE
   // ============================================================
@@ -60,7 +63,10 @@ export default function ClientSessionCard({ session }: ClientSessionCardProps) {
   // ============================================================
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4">
+    <div
+      onClick={() => navigate(`/dashboard/sessions/${session.sessionId}`)}
+      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
+    >
       {/* HEADER */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">
