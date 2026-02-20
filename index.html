@@ -22,6 +22,17 @@
 
   <body>
     <div id="root"></div>
+
+    <!-- Workflows Layer: Pure business logic orchestration -->
+    <!-- These are loaded before the React app to be available globally -->
+    <!-- Order is critical: db → engine → workflows → views → app -->
+    <script src="/js/workflows/mission.workflow.js"></script>
+    <script src="/js/workflows/capacity.workflow.js"></script>
+    <script src="/js/workflows/programme.workflow.js"></script>
+    <script src="/js/workflows/doctrine.workflow.js"></script>
+    <script src="/js/workflows/index.js"></script>
+
+    <!-- React Application -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
