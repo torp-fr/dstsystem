@@ -44,6 +44,9 @@ const Domain = {
   // Operator Auto-Match Intelligence
   OperatorAutoMatchEngine,
 
+  // Staffing Risk Analysis
+  StaffingRiskEngine,
+
   // Helper: Get all services at once
   getServices() {
     return {
@@ -56,7 +59,8 @@ const Domain = {
       accounts: Domain.AccountRepository,
       roleGuard: Domain.RoleGuardService,
       planningRealtime: Domain.PlanningRealtimeService,
-      operatorAutoMatch: Domain.OperatorAutoMatchEngine
+      operatorAutoMatch: Domain.OperatorAutoMatchEngine,
+      staffingRisk: Domain.StaffingRiskEngine
     };
   }
 };
