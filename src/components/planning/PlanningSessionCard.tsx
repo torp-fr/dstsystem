@@ -40,112 +40,102 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
   };
 
   // ============================================================
-  // STATUS BADGE COLORS
+  // OPERATIONAL STATE & BADGE
   // ============================================================
 
-  const getStatusBadgeStyle = (status: string) => {
-    switch (status) {
-      case 'pending_confirmation':
-        return 'bg-gray-100 text-gray-700';
-      case 'confirmed':
-        return 'bg-blue-100 text-blue-700';
-      case 'cancelled':
-        return 'bg-red-100 text-red-700';
-      default:
-        return 'bg-gray-100 text-gray-700';
+  const getOperationalBadge = () => {
+    const isOperational = session.staffing.isOperational;
+    const accepted = session.staffing.acceptedOperators;
+    const required = session.staffing.minOperators;
+    const pending = session.staffing.pendingApplications;
+
+    if (isOperational) {
+      return {
+        label: 'Prête à démarrer',
+        className: 'bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+      };
+    } else if (accepted < required) {
+      return {
+        label: 'Opérateurs manquants',
+        className: 'bg-destructive/10 text-destructive border border-destructive/20'
+      };
+    } else if (pending > 0) {
+      return {
+        label: 'En validation',
+        className: 'bg-blue-600/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800'
+      };
     }
+    return {
+      label: 'Prête à démarrer',
+      className: 'bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+    };
   };
-
-  const getStatusLabel = (status: string) => {
-    return status
-      .split('_')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
-
-  // ============================================================
-  // OPERATIONAL BADGE
-  // ============================================================
-
-  const isOperational = session.staffing.isOperational;
-  const operationalStyle = isOperational
-    ? 'bg-green-100 text-green-700'
-    : 'bg-orange-100 text-orange-700';
-  const operationalLabel = isOperational ? 'OPERATIONAL' : 'AWAITING STAFFING';
 
   // ============================================================
   // RENDER
   // ============================================================
 
+  const badge = getOperationalBadge();
+
   return (
     <div
       onClick={handleNavigate}
-      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
+      className="bg-card rounded-2xl shadow-sm border border-border p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
     >
-      {/* HEADER */}
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex-1">
-          <div className="text-lg font-semibold text-gray-800">
-            {new Date(session.date).toLocaleDateString('fr-FR', {
-              weekday: 'short',
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric'
-            })}
-          </div>
-          <div className="text-sm text-gray-600 mt-1 capitalize">
-            {session.regionId}
-          </div>
+      {/* SECTION 1: DATE (PROMINENT) */}
+      <div className="flex items-baseline justify-between gap-2">
+        <div className="text-xl font-bold text-foreground">
+          {new Date(session.date).toLocaleDateString('fr-FR', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          })}
+        </div>
+        {session.marketplaceVisible && (
+          <span className="text-xs font-medium px-2 py-1 rounded bg-purple-600/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800">
+            Marketplace
+          </span>
+        )}
+      </div>
+
+      {/* SECTION 2: REGION & CLIENT */}
+      <div className="flex flex-col gap-1 text-sm">
+        <div className="text-muted-foreground capitalize">
+          Région: <span className="font-medium text-foreground">{session.regionId}</span>
+        </div>
+        <div className="text-muted-foreground">
+          Client: <span className="font-medium text-foreground">{session.clientId}</span>
+        </div>
+      </div>
+
+      {/* SECTION 3: STAFFING STATUS */}
+      <div className="bg-card border border-border rounded-lg p-3 flex flex-col gap-2 text-sm">
+        <div className="flex justify-between">
+          <span className="text-muted-foreground">Opérateurs confirmés:</span>
+          <span className="font-semibold text-foreground">
+            {session.staffing.acceptedOperators}/{session.staffing.minOperators}
+          </span>
         </div>
 
-        <div className="flex flex-col gap-2 items-end">
-          {/* Status Badge */}
-          <StatusBadge status={session.status} type="session" size="sm" />
-
-          {/* Marketplace Badge */}
-          {session.marketplaceVisible && (
-            <span className="text-xs font-medium px-2 py-1 rounded bg-purple-100 text-purple-700">
-              Marketplace
+        {session.staffing.pendingApplications > 0 && (
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Candidatures en attente:</span>
+            <span className="font-semibold text-foreground">
+              {session.staffing.pendingApplications}
             </span>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
-      {/* STAFFING BLOCK */}
-      <div className="bg-gray-50 rounded-lg p-3 flex flex-col gap-2">
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Accepted Operators:</span>
-          <span className="font-semibold text-gray-800">
-            {session.staffing.acceptedOperators}
-          </span>
-        </div>
-
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Pending Applications:</span>
-          <span className="font-semibold text-gray-800">
-            {session.staffing.pendingApplications}
-          </span>
-        </div>
-
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Required Operators:</span>
-          <span className="font-semibold text-gray-800">
-            {session.staffing.minOperators}
-          </span>
-        </div>
+      {/* SECTION 4: OPERATIONAL STATE BADGE */}
+      <div className={`text-center py-2 px-3 rounded-lg font-medium text-sm border ${badge.className}`}>
+        {badge.label}
       </div>
 
-      {/* OPERATIONAL BADGE */}
-      <div className={`text-center py-2 rounded-lg font-medium text-sm ${operationalStyle}`}>
-        {operationalLabel}
-      </div>
-
-      {/* FOOTER */}
-      <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-        <div className="text-xs text-gray-500">
-          <div>Client: {session.clientId}</div>
-          <div className="text-gray-400 mt-1">{session.id}</div>
-        </div>
+      {/* SECTION 5: STATUS METADATA */}
+      <div className="flex justify-between items-center pt-2 border-t border-border">
+        <StatusBadge status={session.status} type="session" size="sm" />
       </div>
     </div>
   );

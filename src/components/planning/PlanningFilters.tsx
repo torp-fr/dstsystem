@@ -28,7 +28,7 @@ export default function PlanningFilters({ onFiltersChange }: PlanningFiltersProp
   // ============================================================
 
   const REGIONS = [
-    { value: '', label: 'All Regions' },
+    { value: '', label: 'Toutes les régions' },
     { value: 'occitanie', label: 'Occitanie' },
     { value: 'paca', label: 'PACA' },
     { value: 'idf', label: 'Île-de-France' },
@@ -36,10 +36,10 @@ export default function PlanningFilters({ onFiltersChange }: PlanningFiltersProp
   ];
 
   const STATUS_OPTIONS = [
-    { value: '', label: 'All Statuses' },
-    { value: 'pending_confirmation', label: 'Pending Confirmation' },
-    { value: 'confirmed', label: 'Confirmed' },
-    { value: 'cancelled', label: 'Cancelled' }
+    { value: '', label: 'Tous les statuts' },
+    { value: 'pending_confirmation', label: 'En validation' },
+    { value: 'confirmed', label: 'Confirmé' },
+    { value: 'cancelled', label: 'Annulé' }
   ];
 
   // ============================================================
@@ -89,14 +89,14 @@ export default function PlanningFilters({ onFiltersChange }: PlanningFiltersProp
   return (
     <div className="flex flex-col gap-4">
       <h3 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-        Filters
+        Filtres
       </h3>
 
       <div className="flex flex-col md:flex-row gap-4">
         {/* Date From */}
         <div className="flex flex-col gap-1 flex-1">
           <label className="text-xs font-medium text-muted-foreground uppercase">
-            From
+            Du
           </label>
           <input
             type="date"
@@ -109,7 +109,7 @@ export default function PlanningFilters({ onFiltersChange }: PlanningFiltersProp
         {/* Date To */}
         <div className="flex flex-col gap-1 flex-1">
           <label className="text-xs font-medium text-muted-foreground uppercase">
-            To
+            Au
           </label>
           <input
             type="date"
@@ -122,7 +122,7 @@ export default function PlanningFilters({ onFiltersChange }: PlanningFiltersProp
         {/* Region */}
         <div className="flex flex-col gap-1 flex-1">
           <label className="text-xs font-medium text-muted-foreground uppercase">
-            Region
+            Région
           </label>
           <select
             value={filters.region || ''}
@@ -140,7 +140,7 @@ export default function PlanningFilters({ onFiltersChange }: PlanningFiltersProp
         {/* Status */}
         <div className="flex flex-col gap-1 flex-1">
           <label className="text-xs font-medium text-muted-foreground uppercase">
-            Status
+            Statut
           </label>
           <select
             value={filters.status || ''}

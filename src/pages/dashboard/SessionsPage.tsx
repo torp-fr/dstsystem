@@ -25,7 +25,7 @@ export default function SessionsPage() {
         <div>
           <h1 className="text-3xl font-bold text-foreground">Sessions</h1>
           <p className="text-muted-foreground mt-1">
-            Visualiser et gérer le planning des sessions
+            Planifier, suivre et ajuster les sessions en cours
           </p>
         </div>
 
@@ -38,7 +38,7 @@ export default function SessionsPage() {
             className="gap-2"
           >
             <LayoutGrid className="h-4 w-4" />
-            Grille
+            Vue Opérationnelle
           </Button>
           <Button
             variant={view === 'calendar' ? 'default' : 'ghost'}
@@ -47,10 +47,17 @@ export default function SessionsPage() {
             className="gap-2"
           >
             <Calendar className="h-4 w-4" />
-            Calendrier
+            Vue Calendrier
           </Button>
         </div>
       </div>
+
+      {/* Calendar View Info Banner */}
+      {view === 'calendar' && (
+        <div className="bg-card border border-border rounded-lg p-4 text-sm text-muted-foreground">
+          Visualisez la charge des sessions dans le temps
+        </div>
+      )}
 
       {/* View Content */}
       <div className="flex-1 overflow-auto">
