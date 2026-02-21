@@ -1,43 +1,50 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
+import { USE_SUPABASE, assertSupabaseEnabled } from '@/config/runtime';
 
 export const usePageVisits = () => {
   return useQuery({
     queryKey: ['page_visits'],
     queryFn: async () => {
+      if (USE_SUPABASE) {
+        assertSupabaseEnabled();
+      }
+
       try {
-        console.log('[Analytics] Fetching page_visits...');
+        console.log('[Analytics] Fetching page_visits from Supabase...');
         const { data, error } = await supabase
           .from('page_visits')
           .select('*')
           .order('visited_at', { ascending: false })
           .limit(1000);
 
-        if (!error && data && data.length > 0) {
+        if (error) {
+          throw new Error(`Supabase error: ${error.message}`);
+        }
+
+        if (data && data.length > 0) {
           console.log('[Analytics] Page visits loaded from Supabase:', data.length);
           return data;
         }
 
-        // Fallback to localStorage
-        console.log('[Analytics] Falling back to localStorage for page visits...');
-        const localData = localStorage.getItem('dst-page-visits');
-        if (localData) {
-          const parsed = JSON.parse(localData);
-          console.log('[Analytics] Loaded from localStorage:', parsed.length, 'page visits');
-          return parsed;
-        }
-
-        console.log('[Analytics] No page visits data found');
+        console.log('[Analytics] No page visits data found in Supabase');
         return [];
       } catch (error) {
-        console.warn('[Analytics] Error fetching page_visits:', error);
-        // Try localStorage as last resort
+        console.error('[Analytics] Failed to fetch page_visits from Supabase:', error);
+
+        // In production mode, fail explicitly (no localStorage fallback)
+        if (USE_SUPABASE) {
+          throw error;
+        }
+
+        // Fallback only in development mode
+        console.warn('[Analytics] Falling back to localStorage...');
         const localData = localStorage.getItem('dst-page-visits');
         if (localData) {
           try {
             return JSON.parse(localData);
           } catch (parseError) {
-            console.error('[Analytics] Failed to parse localStorage page visits:', parseError);
+            console.error('[Analytics] Failed to parse localStorage:', parseError);
           }
         }
         return [];
@@ -52,39 +59,45 @@ export const useSessions = () => {
   return useQuery({
     queryKey: ['analytics_sessions'],
     queryFn: async () => {
+      if (USE_SUPABASE) {
+        assertSupabaseEnabled();
+      }
+
       try {
-        console.log('[Analytics] Fetching visitor sessions...');
+        console.log('[Analytics] Fetching visitor sessions from Supabase...');
         const { data, error } = await supabase
           .from('sessions')
           .select('*')
           .order('started_at', { ascending: false })
           .limit(1000);
 
-        if (!error && data && data.length > 0) {
+        if (error) {
+          throw new Error(`Supabase error: ${error.message}`);
+        }
+
+        if (data && data.length > 0) {
           console.log('[Analytics] Sessions loaded from Supabase:', data.length);
           return data;
         }
 
-        // Fallback to localStorage
-        console.log('[Analytics] Falling back to localStorage for sessions...');
-        const localData = localStorage.getItem('dst-sessions');
-        if (localData) {
-          const parsed = JSON.parse(localData);
-          console.log('[Analytics] Loaded from localStorage:', parsed.length, 'sessions');
-          return parsed;
-        }
-
-        console.log('[Analytics] No sessions data found');
+        console.log('[Analytics] No sessions data found in Supabase');
         return [];
       } catch (error) {
-        console.warn('[Analytics] Error fetching sessions:', error);
-        // Try localStorage as last resort
+        console.error('[Analytics] Failed to fetch sessions from Supabase:', error);
+
+        // In production mode, fail explicitly (no localStorage fallback)
+        if (USE_SUPABASE) {
+          throw error;
+        }
+
+        // Fallback only in development mode
+        console.warn('[Analytics] Falling back to localStorage...');
         const localData = localStorage.getItem('dst-sessions');
         if (localData) {
           try {
             return JSON.parse(localData);
           } catch (parseError) {
-            console.error('[Analytics] Failed to parse localStorage sessions:', parseError);
+            console.error('[Analytics] Failed to parse localStorage:', parseError);
           }
         }
         return [];

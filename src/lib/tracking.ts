@@ -1,11 +1,18 @@
 import { supabase } from './supabase';
+import { USE_SUPABASE, assertSupabaseEnabled } from '@/config/runtime';
 
-// Generate or retrieve session ID from localStorage
+// Generate or retrieve session ID
+// In production, session ID is managed by Supabase.
+// Fallback to localStorage only in development.
 const getOrCreateSessionId = (): string => {
+  // First try localStorage for browser session persistence
   let sessionId = localStorage.getItem('session_id');
   if (!sessionId) {
     sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    localStorage.setItem('session_id', sessionId);
+    // In production, this is temporary - Supabase will assign a real session ID
+    if (!USE_SUPABASE) {
+      localStorage.setItem('session_id', sessionId);
+    }
   }
   return sessionId;
 };
@@ -44,6 +51,8 @@ export const getGeoLocation = async () => {
 };
 
 // Track page visit
+// In production (USE_SUPABASE=true): Primary to Supabase, no fallback
+// In development (USE_SUPABASE=false): Supabase first, fallback to localStorage
 export const trackPageVisit = async (pageUrl: string, pageTitle?: string) => {
   try {
     const sessionId = getOrCreateSessionId();
@@ -63,28 +72,37 @@ export const trackPageVisit = async (pageUrl: string, pageTitle?: string) => {
       visited_at: new Date().toISOString(),
     };
 
-    console.log('[Tracking] Tracking page visit:', pageVisitData);
+    console.log('[Tracking] Tracking page visit to Supabase:', pageVisitData);
 
-    // Save to localStorage (always works)
-    const localVisits = JSON.parse(localStorage.getItem('dst-page-visits') || '[]');
-    localVisits.push(pageVisitData);
-    localStorage.setItem('dst-page-visits', JSON.stringify(localVisits));
-    console.log('[Tracking] Page visit saved to localStorage');
-
-    // Try to save to Supabase (non-blocking)
+    // Primary: Save to Supabase (required in production)
     const { error } = await supabase.from('page_visits').insert([pageVisitData]);
 
     if (error) {
-      console.warn('[Tracking] Supabase insert error:', error);
+      console.error('[Tracking] Supabase insert error:', error);
+
+      // In production mode, fail explicitly (no localStorage fallback)
+      if (USE_SUPABASE) {
+        throw new Error(`Failed to track page visit: ${error.message}`);
+      }
+
+      // Fallback: In development mode, save to localStorage
+      console.warn('[Tracking] Falling back to localStorage...');
+      const localVisits = JSON.parse(localStorage.getItem('dst-page-visits') || '[]');
+      localVisits.push(pageVisitData);
+      localStorage.setItem('dst-page-visits', JSON.stringify(localVisits));
+      console.log('[Tracking] Page visit saved to localStorage as fallback');
     } else {
       console.log('[Tracking] Page visit tracked to Supabase successfully');
     }
   } catch (error) {
     console.error('[Tracking] Track page visit error:', error);
+    throw error; // Re-throw in production mode
   }
 };
 
 // Track session start
+// In production (USE_SUPABASE=true): Primary to Supabase, no fallback
+// In development (USE_SUPABASE=false): Supabase first, fallback to localStorage
 export const trackSessionStart = async () => {
   try {
     const sessionId = getOrCreateSessionId();
@@ -104,32 +122,39 @@ export const trackSessionStart = async () => {
       started_at: new Date().toISOString(),
     };
 
-    console.log('[Tracking] Starting session:', sessionData);
+    console.log('[Tracking] Starting session in Supabase:', sessionData);
 
-    // Save to localStorage (always works)
-    const localSessions = JSON.parse(localStorage.getItem('dst-sessions') || '[]');
-    const existingSession = localSessions.find((s: any) => s.session_id === sessionId);
-    if (!existingSession) {
-      localSessions.push(sessionData);
-      localStorage.setItem('dst-sessions', JSON.stringify(localSessions));
-      console.log('[Tracking] Session saved to localStorage');
-    }
-
-    // Try to save to Supabase (non-blocking)
+    // Primary: Save to Supabase (required in production)
     const { error } = await supabase.from('sessions').insert([sessionData]);
 
     if (error) {
       // Ignore duplicate key errors (session already exists)
       if (error.code === '23505') {
-        console.log('[Tracking] Session already exists, skipping insert');
+        console.log('[Tracking] Session already exists in Supabase, skipping insert');
       } else {
-        console.warn('[Tracking] Session insert error:', error);
+        console.error('[Tracking] Session insert error:', error);
+
+        // In production mode, fail explicitly (no localStorage fallback)
+        if (USE_SUPABASE) {
+          throw new Error(`Failed to track session: ${error.message}`);
+        }
+
+        // Fallback: In development mode, save to localStorage
+        console.warn('[Tracking] Falling back to localStorage...');
+        const localSessions = JSON.parse(localStorage.getItem('dst-sessions') || '[]');
+        const existingSession = localSessions.find((s: any) => s.session_id === sessionId);
+        if (!existingSession) {
+          localSessions.push(sessionData);
+          localStorage.setItem('dst-sessions', JSON.stringify(localSessions));
+          console.log('[Tracking] Session saved to localStorage as fallback');
+        }
       }
     } else {
       console.log('[Tracking] Session started successfully in Supabase');
     }
   } catch (error) {
     console.error('[Tracking] Track session error:', error);
+    throw error; // Re-throw in production mode
   }
 };
 
