@@ -77,9 +77,46 @@ export function getRuntimeConfig(): RuntimeConfig {
 }
 
 /**
+ * Environment Variable Validation
+ * Verify Supabase credentials are configured
+ */
+function validateSupabaseEnv() {
+  if (USE_SUPABASE) {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl) {
+      throw new Error(
+        '[RUNTIME] ❌ Missing VITE_SUPABASE_URL\n' +
+        'Required for production mode (USE_SUPABASE=true).\n' +
+        'Set via: environment variables or .env file\n' +
+        'Get from: Supabase Dashboard → Settings → API'
+      );
+    }
+
+    if (!supabaseKey) {
+      throw new Error(
+        '[RUNTIME] ❌ Missing VITE_SUPABASE_ANON_KEY\n' +
+        'Required for production mode (USE_SUPABASE=true).\n' +
+        'Set via: environment variables or .env file\n' +
+        'Get from: Supabase Dashboard → Settings → API → anon key'
+      );
+    }
+
+    // Log success in production mode
+    if (typeof window !== 'undefined') {
+      console.info('[RUNTIME] ✅ Supabase environment validated');
+    }
+  }
+}
+
+/**
  * Validation on startup
  */
 if (typeof window !== 'undefined') {
+  // Validate Supabase environment
+  validateSupabaseEnv();
+
   // Browser environment - verify Supabase is available
   if (USE_SUPABASE && !window.__SUPABASE_INITIALIZED__) {
     console.warn(
