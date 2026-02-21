@@ -23,40 +23,6 @@
   <body>
     <div id="root"></div>
 
-    <!-- Workflows Layer: Pure business logic orchestration -->
-    <!-- These are loaded before the React app to be available globally -->
-    <!-- Order is critical: db → engine → workflows → domain → views → app -->
-    <script src="/js/workflows/booking.workflow.js"></script>
-    <script src="/js/workflows/mission.workflow.js"></script>
-    <script src="/js/workflows/operatorMarketplace.workflow.js"></script>
-    <script src="/js/workflows/staffing.workflow.js"></script>
-    <script src="/js/workflows/account.workflow.js"></script>
-    <script src="/js/workflows/capacity.workflow.js"></script>
-    <script src="/js/workflows/programme.workflow.js"></script>
-    <script src="/js/workflows/doctrine.workflow.js"></script>
-    <script src="/js/workflows/index.js"></script>
-
-    <!-- Domain Foundation Layer: Setup management, availability engine, capacity rules -->
-    <script src="/js/domain/setup.repository.js"></script>
-    <script src="/js/domain/operatorAvailability.repository.js"></script>
-    <script src="/js/domain/availability.engine.js"></script>
-    <script src="/js/domain/moduleCapacity.service.js"></script>
-    <script src="/js/domain/sessionResource.service.js"></script>
-    <script src="/js/domain/sessionMigration.helper.js"></script>
-    <script src="/js/domain/account.repository.js"></script>
-    <script src="/js/domain/roleGuard.service.js"></script>
-    <script src="/js/domain/planningRealtime.service.js"></script>
-    <script src="/js/domain/operatorAutoMatch.service.js"></script>
-    <script src="/js/domain/staffingRisk.service.js"></script>
-    <script src="/js/domain/planningState.service.js"></script>
-    <script src="/js/domain/index.js"></script>
-
-    <!-- Controllers Layer: User action handlers with role guards -->
-    <script src="/js/controllers/auth.controller.js"></script>
-    <script src="/js/controllers/dashboard.controller.js"></script>
-    <script src="/js/controllers/bookingFlow.controller.js"></script>
-    <script src="/js/controllers/marketplace.controller.js"></script>
-
     <!-- React Application -->
     <script type="module" src="/src/main.tsx"></script>
   </body>

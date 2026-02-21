@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { useTracking } from "@/hooks/useTracking";
 import { useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import Index from "./pages/Index";
 import Solutions from "./pages/Solutions";
 import Programs from "./pages/Programs";
@@ -64,6 +65,12 @@ const AppRoutes = () => {
   useEffect(() => {
     initializeRuntimeLock(); // FINAL LOCK - must run first
     initializeMonitoring(); // Global error handlers
+
+    // Initialize Supabase connection - needed before role checks
+    // This ensures auth state is available to RoleRouteGuard
+    if (supabase) {
+      console.info('[APP] Supabase initialized for auth state tracking');
+    }
   }, []);
 
   return (

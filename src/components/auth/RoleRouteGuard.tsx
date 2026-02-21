@@ -43,8 +43,13 @@ export default function RoleRouteGuard({
   useEffect(() => {
     const checkUserRole = async () => {
       try {
+        // PROTECTION: Don't check role until auth is loaded
+        if (loading) {
+          return;
+        }
+
         if (!user) {
-          navigate('/auth/login');
+          navigate('/login');
           return;
         }
 
@@ -56,8 +61,8 @@ export default function RoleRouteGuard({
           null;
 
         if (!role) {
-          console.warn('[RoleGuard] No user role found, redirecting to fallback');
-          navigate(fallbackPath, { replace: true });
+          console.warn('[RoleGuard] No user role found, redirecting to login');
+          navigate('/login', { replace: true });
           return;
         }
 
