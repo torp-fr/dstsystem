@@ -56,8 +56,8 @@ export default function RoleRouteGuard({
           null;
 
         if (!role) {
-          console.warn('[RoleGuard] No user role found, redirecting to fallback');
-          navigate(fallbackPath, { replace: true });
+          console.warn('[RoleGuard] No user role found, redirecting to login');
+          navigate('/auth/login', { replace: true });
           return;
         }
 
