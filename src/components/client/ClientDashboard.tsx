@@ -87,9 +87,9 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
       {/* PAGE HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Mes Programmes</h1>
+          <h1 className="text-3xl font-bold text-foreground">Mes sessions</h1>
           <p className="text-muted-foreground mt-1">
-            Créez et suivez vos sessions de tir
+            Suivez l'avancement et préparez vos prochaines sessions
           </p>
         </div>
 
@@ -97,7 +97,7 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
           onClick={() => setShowForm(!showForm)}
           className="bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded-lg font-medium"
         >
-          {showForm ? 'Annuler' : 'Nouveau Programme'}
+          {showForm ? 'Annuler' : 'Demander une session'}
         </button>
       </div>
 

@@ -106,15 +106,15 @@ export default function StaffingOperatorRow({
   const statusDateFormatted = formatDate(statusDate);
 
   return (
-    <div className="bg-gray-50 rounded-lg p-3">
+    <div className="bg-card rounded-lg p-3 border border-border">
       {/* HEADER */}
       <div className="flex items-center justify-between gap-2 mb-2">
         <div className="flex-1 min-w-0">
-          <div className="font-medium text-sm text-gray-800 truncate">
+          <div className="font-medium text-sm text-foreground truncate">
             {operator.name}
           </div>
           {operator.email && (
-            <div className="text-xs text-gray-500 truncate">{operator.email}</div>
+            <div className="text-xs text-muted-foreground truncate">{operator.email}</div>
           )}
         </div>
 
@@ -124,11 +124,11 @@ export default function StaffingOperatorRow({
       </div>
 
       {/* DATES */}
-      <div className="flex justify-between text-xs text-gray-500 mb-3">
-        <span>Applied: {appliedDate}</span>
+      <div className="flex justify-between text-xs text-muted-foreground mb-3">
+        <span>Candidature: {appliedDate}</span>
         {operator.status !== 'pending' && (
           <span>
-            {operator.status === 'accepted' ? 'Accepted' : 'Rejected'}:{' '}
+            {operator.status === 'accepted' ? 'Confirmé' : 'Refusé'}:{' '}
             {statusDateFormatted}
           </span>
         )}
@@ -136,7 +136,7 @@ export default function StaffingOperatorRow({
 
       {/* ERROR */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded p-2 text-red-700 text-xs mb-2">
+        <div className="bg-destructive/5 border border-destructive/30 rounded p-2 text-destructive text-xs mb-2">
           {error}
         </div>
       )}
@@ -147,16 +147,16 @@ export default function StaffingOperatorRow({
           <Button
             onClick={handleAccept}
             disabled={isProcessing}
-            className="flex-1 h-8 text-xs bg-green-600 hover:bg-green-700 text-white"
+            className="flex-1 h-8 text-xs bg-emerald-600 hover:bg-emerald-700 text-white"
           >
-            {isProcessing ? 'Processing...' : 'Accept'}
+            {isProcessing ? 'Processing...' : 'Confirmer'}
           </Button>
           <Button
             onClick={handleReject}
             disabled={isProcessing}
             className="flex-1 h-8 text-xs bg-red-600 hover:bg-red-700 text-white"
           >
-            {isProcessing ? 'Processing...' : 'Reject'}
+            {isProcessing ? 'Processing...' : 'Refuser'}
           </Button>
         </div>
       )}

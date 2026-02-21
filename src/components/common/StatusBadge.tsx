@@ -26,37 +26,37 @@ export default function StatusBadge({
 
   const sessionStatusConfig: Record<string, any> = {
     pending_confirmation: {
-      style: 'bg-gray-100 text-gray-700',
+      style: 'bg-blue-600/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800',
       icon: Clock,
-      label: 'Pending Confirmation'
+      label: 'En validation'
     },
     confirmed: {
-      style: 'bg-blue-100 text-blue-700',
+      style: 'bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800',
       icon: CheckCircle,
-      label: 'Confirmed'
+      label: 'Confirmé'
     },
     cancelled: {
-      style: 'bg-red-100 text-red-700',
+      style: 'bg-destructive/10 text-destructive border border-destructive/20',
       icon: XCircle,
-      label: 'Cancelled'
+      label: 'Annulé'
     }
   };
 
   const staffingStatusConfig: Record<string, any> = {
     pending: {
-      style: 'bg-yellow-100 text-yellow-700',
+      style: 'bg-blue-600/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800',
       icon: Clock,
-      label: 'Pending'
+      label: 'À valider'
     },
     accepted: {
-      style: 'bg-green-100 text-green-700',
+      style: 'bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800',
       icon: CheckCircle,
-      label: 'Accepted'
+      label: 'Confirmé'
     },
     rejected: {
-      style: 'bg-red-100 text-red-700',
+      style: 'bg-destructive/10 text-destructive border border-destructive/20',
       icon: XCircle,
-      label: 'Rejected'
+      label: 'Refusé'
     }
   };
 
@@ -84,7 +84,7 @@ export default function StatusBadge({
 
     // Default fallback
     return {
-      style: 'bg-gray-100 text-gray-700',
+      style: 'bg-muted text-muted-foreground border border-border',
       icon: AlertCircle,
       label: status
         .split('_')

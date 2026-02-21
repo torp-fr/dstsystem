@@ -90,7 +90,7 @@ export default function MarketplaceDashboard() {
       <div>
         <h1 className="text-3xl font-bold text-foreground">Opportunités</h1>
         <p className="text-muted-foreground mt-1">
-          Retrouvez les sessions ouvertes et postulez pour les opportunités qui vous intéressent
+          Sessions ouvertes auxquelles vous pouvez candidater
         </p>
       </div>
 
@@ -134,7 +134,7 @@ export default function MarketplaceDashboard() {
       {!loading && sessions.length > 0 && (
         <div className="mt-8 p-4 bg-blue-600/5 rounded-lg border border-blue-600/30">
           <p className="text-sm text-blue-600 dark:text-blue-400">
-            💡 <strong>Comment ça marche :</strong> Cliquez sur « Postuler » pour exprimer votre intérêt.
+            💡 <strong>Comment ça marche :</strong> Cliquez sur « Candidater » pour exprimer votre intérêt.
             L'entreprise examinera votre candidature et vous notifiera du résultat.
           </p>
         </div>

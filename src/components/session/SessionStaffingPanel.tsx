@@ -27,59 +27,70 @@ export default function SessionStaffingPanel({
   // OPERATIONAL STATUS BADGE
   // ============================================================
 
-  const operationalStyle = isOperational
-    ? 'bg-green-100 text-green-700'
-    : 'bg-orange-100 text-orange-700';
-  const operationalLabel = isOperational ? '✓ OPÉRATIONNEL' : '⚠ EN ATTENTE';
+  const getOperationalBadge = () => {
+    if (isOperational) {
+      return {
+        label: 'Prête à démarrer',
+        className: 'bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+      };
+    } else {
+      return {
+        label: 'Opérateurs manquants',
+        className: 'bg-destructive/10 text-destructive border border-destructive/20'
+      };
+    }
+  };
+
+  const badge = getOperationalBadge();
 
   // ============================================================
   // RENDER
   // ============================================================
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">
-        État du Staffing
+    <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
+      <h2 className="text-lg font-semibold text-foreground mb-4">
+        Affectations
       </h2>
 
       {/* Staffing Stats Grid */}
-      <div className="bg-gray-50 rounded-lg p-4 flex flex-col gap-3 mb-4">
+      <div className="bg-card border border-border rounded-lg p-4 flex flex-col gap-3 mb-4">
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-600">Opérateurs Requis</span>
-          <span className="text-lg font-semibold text-gray-800">
+          <span className="text-sm text-muted-foreground">Opérateurs requis</span>
+          <span className="text-lg font-semibold text-foreground">
             {minOperators}
           </span>
         </div>
 
-        <div className="flex justify-between items-center border-t border-gray-200 pt-3">
-          <span className="text-sm text-gray-600">Acceptés</span>
-          <span className="text-lg font-semibold text-green-700">
+        <div className="flex justify-between items-center border-t border-border pt-3">
+          <span className="text-sm text-muted-foreground">Confirmés</span>
+          <span className="text-lg font-semibold text-emerald-700 dark:text-emerald-400">
             {acceptedCount}
           </span>
         </div>
 
-        <div className="flex justify-between items-center border-t border-gray-200 pt-3">
-          <span className="text-sm text-gray-600">En Attente</span>
-          <span className="text-lg font-semibold text-yellow-700">
+        <div className="flex justify-between items-center border-t border-border pt-3">
+          <span className="text-sm text-muted-foreground">En attente de validation</span>
+          <span className="text-lg font-semibold text-blue-700 dark:text-blue-400">
             {pendingCount}
           </span>
         </div>
       </div>
 
       {/* Operational Status Badge */}
-      <div className={`text-center py-3 rounded-lg font-medium text-sm ${operationalStyle}`}>
-        {operationalLabel}
+      <div className={`text-center py-3 px-4 rounded-lg font-medium text-sm border ${badge.className}`}>
+        {badge.label}
       </div>
 
       {/* Status Message */}
       {!isOperational && (
-        <p className="text-xs text-gray-500 mt-3 text-center">
+        <p className="text-xs text-muted-foreground mt-3 text-center">
           {minOperators - acceptedCount} opérateur(s) supplémentaire(s) nécessaire(s)
         </p>
       )}
 
       {isOperational && (
-        <p className="text-xs text-green-600 mt-3 text-center">
+        <p className="text-xs text-emerald-700 dark:text-emerald-400 mt-3 text-center">
           Tous les opérateurs requis sont confirmés
         </p>
       )}

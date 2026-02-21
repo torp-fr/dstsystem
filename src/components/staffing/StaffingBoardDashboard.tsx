@@ -107,7 +107,7 @@ export default function StaffingBoardDashboard() {
       <div>
         <h1 className="text-3xl font-bold text-foreground">Affectations</h1>
         <p className="text-muted-foreground mt-1">
-          Validation humaine des candidatures — Acceptez ou rejetez les opérateurs
+          Valider les opérateurs pour débloquer les sessions
         </p>
       </div>
 
@@ -124,7 +124,7 @@ export default function StaffingBoardDashboard() {
 
         <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-            Opérationnelles
+            Prêtes à démarrer
           </div>
           <div className="text-3xl font-semibold text-emerald-600 dark:text-emerald-400 mt-2">
             {stats.operational}
@@ -133,7 +133,7 @@ export default function StaffingBoardDashboard() {
 
         <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-            En attente
+            Opérateurs manquants
           </div>
           <div className="text-3xl font-semibold text-destructive mt-2">
             {stats.awaiting}
