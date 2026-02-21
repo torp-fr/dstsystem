@@ -477,7 +477,6 @@ const ClientFormPage = () => {
         </form>
       </div>
     </div>
-      </div>
     </>
   );
 };
