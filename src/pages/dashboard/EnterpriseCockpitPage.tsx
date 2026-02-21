@@ -143,12 +143,15 @@ export default function EnterpriseCockpitPage() {
         <div>
           <h1 className="text-3xl font-bold text-foreground">Cockpit</h1>
           <p className="text-muted-foreground mt-1">
-            Vue synthèse des sessions en attente et opérationnelles
+            Vue globale — Quoi est prêt, quoi bloque, quoi attend validation
           </p>
         </div>
 
-        {/* System Health Indicator - Subtle */}
-        <div className="flex flex-col items-end gap-1">
+        {/* System Health Indicator - Subtle Non-Technical */}
+        <div className="flex flex-col items-end gap-0.5">
+          <div className="text-xs text-muted-foreground font-medium opacity-50">
+            État système
+          </div>
           <div
             className="flex items-center gap-2 px-3 py-1 rounded-lg border text-xs"
             style={{ borderColor: healthIndicator.color, opacity: 0.6 }}
@@ -158,7 +161,9 @@ export default function EnterpriseCockpitPage() {
               style={{ backgroundColor: healthIndicator.color }}
             />
             <span className="text-muted-foreground font-medium">
-              {healthIndicator.label}
+              {healthIndicator.label === 'ok' ? 'Nominal' :
+               healthIndicator.label === 'degraded' ? 'Dégradé' :
+               'Alerte'}
             </span>
           </div>
         </div>
