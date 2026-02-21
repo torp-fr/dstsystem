@@ -43,6 +43,11 @@ export default function RoleRouteGuard({
   useEffect(() => {
     const checkUserRole = async () => {
       try {
+        // PROTECTION: Don't check role until auth is loaded
+        if (loading) {
+          return;
+        }
+
         if (!user) {
           navigate('/login');
           return;
