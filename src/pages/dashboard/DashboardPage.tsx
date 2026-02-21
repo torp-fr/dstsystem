@@ -7,6 +7,7 @@ import { Users, TrendingUp, Package, DollarSign, Crosshair, Calculator, Calendar
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 
 const StatCard = ({ icon: Icon, label, value, color, trend }: any) => (
   <div className="bg-card rounded-lg border-border border-border-border p-4 hover:border-primary/30 transition-colors">
@@ -32,11 +33,12 @@ const StatCard = ({ icon: Icon, label, value, color, trend }: any) => (
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const { data: clients = [] } = useClients();
-  const { data: operators = [] } = useOperators();
-  const { data: costs = [] } = useCostStructures();
-  const { data: sessions = [] } = useShootingSessions();
-  const { data: quotesData = [] } = useQuotes();
+  // PART 2: Safe defaults - prevent crashes if hooks fail
+  const { data: clients = [] } = useClients() || {};
+  const { data: operators = [] } = useOperators() || {};
+  const { data: costs = [] } = useCostStructures() || {};
+  const { data: sessions = [] } = useShootingSessions() || {};
+  const { data: quotesData = [] } = useQuotes() || {};
 
   const totalClients = clients.length;
   const activeClients = clients.filter((c: any) => c.status === 'active').length;
@@ -63,6 +65,52 @@ const DashboardPage = () => {
   const totalSessions = sessions.length;
   const activeSessions = sessions.filter((s: any) => s.status === 'scheduled').length;
   const completedSessions = sessions.filter((s: any) => s.status === 'completed').length;
+
+  // PART 4: DEBUG fallback - prevent blank dashboard on initial load
+  const isDataLoading = !clients && !sessions && !operators;
+  if (isDataLoading) {
+    return (
+      <div className="p-6 text-muted-foreground text-center">
+        <p>Chargement du tableau de bord...</p>
+      </div>
+    );
+  }
+
+  // PART 1: Onboarding fallback - if all data is empty, show helpful message
+  const hasNoData = clients.length === 0 && sessions.length === 0 && operators.length === 0;
+  if (hasNoData) {
+    return (
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-3xl font-bold">Tableau de bord</h1>
+          <p className="text-muted-foreground text-sm">Suivez l'avancement et préparez vos prochaines sessions</p>
+        </div>
+        <Card>
+          <CardContent className="py-16 text-center">
+            <p className="text-muted-foreground">
+              Bienvenue 👋 — Commencez par créer votre premier client ou votre première session.
+            </p>
+            <div className="flex gap-2 justify-center mt-6">
+              <Button
+                size="sm"
+                onClick={() => navigate('/dashboard/clients/new')}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Créer un client
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => navigate('/dashboard/sessions/new')}
+              >
+                Créer une session
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
