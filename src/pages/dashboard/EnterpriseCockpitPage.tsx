@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PlanningSessionCard from '@/components/planning/PlanningSessionCard';
 import SkeletonCard from '@/components/common/SkeletonCard';
+import { useRuntimeHealth, getHealthIndicator, getOverallHealth } from '@/hooks/useRuntimeHealth';
 
 /**
  * EnterpriseCockpitPage — Enterprise Operations Overview
@@ -33,6 +34,9 @@ export default function EnterpriseCockpitPage() {
   const [sessions, setSessions] = useState<PlanningSession[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const health = useRuntimeHealth();
+  const overallHealth = getOverallHealth(health);
+  const healthIndicator = getHealthIndicator(overallHealth);
 
   // ============================================================
   // FETCH DATA FROM PlanningStateService
@@ -140,6 +144,33 @@ export default function EnterpriseCockpitPage() {
           <p className="text-muted-foreground mt-1">
             Vue synthèse des sessions en attente et opérationnelles
           </p>
+        </div>
+
+        {/* System Health Indicator */}
+        <div className="flex flex-col items-end gap-2">
+          <div
+            className="flex items-center gap-2 px-3 py-2 rounded-lg border"
+            style={{ borderColor: healthIndicator.color }}
+          >
+            <div
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: healthIndicator.color }}
+            />
+            <span className="text-sm font-medium text-gray-700">
+              {healthIndicator.label}
+            </span>
+          </div>
+          <div className="text-xs text-gray-500 space-y-1">
+            <div>DB: <span style={{ color: getHealthIndicator(health.supabase).color }}>
+              {health.supabase === 'ok' ? '✓' : '✗'}
+            </span></div>
+            <div>Auth: <span style={{ color: getHealthIndicator(health.auth).color }}>
+              {health.auth === 'ok' ? '✓' : '✗'}
+            </span></div>
+            <div>Net: <span style={{ color: getHealthIndicator(health.network).color }}>
+              {health.network === 'ok' ? '✓' : '⚠'}
+            </span></div>
+          </div>
         </div>
       </div>
 

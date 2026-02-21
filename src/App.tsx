@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { useTracking } from "@/hooks/useTracking";
+import { useEffect } from "react";
 import Index from "./pages/Index";
 import Solutions from "./pages/Solutions";
 import Programs from "./pages/Programs";
@@ -51,12 +52,18 @@ import PrivateRoute from "./components/auth/PrivateRoute";
 import AppErrorBoundary from "./components/common/AppErrorBoundary";
 import RoleRouteGuard from "./components/auth/RoleRouteGuard";
 import NotFound from "./pages/NotFound";
+import { initializeMonitoring } from "@/lib/monitoring";
 
 const queryClient = new QueryClient();
 
-// Routes component with tracking
+// Routes component with tracking and monitoring
 const AppRoutes = () => {
   useTracking();
+
+  // Initialize global error monitoring on app startup
+  useEffect(() => {
+    initializeMonitoring();
+  }, []);
 
   return (
     <Routes>
