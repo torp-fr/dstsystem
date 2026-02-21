@@ -1,18 +1,16 @@
 import React, { ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 /**
- * RoleRouteGuard — Role-Based Route Protection
+ * RoleRouteGuard — PRODUCTION SAFE VERSION
  *
- * Guards routes based on user role from AuthContext.
- * Redirects unauthorized users to dashboard home.
- *
- * PURE SECURITY LAYER:
- * - Does NOT modify UI or business logic
- * - Does NOT change route structure
- * - Only adds access control check
+ * FIXES:
+ * - Waits for AuthContext loading
+ * - No navigation inside useEffect
+ * - No redirect loops
+ * - No redirect while role undefined
  */
 
 interface RoleRouteGuardProps {
@@ -21,103 +19,91 @@ interface RoleRouteGuardProps {
   fallbackPath?: string;
 }
 
-/**
- * RoleRouteGuard Component
- *
- * Usage:
- * <RoleRouteGuard allowedRoles={['enterprise']}>
- *   <CockpitPage />
- * </RoleRouteGuard>
- */
 export default function RoleRouteGuard({
   children,
   allowedRoles,
   fallbackPath = '/dashboard/cockpit',
 }: RoleRouteGuardProps) {
-  const navigate = useNavigate();
   const { user, loading } = useAuth();
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [checking, setChecking] = useState(true);
 
-  // Get user role from user metadata or localStorage
+  const [userRole, setUserRole] = useState<string | null | undefined>(undefined);
+
+  /**
+   * 🔐 Resolve role ONLY when auth is ready
+   */
   useEffect(() => {
-    const checkUserRole = async () => {
-      try {
-        // PROTECTION: Don't check role until auth is loaded
-        if (loading) {
-          return;
-        }
+    if (loading) return;
 
-        if (!user) {
-          navigate('/login');
-          return;
-        }
-
-        // Try to get role from user metadata, app_metadata, or localStorage
-        const role =
-          user.user_metadata?.role ||
-          (user as any).app_metadata?.role ||
-          localStorage.getItem('user_role') ||
-          null;
-
-        if (!role) {
-          console.warn('[RoleGuard] No user role found, redirecting to login');
-          navigate('/login', { replace: true });
-          return;
-        }
-
-        setUserRole(role);
-
-        // Check if role is authorized for this route
-        if (!allowedRoles.includes(role)) {
-          console.warn(
-            `[RoleGuard] Unauthorized access. Role '${role}' not in [${allowedRoles.join(', ')}]. Redirecting to ${fallbackPath}`
-          );
-          navigate(fallbackPath, { replace: true });
-          return;
-        }
-
-        setChecking(false);
-      } catch (error) {
-        console.error('[RoleGuard] Error checking role:', error);
-        navigate(fallbackPath, { replace: true });
-      }
-    };
-
-    if (!loading) {
-      checkUserRole();
+    if (!user) {
+      setUserRole(null);
+      return;
     }
-  }, [user, loading, allowedRoles, navigate, fallbackPath]);
 
-  // Show nothing while checking
-  if (loading || checking) {
+    const role =
+      user.user_metadata?.role ||
+      (user as any).app_metadata?.role ||
+      localStorage.getItem('user_role') ||
+      null;
+
+    setUserRole(role);
+  }, [user, loading]);
+
+  /**
+   * 🧠 IMPORTANT LOGIC ORDER
+   */
+
+  // 1️⃣ Auth still loading → wait
+  if (loading) {
     return null;
   }
 
-  // If we get here, user is authorized
+  // 2️⃣ No user → login
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // 3️⃣ Role still resolving → wait
+  if (userRole === undefined) {
+    return null;
+  }
+
+  // 4️⃣ No role found → login
+  if (!userRole) {
+    console.warn('[RoleGuard] No user role found, redirecting to login');
+    return <Navigate to="/login" replace />;
+  }
+
+  // 5️⃣ Role not allowed → fallback
+  if (!allowedRoles.includes(userRole)) {
+    console.warn(
+      `[RoleGuard] Unauthorized access. Role '${userRole}' not allowed. Redirecting to ${fallbackPath}`
+    );
+    return <Navigate to={fallbackPath} replace />;
+  }
+
+  // ✅ Authorized
   return <>{children}</>;
 }
 
 /**
  * Hook to get current user role
- *
- * Usage:
- * const role = useUserRole();
- * if (role === 'enterprise') { ... }
  */
 export function useUserRole(): string | null {
   const { user } = useAuth();
   const [role, setRole] = useState<string | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!user) {
       setRole(null);
       return;
     }
 
-    const userRole = user.user_metadata?.role ||
-                     localStorage.getItem('user_role') ||
-                     null;
+    const userRole =
+      user.user_metadata?.role ||
+      (user as any).app_metadata?.role ||
+      localStorage.getItem('user_role') ||
+      null;
+
     setRole(userRole);
   }, [user]);
 
@@ -125,11 +111,7 @@ export function useUserRole(): string | null {
 }
 
 /**
- * Higher-order component for protecting routes
- *
- * Usage:
- * const ProtectedCockpit = withRoleGuard(CockpitPage, ['enterprise']);
- * <Route path="/dashboard/cockpit" element={<ProtectedCockpit />} />
+ * HOC helper
  */
 export function withRoleGuard(
   Component: React.ComponentType<any>,
