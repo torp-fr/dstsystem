@@ -32,14 +32,14 @@ interface RoleRouteGuardProps {
 export default function RoleRouteGuard({
   children,
   allowedRoles,
-  fallbackPath = '/dashboard',
+  fallbackPath = '/dashboard/cockpit',
 }: RoleRouteGuardProps) {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [userRole, setUserRole] = useState<string | null>(null);
   const [checking, setChecking] = useState(true);
 
-  // Get user role from localStorage (set during auth)
+  // Get user role from user metadata or localStorage
   useEffect(() => {
     const checkUserRole = async () => {
       try {
@@ -48,32 +48,34 @@ export default function RoleRouteGuard({
           return;
         }
 
-        // Get role from user metadata or localStorage
-        const role = user.user_metadata?.role ||
-                     localStorage.getItem('user_role') ||
-                     null;
+        // Try to get role from user metadata, app_metadata, or localStorage
+        const role =
+          user.user_metadata?.role ||
+          (user as any).app_metadata?.role ||
+          localStorage.getItem('user_role') ||
+          null;
 
         if (!role) {
-          console.warn('[RoleGuard] No user role found');
-          navigate(fallbackPath);
+          console.warn('[RoleGuard] No user role found, redirecting to fallback');
+          navigate(fallbackPath, { replace: true });
           return;
         }
 
         setUserRole(role);
 
-        // Check if role is authorized
+        // Check if role is authorized for this route
         if (!allowedRoles.includes(role)) {
           console.warn(
-            `[RoleGuard] Unauthorized access. Role '${role}' not in [${allowedRoles.join(', ')}]`
+            `[RoleGuard] Unauthorized access. Role '${role}' not in [${allowedRoles.join(', ')}]. Redirecting to ${fallbackPath}`
           );
-          navigate(fallbackPath);
+          navigate(fallbackPath, { replace: true });
           return;
         }
 
         setChecking(false);
       } catch (error) {
         console.error('[RoleGuard] Error checking role:', error);
-        navigate(fallbackPath);
+        navigate(fallbackPath, { replace: true });
       }
     };
 

@@ -94,35 +94,35 @@ export default function PlanningDashboard() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* FILTERS BAR */}
-      <div className="sticky top-0 bg-gray-50 border-b border-gray-200 p-4 rounded-lg">
+      <div className="sticky top-0 bg-card border-b border-border p-4 rounded-lg">
         <PlanningFilters onFiltersChange={setFilters} />
       </div>
 
       {/* STATS ROW */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-          <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
+          <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
             Total Sessions
           </div>
-          <div className="text-3xl font-semibold text-gray-800 mt-2">
+          <div className="text-3xl font-semibold text-foreground mt-2">
             {stats.total}
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-          <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
+          <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
             Operational
           </div>
-          <div className="text-3xl font-semibold text-green-700 mt-2">
+          <div className="text-3xl font-semibold text-green-600 dark:text-green-400 mt-2">
             {stats.operational}
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-          <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
+          <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
             Awaiting Staffing
           </div>
-          <div className="text-3xl font-semibold text-orange-700 mt-2">
+          <div className="text-3xl font-semibold text-orange-600 dark:text-orange-400 mt-2">
             {stats.awaitingStaffing}
           </div>
         </div>

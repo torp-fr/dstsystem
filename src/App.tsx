@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { useTracking } from "@/hooks/useTracking";
 import { useEffect } from "react";
@@ -23,8 +23,7 @@ import OperatorFormPage from "./pages/dashboard/OperatorFormPage";
 import OperatorCostAnalysisPage from "./pages/dashboard/OperatorCostAnalysisPage";
 import CostStructuresPage from "./pages/dashboard/CostStructuresPage";
 import CostStructureFormPage from "./pages/dashboard/CostStructureFormPage";
-import CalendarPage from "./pages/dashboard/CalendarPage";
-import PlanningPage from "./pages/dashboard/PlanningPage";
+import SessionsPage from "./pages/dashboard/SessionsPage";
 import MarketplacePage from "./pages/dashboard/MarketplacePage";
 import StaffingPage from "./pages/dashboard/StaffingPage";
 import ClientPage from "./pages/dashboard/ClientPage";
@@ -91,7 +90,8 @@ const AppRoutes = () => {
           </PrivateRoute>
         }
       >
-        <Route index element={<DashboardPage />} />
+        {/* Default Dashboard Routes to Cockpit */}
+        <Route index element={<Navigate to="/dashboard/cockpit" replace />} />
 
         {/* ENTERPRISE ROUTES - Role Guard */}
         <Route
@@ -115,8 +115,8 @@ const AppRoutes = () => {
         <Route path="costs/initialize" element={<CostInitializationPage />} />
         <Route path="costs/new" element={<CostStructureFormPage />} />
         <Route path="costs/:id/edit" element={<CostStructureFormPage />} />
-        <Route path="calendar" element={<CalendarPage />} />
-        <Route path="planning" element={<PlanningPage />} />
+        {/* Unified Sessions - Replaces Planning + Calendar */}
+        <Route path="sessions" element={<SessionsPage />} />
 
         {/* OPERATOR ROUTES - Role Guard */}
         <Route
