@@ -51,7 +51,7 @@ export default function MarketplaceDashboard() {
       });
 
       if (!result) {
-        setError('Service not initialized');
+        setError('Le service n\'est pas initialisé');
         setSessions([]);
         setLoading(false);
         return;
@@ -60,11 +60,11 @@ export default function MarketplaceDashboard() {
       if (result.success) {
         setSessions(result.sessions || []);
       } else {
-        setError(result.error || 'Failed to load marketplace sessions');
+        setError(result.error || 'Impossible de charger les opportunités');
         setSessions([]);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setSessions([]);
     } finally {
       setLoading(false);
@@ -88,15 +88,15 @@ export default function MarketplaceDashboard() {
     <div className="flex flex-col gap-6 w-full">
       {/* PAGE HEADER */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">Marketplace Sessions</h1>
-        <p className="text-gray-600 mt-1">
-          Browse available sessions and submit your applications
+        <h1 className="text-3xl font-bold text-foreground">Opportunités</h1>
+        <p className="text-muted-foreground mt-1">
+          Retrouvez les sessions ouvertes et postulez pour les opportunités qui vous intéressent
         </p>
       </div>
 
       {/* ERROR STATE */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+        <div className="bg-destructive/5 border border-destructive/30 rounded-lg p-4 text-destructive text-sm">
           {error}
         </div>
       )}
@@ -132,10 +132,10 @@ export default function MarketplaceDashboard() {
 
       {/* INFO TEXT */}
       {!loading && sessions.length > 0 && (
-        <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <p className="text-sm text-blue-700">
-            💡 <strong>Tip:</strong> Click "Apply to Session" to express your interest.
-            The enterprise will review your application and notify you of the outcome.
+        <div className="mt-8 p-4 bg-blue-600/5 rounded-lg border border-blue-600/30">
+          <p className="text-sm text-blue-600 dark:text-blue-400">
+            💡 <strong>Comment ça marche :</strong> Cliquez sur « Postuler » pour exprimer votre intérêt.
+            L'entreprise examinera votre candidature et vous notifiera du résultat.
           </p>
         </div>
       )}

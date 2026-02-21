@@ -57,7 +57,7 @@ export default function PlanningDashboard() {
       const result = (window as any).Domain?.PlanningStateService?.getPlanningSessions(filters);
 
       if (!result) {
-        setError('Service not initialized');
+        setError('Le service n\'est pas initialisé');
         setSessions([]);
         setLoading(false);
         return;
@@ -66,11 +66,11 @@ export default function PlanningDashboard() {
       if (result.success) {
         setSessions(result.sessions || []);
       } else {
-        setError(result.error || 'Failed to load sessions');
+        setError(result.error || 'Impossible de charger les sessions');
         setSessions([]);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setSessions([]);
     } finally {
       setLoading(false);
@@ -102,7 +102,7 @@ export default function PlanningDashboard() {
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-            Total Sessions
+            Au total
           </div>
           <div className="text-3xl font-semibold text-foreground mt-2">
             {stats.total}
@@ -111,18 +111,18 @@ export default function PlanningDashboard() {
 
         <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-            Operational
+            Prêtes à démarrer
           </div>
-          <div className="text-3xl font-semibold text-green-600 dark:text-green-400 mt-2">
+          <div className="text-3xl font-semibold text-emerald-600 dark:text-emerald-400 mt-2">
             {stats.operational}
           </div>
         </div>
 
         <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
           <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-            Awaiting Staffing
+            Opérateurs manquants
           </div>
-          <div className="text-3xl font-semibold text-orange-600 dark:text-orange-400 mt-2">
+          <div className="text-3xl font-semibold text-destructive mt-2">
             {stats.awaitingStaffing}
           </div>
         </div>
@@ -130,7 +130,7 @@ export default function PlanningDashboard() {
 
       {/* ERROR STATE */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+        <div className="bg-destructive/5 border border-destructive/30 rounded-lg p-4 text-destructive text-sm">
           {error}
         </div>
       )}
@@ -146,8 +146,8 @@ export default function PlanningDashboard() {
       {!loading && sessions.length === 0 && !error && (
         <EmptyState
           icon={FileText}
-          title="No sessions found"
-          description="Adjust your filters or create a new session to get started."
+          title="Aucune session trouvée"
+          description="Ajustez vos filtres ou créez une nouvelle session pour commencer."
         />
       )}
 

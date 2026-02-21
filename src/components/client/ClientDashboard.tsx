@@ -49,7 +49,7 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
       const result = (window as any).Domain?.PlanningStateService?.getClientPlanning(clientId);
 
       if (!result) {
-        setError('Service not initialized');
+        setError('Le service n\'est pas initialisé');
         setSessions([]);
         setLoading(false);
         return;
@@ -58,11 +58,11 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
       if (result.success) {
         setSessions(result.sessions || []);
       } else {
-        setError(result.error || 'Failed to load sessions');
+        setError(result.error || 'Impossible de charger vos sessions');
         setSessions([]);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setSessions([]);
     } finally {
       setLoading(false);
@@ -87,9 +87,9 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
       {/* PAGE HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Mes Sessions</h1>
-          <p className="text-gray-600 mt-1">
-            Gérer vos programmes et suivre le staffing
+          <h1 className="text-3xl font-bold text-foreground">Mes Programmes</h1>
+          <p className="text-muted-foreground mt-1">
+            Créez et suivez vos sessions de tir
           </p>
         </div>
 
@@ -103,7 +103,7 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
 
       {/* CREATE SESSION FORM */}
       {showForm && (
-        <div className="bg-blue-50 rounded-2xl border border-blue-200 p-4">
+        <div className="bg-blue-600/5 rounded-2xl border border-blue-600/30 p-4">
           <ClientCreateSessionForm
             clientId={clientId}
             onSuccess={handleSessionCreated}
@@ -113,7 +113,7 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
 
       {/* ERROR STATE */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+        <div className="bg-destructive/5 border border-destructive/30 rounded-lg p-4 text-destructive text-sm">
           {error}
         </div>
       )}

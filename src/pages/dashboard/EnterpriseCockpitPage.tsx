@@ -51,7 +51,7 @@ export default function EnterpriseCockpitPage() {
       const result = (window as any).Domain?.PlanningStateService?.getPlanningSessions();
 
       if (!result) {
-        setError('Service not initialized');
+        setError('Le service n\'est pas initialisé');
         setSessions([]);
         setLoading(false);
         return;
@@ -60,11 +60,11 @@ export default function EnterpriseCockpitPage() {
       if (result.success) {
         setSessions(result.sessions || []);
       } else {
-        setError(result.error || 'Failed to load sessions');
+        setError(result.error || 'Impossible de charger les sessions');
         setSessions([]);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setSessions([]);
     } finally {
       setLoading(false);
@@ -88,19 +88,20 @@ export default function EnterpriseCockpitPage() {
   // ============================================================
 
   const renderSection = (title: string, subtitle: string, sessionList: PlanningSession[], color: string) => {
-    const colorStyles = {
-      orange: 'bg-orange-50 border-orange-200',
-      green: 'bg-green-50 border-green-200',
-      blue: 'bg-blue-50 border-blue-200',
-      orange_text: 'text-orange-700',
-      green_text: 'text-green-700',
-      blue_text: 'text-blue-700'
-    };
-
+    // Theme-aware color mapping
     const colorMap = {
-      orange: { bg: colorStyles['orange'], text: colorStyles['orange_text'] },
-      green: { bg: colorStyles['green'], text: colorStyles['green_text'] },
-      blue: { bg: colorStyles['blue'], text: colorStyles['blue_text'] }
+      orange: {
+        bg: 'bg-destructive/5 border-destructive/30',
+        text: 'text-destructive',
+      },
+      green: {
+        bg: 'bg-emerald-600/5 border-emerald-600/30',
+        text: 'text-emerald-600 dark:text-emerald-400',
+      },
+      blue: {
+        bg: 'bg-blue-600/5 border-blue-600/30',
+        text: 'text-blue-600 dark:text-blue-400',
+      }
     };
 
     const currentColor = colorMap[color as keyof typeof colorMap] || colorMap.orange;
@@ -111,14 +112,14 @@ export default function EnterpriseCockpitPage() {
           <h2 className={`text-lg font-semibold ${currentColor.text}`}>
             {title}
           </h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             {subtitle} ({sessionList.length})
           </p>
         </div>
 
         {sessionList.length === 0 ? (
-          <div className="text-center py-12 text-gray-400">
-            No sessions in this category.
+          <div className="text-center py-12 text-muted-foreground">
+            Aucune session dans cette catégorie.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -146,37 +147,26 @@ export default function EnterpriseCockpitPage() {
           </p>
         </div>
 
-        {/* System Health Indicator */}
-        <div className="flex flex-col items-end gap-2">
+        {/* System Health Indicator - Subtle */}
+        <div className="flex flex-col items-end gap-1">
           <div
-            className="flex items-center gap-2 px-3 py-2 rounded-lg border"
-            style={{ borderColor: healthIndicator.color }}
+            className="flex items-center gap-2 px-3 py-1 rounded-lg border text-xs"
+            style={{ borderColor: healthIndicator.color, opacity: 0.6 }}
           >
             <div
-              className="w-2 h-2 rounded-full"
+              className="w-1.5 h-1.5 rounded-full"
               style={{ backgroundColor: healthIndicator.color }}
             />
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-muted-foreground font-medium">
               {healthIndicator.label}
             </span>
-          </div>
-          <div className="text-xs text-gray-500 space-y-1">
-            <div>DB: <span style={{ color: getHealthIndicator(health.supabase).color }}>
-              {health.supabase === 'ok' ? '✓' : '✗'}
-            </span></div>
-            <div>Auth: <span style={{ color: getHealthIndicator(health.auth).color }}>
-              {health.auth === 'ok' ? '✓' : '✗'}
-            </span></div>
-            <div>Net: <span style={{ color: getHealthIndicator(health.network).color }}>
-              {health.network === 'ok' ? '✓' : '⚠'}
-            </span></div>
           </div>
         </div>
       </div>
 
       {/* ERROR STATE */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+        <div className="bg-destructive/5 border border-destructive/30 rounded-lg p-4 text-destructive text-sm">
           {error}
         </div>
       )}
@@ -200,24 +190,24 @@ export default function EnterpriseCockpitPage() {
         <div className="flex flex-col gap-12">
           {/* SECTION 1: AWAITING STAFFING */}
           {renderSection(
-            '⚠ Sessions Awaiting Staffing',
-            'Staffing not yet complete',
+            '⚠️ Opérateurs manquants',
+            'Sessions bloquées en attente d\'affectations',
             categorizedSessions.awaitingStaffing,
             'orange'
           )}
 
           {/* SECTION 2: OPERATIONAL */}
           {renderSection(
-            '✓ Operational Sessions',
-            'Ready for execution',
+            '✓ Prêtes à démarrer',
+            'Toutes les affectations confirmées',
             categorizedSessions.operational,
             'green'
           )}
 
           {/* SECTION 3: PENDING CONFIRMATION */}
           {renderSection(
-            '⏳ Pending Confirmation',
-            'Awaiting client or admin confirmation',
+            '⏳ En validation',
+            'Client ou administrateur doit confirmer',
             categorizedSessions.pendingConfirmation,
             'blue'
           )}

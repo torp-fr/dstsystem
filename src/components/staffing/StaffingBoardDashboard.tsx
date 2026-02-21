@@ -54,7 +54,7 @@ export default function StaffingBoardDashboard() {
       });
 
       if (!result) {
-        setError('Service not initialized');
+        setError('Le service n\'est pas initialisé');
         setSessions([]);
         setLoading(false);
         return;
@@ -67,11 +67,11 @@ export default function StaffingBoardDashboard() {
         );
         setSessions(filteredSessions);
       } else {
-        setError(result.error || 'Failed to load sessions');
+        setError(result.error || 'Impossible de charger les sessions');
         setSessions([]);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setSessions([]);
     } finally {
       setLoading(false);
@@ -105,37 +105,37 @@ export default function StaffingBoardDashboard() {
     <div className="flex flex-col gap-6 w-full">
       {/* PAGE HEADER */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">Staffing Board</h1>
-        <p className="text-gray-600 mt-1">
-          Validation humaine des opérateurs — Accepter ou rejeter les candidatures
+        <h1 className="text-3xl font-bold text-foreground">Affectations</h1>
+        <p className="text-muted-foreground mt-1">
+          Validation humaine des candidatures — Acceptez ou rejetez les opérateurs
         </p>
       </div>
 
       {/* STATS ROW */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-          <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">
-            Total Sessions
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
+          <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
+            Au total
           </div>
-          <div className="text-3xl font-semibold text-gray-800 mt-2">
+          <div className="text-3xl font-semibold text-foreground mt-2">
             {stats.total}
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-          <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">
-            Operational
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
+          <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
+            Opérationnelles
           </div>
-          <div className="text-3xl font-semibold text-green-700 mt-2">
+          <div className="text-3xl font-semibold text-emerald-600 dark:text-emerald-400 mt-2">
             {stats.operational}
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-          <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">
-            Awaiting Staffing
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-4">
+          <div className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
+            En attente
           </div>
-          <div className="text-3xl font-semibold text-orange-700 mt-2">
+          <div className="text-3xl font-semibold text-destructive mt-2">
             {stats.awaiting}
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function StaffingBoardDashboard() {
 
       {/* ERROR STATE */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+        <div className="bg-destructive/5 border border-destructive/30 rounded-lg p-4 text-destructive text-sm">
           {error}
         </div>
       )}
@@ -179,10 +179,10 @@ export default function StaffingBoardDashboard() {
 
       {/* INSTRUCTION */}
       {!loading && sessions.length > 0 && (
-        <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <p className="text-sm text-blue-700">
-            💡 <strong>Procédure:</strong> Examinez chaque candidature en attente et cliquez
-            sur "Accepter" ou "Rejeter". Les candidatures acceptées compteront vers le total
+        <div className="mt-8 p-4 bg-blue-600/5 rounded-lg border border-blue-600/30">
+          <p className="text-sm text-blue-600 dark:text-blue-400">
+            💡 <strong>Procédure :</strong> Examinez chaque candidature en attente et cliquez
+            sur « Accepter » ou « Rejeter ». Les candidatures acceptées compteront vers le nombre
             requis d'opérateurs.
           </p>
         </div>
