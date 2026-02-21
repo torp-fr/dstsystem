@@ -49,6 +49,7 @@ import SettingsPage from "./pages/dashboard/SettingsPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import AppErrorBoundary from "./components/common/AppErrorBoundary";
+import RoleRouteGuard from "./components/auth/RoleRouteGuard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -82,7 +83,16 @@ const AppRoutes = () => {
         }
       >
         <Route index element={<DashboardPage />} />
-        <Route path="cockpit" element={<EnterpriseCockpitPage />} />
+
+        {/* ENTERPRISE ROUTES - Role Guard */}
+        <Route
+          path="cockpit"
+          element={
+            <RoleRouteGuard allowedRoles={['enterprise']}>
+              <EnterpriseCockpitPage />
+            </RoleRouteGuard>
+          }
+        />
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<ClientFormPage />} />
         <Route path="clients/:id" element={<ClientDetailPage />} />
@@ -98,9 +108,36 @@ const AppRoutes = () => {
         <Route path="costs/:id/edit" element={<CostStructureFormPage />} />
         <Route path="calendar" element={<CalendarPage />} />
         <Route path="planning" element={<PlanningPage />} />
-        <Route path="marketplace" element={<MarketplacePage />} />
-        <Route path="staffing" element={<StaffingPage />} />
-        <Route path="client" element={<ClientPage />} />
+
+        {/* OPERATOR ROUTES - Role Guard */}
+        <Route
+          path="marketplace"
+          element={
+            <RoleRouteGuard allowedRoles={['operator']}>
+              <MarketplacePage />
+            </RoleRouteGuard>
+          }
+        />
+
+        {/* ENTERPRISE STAFFING - Role Guard */}
+        <Route
+          path="staffing"
+          element={
+            <RoleRouteGuard allowedRoles={['enterprise']}>
+              <StaffingPage />
+            </RoleRouteGuard>
+          }
+        />
+
+        {/* CLIENT ROUTES - Role Guard */}
+        <Route
+          path="client"
+          element={
+            <RoleRouteGuard allowedRoles={['client']}>
+              <ClientPage />
+            </RoleRouteGuard>
+          }
+        />
         <Route path="sessions/new" element={<SessionFormPage />} />
         <Route path="sessions/:id/edit" element={<SessionFormPage />} />
         <Route path="sessions/:id" element={<SessionDetailPage />} />
