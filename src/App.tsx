@@ -53,6 +53,7 @@ import AppErrorBoundary from "./components/common/AppErrorBoundary";
 import RoleRouteGuard from "./components/auth/RoleRouteGuard";
 import NotFound from "./pages/NotFound";
 import { initializeMonitoring } from "@/lib/monitoring";
+import { initializeRuntimeLock } from "@/lib/runtimeLock";
 
 const queryClient = new QueryClient();
 
@@ -60,9 +61,10 @@ const queryClient = new QueryClient();
 const AppRoutes = () => {
   useTracking();
 
-  // Initialize global error monitoring on app startup
+  // Initialize production runtime lock and global error monitoring on app startup
   useEffect(() => {
-    initializeMonitoring();
+    initializeRuntimeLock(); // FINAL LOCK - must run first
+    initializeMonitoring(); // Global error handlers
   }, []);
 
   return (
