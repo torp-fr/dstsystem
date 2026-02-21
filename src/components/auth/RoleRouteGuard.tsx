@@ -44,7 +44,7 @@ export default function RoleRouteGuard({
     const checkUserRole = async () => {
       try {
         if (!user) {
-          navigate('/auth/login');
+          navigate('/login');
           return;
         }
 
@@ -57,7 +57,7 @@ export default function RoleRouteGuard({
 
         if (!role) {
           console.warn('[RoleGuard] No user role found, redirecting to login');
-          navigate('/auth/login', { replace: true });
+          navigate('/login', { replace: true });
           return;
         }
 
