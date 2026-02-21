@@ -1,8 +1,8 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
+import { useUserRole } from '@/components/auth/RoleRouteGuard';
 import {
-  BarChart3,
   Users,
   Package,
   DollarSign,
@@ -13,7 +13,6 @@ import {
   TrendingUp,
   Crosshair,
   Calculator,
-  Calendar,
   CalendarDays,
   ShoppingCart,
   Briefcase,
@@ -29,23 +28,28 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuth();
+  const userRole = useUserRole();
 
-  const menuItems = [
-    { icon: BarChart3, label: 'Tableau de bord', path: '/dashboard' },
-    { icon: LayoutDashboard, label: 'Cockpit', path: '/dashboard/cockpit' },
+  // Define menu items with role-based visibility
+  const baseMenuItems = [
+    { icon: LayoutDashboard, label: 'Cockpit', path: '/dashboard/cockpit', requiredRole: 'enterprise' },
     { icon: Users, label: 'Clients', path: '/dashboard/clients' },
     { icon: Crosshair, label: 'Opérateurs', path: '/dashboard/operators' },
     { icon: Calculator, label: 'Coûts', path: '/dashboard/costs' },
-    { icon: Calendar, label: 'Calendrier', path: '/dashboard/calendar' },
-    { icon: CalendarDays, label: 'Planning', path: '/dashboard/planning' },
-    { icon: ShoppingCart, label: 'Marketplace', path: '/dashboard/marketplace' },
-    { icon: Users, label: 'Staffing', path: '/dashboard/staffing' },
-    { icon: Briefcase, label: 'Portail Client', path: '/dashboard/client' },
-    { icon: TrendingUp, label: 'Analytics', path: '/dashboard/analytics' },
+    { icon: CalendarDays, label: 'Sessions', path: '/dashboard/sessions' },
+    { icon: Users, label: 'Affectations', path: '/dashboard/staffing', requiredRole: 'enterprise' },
+    { icon: ShoppingCart, label: 'Marketplace', path: '/dashboard/marketplace', requiredRole: 'operator' },
+    { icon: Briefcase, label: 'Portail Client', path: '/dashboard/client', requiredRole: 'client' },
     { icon: Package, label: 'Offres & Formules', path: '/dashboard/offers' },
     { icon: DollarSign, label: 'Finances', path: '/dashboard/finances' },
     { icon: Settings, label: 'Paramètres', path: '/dashboard/settings' },
   ];
+
+  // Filter menu items based on user role
+  const menuItems = baseMenuItems.filter(item => {
+    if (!item.requiredRole) return true;
+    return userRole === item.requiredRole;
+  });
 
   const isActive = (path: string) => location.pathname === path;
 

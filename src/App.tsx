@@ -2,9 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { useTracking } from "@/hooks/useTracking";
+import { useEffect } from "react";
 import Index from "./pages/Index";
 import Solutions from "./pages/Solutions";
 import Programs from "./pages/Programs";
@@ -22,8 +23,7 @@ import OperatorFormPage from "./pages/dashboard/OperatorFormPage";
 import OperatorCostAnalysisPage from "./pages/dashboard/OperatorCostAnalysisPage";
 import CostStructuresPage from "./pages/dashboard/CostStructuresPage";
 import CostStructureFormPage from "./pages/dashboard/CostStructureFormPage";
-import CalendarPage from "./pages/dashboard/CalendarPage";
-import PlanningPage from "./pages/dashboard/PlanningPage";
+import SessionsPage from "./pages/dashboard/SessionsPage";
 import MarketplacePage from "./pages/dashboard/MarketplacePage";
 import StaffingPage from "./pages/dashboard/StaffingPage";
 import ClientPage from "./pages/dashboard/ClientPage";
@@ -49,13 +49,22 @@ import SettingsPage from "./pages/dashboard/SettingsPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import AppErrorBoundary from "./components/common/AppErrorBoundary";
+import RoleRouteGuard from "./components/auth/RoleRouteGuard";
 import NotFound from "./pages/NotFound";
+import { initializeMonitoring } from "@/lib/monitoring";
+import { initializeRuntimeLock } from "@/lib/runtimeLock";
 
 const queryClient = new QueryClient();
 
-// Routes component with tracking
+// Routes component with tracking and monitoring
 const AppRoutes = () => {
   useTracking();
+
+  // Initialize production runtime lock and global error monitoring on app startup
+  useEffect(() => {
+    initializeRuntimeLock(); // FINAL LOCK - must run first
+    initializeMonitoring(); // Global error handlers
+  }, []);
 
   return (
     <Routes>
@@ -81,8 +90,18 @@ const AppRoutes = () => {
           </PrivateRoute>
         }
       >
-        <Route index element={<DashboardPage />} />
-        <Route path="cockpit" element={<EnterpriseCockpitPage />} />
+        {/* Default Dashboard Routes to Cockpit */}
+        <Route index element={<Navigate to="/dashboard/cockpit" replace />} />
+
+        {/* ENTERPRISE ROUTES - Role Guard */}
+        <Route
+          path="cockpit"
+          element={
+            <RoleRouteGuard allowedRoles={['enterprise']}>
+              <EnterpriseCockpitPage />
+            </RoleRouteGuard>
+          }
+        />
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<ClientFormPage />} />
         <Route path="clients/:id" element={<ClientDetailPage />} />
@@ -96,11 +115,38 @@ const AppRoutes = () => {
         <Route path="costs/initialize" element={<CostInitializationPage />} />
         <Route path="costs/new" element={<CostStructureFormPage />} />
         <Route path="costs/:id/edit" element={<CostStructureFormPage />} />
-        <Route path="calendar" element={<CalendarPage />} />
-        <Route path="planning" element={<PlanningPage />} />
-        <Route path="marketplace" element={<MarketplacePage />} />
-        <Route path="staffing" element={<StaffingPage />} />
-        <Route path="client" element={<ClientPage />} />
+        {/* Unified Sessions - Replaces Planning + Calendar */}
+        <Route path="sessions" element={<SessionsPage />} />
+
+        {/* OPERATOR ROUTES - Role Guard */}
+        <Route
+          path="marketplace"
+          element={
+            <RoleRouteGuard allowedRoles={['operator']}>
+              <MarketplacePage />
+            </RoleRouteGuard>
+          }
+        />
+
+        {/* ENTERPRISE STAFFING - Role Guard */}
+        <Route
+          path="staffing"
+          element={
+            <RoleRouteGuard allowedRoles={['enterprise']}>
+              <StaffingPage />
+            </RoleRouteGuard>
+          }
+        />
+
+        {/* CLIENT ROUTES - Role Guard */}
+        <Route
+          path="client"
+          element={
+            <RoleRouteGuard allowedRoles={['client']}>
+              <ClientPage />
+            </RoleRouteGuard>
+          }
+        />
         <Route path="sessions/new" element={<SessionFormPage />} />
         <Route path="sessions/:id/edit" element={<SessionFormPage />} />
         <Route path="sessions/:id" element={<SessionDetailPage />} />

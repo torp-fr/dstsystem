@@ -19,7 +19,7 @@ export default function ClientPage() {
     return (
       <div className="flex flex-col gap-6 w-full">
         <div className="text-center py-12">
-          <p className="text-red-600">Client ID not found. Please contact support.</p>
+          <p className="text-destructive">ID client non trouvé. Veuillez contacter le support.</p>
         </div>
       </div>
     );
@@ -27,14 +27,6 @@ export default function ClientPage() {
 
   return (
     <div className="flex flex-col gap-6 w-full">
-      {/* PAGE HEADER */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800">Portail Client</h1>
-        <p className="text-gray-600 mt-1">
-          Gérer vos programmes de formation au tir
-        </p>
-      </div>
-
       {/* CLIENT DASHBOARD */}
       <ClientDashboard clientId={clientId} />
     </div>

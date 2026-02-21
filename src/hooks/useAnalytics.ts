@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { USE_SUPABASE, assertSupabaseEnabled } from '@/config/runtime';
+import { logger } from '@/lib/logger';
 
 export const usePageVisits = () => {
   return useQuery({
@@ -11,7 +12,7 @@ export const usePageVisits = () => {
       }
 
       try {
-        console.log('[Analytics] Fetching page_visits from Supabase...');
+        logger.log('[Analytics] Fetching page_visits from Supabase...');
         const { data, error } = await supabase
           .from('page_visits')
           .select('*')
@@ -23,11 +24,11 @@ export const usePageVisits = () => {
         }
 
         if (data && data.length > 0) {
-          console.log('[Analytics] Page visits loaded from Supabase:', data.length);
+          logger.log('[Analytics] Page visits loaded from Supabase:', data.length);
           return data;
         }
 
-        console.log('[Analytics] No page visits data found in Supabase');
+        logger.log('[Analytics] No page visits data found in Supabase');
         return [];
       } catch (error) {
         console.error('[Analytics] Failed to fetch page_visits from Supabase:', error);
@@ -64,7 +65,7 @@ export const useSessions = () => {
       }
 
       try {
-        console.log('[Analytics] Fetching visitor sessions from Supabase...');
+        logger.log('[Analytics] Fetching visitor sessions from Supabase...');
         const { data, error } = await supabase
           .from('sessions')
           .select('*')
@@ -76,11 +77,11 @@ export const useSessions = () => {
         }
 
         if (data && data.length > 0) {
-          console.log('[Analytics] Sessions loaded from Supabase:', data.length);
+          logger.log('[Analytics] Sessions loaded from Supabase:', data.length);
           return data;
         }
 
-        console.log('[Analytics] No sessions data found in Supabase');
+        logger.log('[Analytics] No sessions data found in Supabase');
         return [];
       } catch (error) {
         console.error('[Analytics] Failed to fetch sessions from Supabase:', error);

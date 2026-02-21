@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { USE_SUPABASE, assertSupabaseEnabled } from '@/config/runtime';
+import { logger } from './logger';
 
 // Generate or retrieve session ID
 // In production, session ID is managed by Supabase.
@@ -29,7 +30,7 @@ export const getGeoLocation = async () => {
     }
 
     const data = await response.json();
-    console.log('[Tracking] Geolocation data:', data);
+    logger.log('[Tracking] Geolocation data:', data);
 
     return {
       ip: data.ip || null,
@@ -72,7 +73,7 @@ export const trackPageVisit = async (pageUrl: string, pageTitle?: string) => {
       visited_at: new Date().toISOString(),
     };
 
-    console.log('[Tracking] Tracking page visit to Supabase:', pageVisitData);
+    logger.log('[Tracking] Tracking page visit to Supabase:', pageVisitData);
 
     // Primary: Save to Supabase (required in production)
     const { error } = await supabase.from('page_visits').insert([pageVisitData]);
@@ -90,9 +91,9 @@ export const trackPageVisit = async (pageUrl: string, pageTitle?: string) => {
       const localVisits = JSON.parse(localStorage.getItem('dst-page-visits') || '[]');
       localVisits.push(pageVisitData);
       localStorage.setItem('dst-page-visits', JSON.stringify(localVisits));
-      console.log('[Tracking] Page visit saved to localStorage as fallback');
+      logger.log('[Tracking] Page visit saved to localStorage as fallback');
     } else {
-      console.log('[Tracking] Page visit tracked to Supabase successfully');
+      logger.log('[Tracking] Page visit tracked to Supabase successfully');
     }
   } catch (error) {
     console.error('[Tracking] Track page visit error:', error);
@@ -122,7 +123,7 @@ export const trackSessionStart = async () => {
       started_at: new Date().toISOString(),
     };
 
-    console.log('[Tracking] Starting session in Supabase:', sessionData);
+    logger.log('[Tracking] Starting session in Supabase:', sessionData);
 
     // Primary: Save to Supabase (required in production)
     const { error } = await supabase.from('sessions').insert([sessionData]);
@@ -130,7 +131,7 @@ export const trackSessionStart = async () => {
     if (error) {
       // Ignore duplicate key errors (session already exists)
       if (error.code === '23505') {
-        console.log('[Tracking] Session already exists in Supabase, skipping insert');
+        logger.log('[Tracking] Session already exists in Supabase, skipping insert');
       } else {
         console.error('[Tracking] Session insert error:', error);
 
@@ -146,11 +147,11 @@ export const trackSessionStart = async () => {
         if (!existingSession) {
           localSessions.push(sessionData);
           localStorage.setItem('dst-sessions', JSON.stringify(localSessions));
-          console.log('[Tracking] Session saved to localStorage as fallback');
+          logger.log('[Tracking] Session saved to localStorage as fallback');
         }
       }
     } else {
-      console.log('[Tracking] Session started successfully in Supabase');
+      logger.log('[Tracking] Session started successfully in Supabase');
     }
   } catch (error) {
     console.error('[Tracking] Track session error:', error);
