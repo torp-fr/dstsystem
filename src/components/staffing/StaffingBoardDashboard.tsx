@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Users } from 'lucide-react';
 import StaffingSessionCard from './StaffingSessionCard';
-import StaffingEmptyState from './StaffingEmptyState';
+import EmptyState from '@/components/common/EmptyState';
+import SkeletonCard from '@/components/common/SkeletonCard';
 
 /**
  * StaffingBoardDashboard — Enterprise Staffing Management
@@ -148,14 +150,18 @@ export default function StaffingBoardDashboard() {
 
       {/* LOADING STATE */}
       {loading && (
-        <div className="text-center py-12 text-gray-500">
-          Loading staffing sessions...
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <SkeletonCard count={6} />
         </div>
       )}
 
       {/* EMPTY STATE */}
       {!loading && sessions.length === 0 && !error && (
-        <StaffingEmptyState />
+        <EmptyState
+          icon={Users}
+          title="Aucune session en attente de staffing"
+          description="Toutes les sessions marketplace actuelles sont opérationnelles ou complètement staffées."
+        />
       )}
 
       {/* SESSIONS GRID */}

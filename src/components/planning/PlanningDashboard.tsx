@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { FileText } from 'lucide-react';
 import PlanningFilters from './PlanningFilters';
 import PlanningSessionCard from './PlanningSessionCard';
+import EmptyState from '@/components/common/EmptyState';
+import SkeletonCard from '@/components/common/SkeletonCard';
 
 /**
  * PlanningDashboard — Enterprise/Client Planning View
@@ -134,16 +137,18 @@ export default function PlanningDashboard() {
 
       {/* LOADING STATE */}
       {loading && (
-        <div className="text-center py-8 text-gray-500">
-          Loading sessions...
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <SkeletonCard count={6} />
         </div>
       )}
 
       {/* SESSIONS GRID */}
       {!loading && sessions.length === 0 && !error && (
-        <div className="text-center py-12 text-gray-400">
-          No sessions found matching your filters.
-        </div>
+        <EmptyState
+          icon={FileText}
+          title="No sessions found"
+          description="Adjust your filters or create a new session to get started."
+        />
       )}
 
       {!loading && sessions.length > 0 && (

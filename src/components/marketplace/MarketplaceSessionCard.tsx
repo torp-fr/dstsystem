@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import StatusBadge from '@/components/common/StatusBadge';
 import MarketplaceApplicationBadge from './MarketplaceApplicationBadge';
 
 /**
@@ -40,6 +42,7 @@ export default function MarketplaceSessionCard({
   onApply
 }: MarketplaceSessionCardProps) {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [hasApplied, setHasApplied] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState<'pending' | 'accepted' | 'rejected' | null>(null);
   const [isApplying, setIsApplying] = useState(false);
@@ -91,15 +94,41 @@ export default function MarketplaceSessionCard({
       if (result && result.success) {
         setHasApplied(true);
         setApplicationStatus('pending');
+        toast({
+          title: 'Application submitted',
+          description: 'Your application has been submitted successfully.',
+          variant: 'default'
+        });
         onApply(session.id);
       } else {
-        setError(result?.error || 'Failed to apply to session');
+        const errorMsg = result?.error || 'Failed to apply to session';
+        setError(errorMsg);
+        toast({
+          title: 'Error',
+          description: errorMsg,
+          variant: 'destructive'
+        });
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+      setError(errorMsg);
+      toast({
+        title: 'Error',
+        description: errorMsg,
+        variant: 'destructive'
+      });
     } finally {
       setIsApplying(false);
     }
+  };
+
+  // ============================================================
+  // HANDLE NAVIGATION
+  // ============================================================
+
+  const handleNavigate = () => {
+    if (!session?.id) return;
+    navigate(`/dashboard/sessions/${session.id}`);
   };
 
   // ============================================================
@@ -142,7 +171,7 @@ export default function MarketplaceSessionCard({
 
   return (
     <div
-      onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+      onClick={handleNavigate}
       className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
     >
       {/* HEADER */}
@@ -163,9 +192,7 @@ export default function MarketplaceSessionCard({
 
         <div className="flex flex-col gap-2 items-end">
           {/* Status Badge */}
-          <span className={`text-xs font-medium px-2 py-1 rounded ${getStatusBadgeStyle(session.status)}`}>
-            {getStatusLabel(session.status)}
-          </span>
+          <StatusBadge status={session.status} type="session" size="sm" />
 
           {/* Marketplace Badge */}
           {session.marketplaceVisible && (

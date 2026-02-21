@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import StatusBadge from '@/components/common/StatusBadge';
 
 /**
  * ClientSessionCard — Client's Session Display
@@ -23,6 +24,15 @@ interface ClientSessionCardProps {
 
 export default function ClientSessionCard({ session }: ClientSessionCardProps) {
   const navigate = useNavigate();
+
+  // ============================================================
+  // HANDLE NAVIGATION
+  // ============================================================
+
+  const handleNavigate = () => {
+    if (!session?.sessionId) return;
+    navigate(`/dashboard/sessions/${session.sessionId}`);
+  };
 
   // ============================================================
   // STATUS BADGE
@@ -64,7 +74,7 @@ export default function ClientSessionCard({ session }: ClientSessionCardProps) {
 
   return (
     <div
-      onClick={() => navigate(`/dashboard/sessions/${session.sessionId}`)}
+      onClick={handleNavigate}
       className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
     >
       {/* HEADER */}
@@ -82,9 +92,7 @@ export default function ClientSessionCard({ session }: ClientSessionCardProps) {
 
         <div className="flex flex-col gap-2 items-end">
           {/* Status Badge */}
-          <span className={`text-xs font-medium px-2 py-1 rounded ${getStatusColor(session.status)}`}>
-            {getStatusLabel(session.status)}
-          </span>
+          <StatusBadge status={session.status} type="session" size="sm" />
 
           {/* Marketplace Badge */}
           {session.marketplaceVisible && (

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Calendar } from 'lucide-react';
 import ClientSessionCard from './ClientSessionCard';
 import ClientCreateSessionForm from './ClientCreateSessionForm';
-import ClientEmptyState from './ClientEmptyState';
+import EmptyState from '@/components/common/EmptyState';
+import SkeletonCard from '@/components/common/SkeletonCard';
 
 /**
  * ClientDashboard — Client Portal Interface
@@ -118,14 +120,18 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
 
       {/* LOADING STATE */}
       {loading && (
-        <div className="text-center py-12 text-gray-500">
-          Loading your sessions...
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <SkeletonCard count={6} />
         </div>
       )}
 
       {/* EMPTY STATE */}
       {!loading && sessions.length === 0 && !error && (
-        <ClientEmptyState />
+        <EmptyState
+          icon={Calendar}
+          title="Aucune session programmée"
+          description="Créez votre premier programme pour démarrer. Cliquez sur 'Nouveau Programme' pour soumettre une demande."
+        />
       )}
 
       {/* SESSIONS GRID */}

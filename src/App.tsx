@@ -27,6 +27,7 @@ import PlanningPage from "./pages/dashboard/PlanningPage";
 import MarketplacePage from "./pages/dashboard/MarketplacePage";
 import StaffingPage from "./pages/dashboard/StaffingPage";
 import ClientPage from "./pages/dashboard/ClientPage";
+import EnterpriseCockpitPage from "./pages/dashboard/EnterpriseCockpitPage";
 import SessionFormPage from "./pages/dashboard/SessionFormPage";
 import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
 import QuotesPage from "./pages/dashboard/QuotesPage";
@@ -47,6 +48,7 @@ import FinancesPage from "./pages/dashboard/FinancesPage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PrivateRoute from "./components/auth/PrivateRoute";
+import AppErrorBoundary from "./components/common/AppErrorBoundary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -80,6 +82,7 @@ const AppRoutes = () => {
         }
       >
         <Route index element={<DashboardPage />} />
+        <Route path="cockpit" element={<EnterpriseCockpitPage />} />
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<ClientFormPage />} />
         <Route path="clients/:id" element={<ClientDetailPage />} />
@@ -134,7 +137,9 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <BrowserRouter>
-          <AppRoutes />
+          <AppErrorBoundary>
+            <AppRoutes />
+          </AppErrorBoundary>
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>

@@ -14,7 +14,7 @@ export default function PlanningPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Planning</h1>
+          <h1 className="text-3xl font-bold text-foreground">Sessions</h1>
           <p className="text-muted-foreground mt-1">
             Visualiser et gérer le planning des sessions
           </p>

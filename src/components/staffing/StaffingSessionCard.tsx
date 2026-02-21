@@ -87,6 +87,15 @@ export default function StaffingSessionCard({
   }, [session.id]);
 
   // ============================================================
+  // HANDLE NAVIGATION
+  // ============================================================
+
+  const handleNavigate = () => {
+    if (!session?.id) return;
+    navigate(`/dashboard/sessions/${session.id}`);
+  };
+
+  // ============================================================
   // OPERATIONAL STATUS
   // ============================================================
 
@@ -104,7 +113,7 @@ export default function StaffingSessionCard({
 
   return (
     <div
-      onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+      onClick={handleNavigate}
       className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
     >
       {/* HEADER */}

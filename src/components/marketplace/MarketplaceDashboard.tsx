@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { CalendarX } from 'lucide-react';
 import MarketplaceSessionCard from './MarketplaceSessionCard';
-import MarketplaceEmptyState from './MarketplaceEmptyState';
+import EmptyState from '@/components/common/EmptyState';
+import SkeletonCard from '@/components/common/SkeletonCard';
 
 /**
  * MarketplaceDashboard — Operator Marketplace Interface
@@ -101,14 +103,18 @@ export default function MarketplaceDashboard() {
 
       {/* LOADING STATE */}
       {loading && (
-        <div className="text-center py-12 text-gray-500">
-          Loading marketplace sessions...
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <SkeletonCard count={6} />
         </div>
       )}
 
       {/* EMPTY STATE */}
       {!loading && sessions.length === 0 && !error && (
-        <MarketplaceEmptyState />
+        <EmptyState
+          icon={CalendarX}
+          title="Aucune session disponible actuellement"
+          description="Revenez plus tard ou contactez l'entreprise pour découvrir les nouvelles opportunités."
+        />
       )}
 
       {/* SESSIONS GRID */}

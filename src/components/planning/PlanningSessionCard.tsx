@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import StatusBadge from '@/components/common/StatusBadge';
 
 /**
  * PlanningSessionCard — Individual Session Display
@@ -32,6 +33,11 @@ interface PlanningSessionCardProps {
 
 export default function PlanningSessionCard({ session }: PlanningSessionCardProps) {
   const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    if (!session?.id) return;
+    navigate(`/dashboard/sessions/${session.id}`);
+  };
 
   // ============================================================
   // STATUS BADGE COLORS
@@ -73,7 +79,7 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
 
   return (
     <div
-      onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+      onClick={handleNavigate}
       className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
     >
       {/* HEADER */}
@@ -94,9 +100,7 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
 
         <div className="flex flex-col gap-2 items-end">
           {/* Status Badge */}
-          <span className={`text-xs font-medium px-2 py-1 rounded ${getStatusBadgeStyle(session.status)}`}>
-            {getStatusLabel(session.status)}
-          </span>
+          <StatusBadge status={session.status} type="session" size="sm" />
 
           {/* Marketplace Badge */}
           {session.marketplaceVisible && (
