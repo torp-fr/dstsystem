@@ -20,25 +20,25 @@ export default function StaffingStatusBadge({ status }: StaffingStatusBadgeProps
     switch (status) {
       case 'pending':
         return {
-          style: 'bg-yellow-100 text-yellow-700',
+          style: 'bg-blue-600/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800',
           icon: Clock,
-          label: 'Pending'
+          label: 'À valider'
         };
       case 'accepted':
         return {
-          style: 'bg-green-100 text-green-700',
+          style: 'bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800',
           icon: CheckCircle,
-          label: 'Accepted'
+          label: 'Confirmé'
         };
       case 'rejected':
         return {
-          style: 'bg-red-100 text-red-700',
+          style: 'bg-destructive/10 text-destructive border border-destructive/20',
           icon: XCircle,
-          label: 'Rejected'
+          label: 'Refusé'
         };
       default:
         return {
-          style: 'bg-gray-100 text-gray-700',
+          style: 'bg-muted text-muted-foreground',
           icon: Clock,
           label: 'Unknown'
         };

@@ -59,11 +59,11 @@ export default function SessionHeader({
   return (
     <div className="flex items-start justify-between gap-4 mb-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">
+        <h1 className="text-3xl font-bold text-foreground">
           {formattedDate}
         </h1>
-        <p className="text-gray-600 mt-1">
-          Détails de la session
+        <p className="text-muted-foreground mt-1">
+          Détails et gestion de la session
         </p>
       </div>
 
@@ -75,7 +75,7 @@ export default function SessionHeader({
 
         {/* Marketplace Badge */}
         {marketplaceVisible && (
-          <span className="text-xs font-medium px-3 py-1 rounded-full bg-purple-100 text-purple-700">
+          <span className="text-xs font-medium px-3 py-1 rounded-full bg-purple-600/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800">
             Marketplace
           </span>
         )}
