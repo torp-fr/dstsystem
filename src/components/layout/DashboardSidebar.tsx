@@ -32,18 +32,17 @@ const DashboardSidebar = ({ open, setOpen }: DashboardSidebarProps) => {
 
   // Define menu items with role-based visibility
   const baseMenuItems = [
-    { icon: LayoutDashboard, label: 'Cockpit', path: '/dashboard/cockpit', requiredRole: 'enterprise' },
+    { icon: LayoutDashboard, label: 'Tableau de bord', path: '/dashboard', requiredRole: 'enterprise' },
     { icon: Users, label: 'Clients', path: '/dashboard/clients' },
     { icon: Crosshair, label: 'Opérateurs', path: '/dashboard/operators' },
-    { icon: Calculator, label: 'Coûts', path: '/dashboard/costs' },
     { icon: CalendarDays, label: 'Sessions', path: '/dashboard/sessions' },
-    { icon: Users, label: 'Affectations', path: '/dashboard/staffing', requiredRole: 'enterprise' },
-    { icon: ShoppingCart, label: 'Marketplace', path: '/dashboard/marketplace', requiredRole: 'operator' },
-    { icon: Briefcase, label: 'Portail Client', path: '/dashboard/client', requiredRole: 'client' },
     { icon: Package, label: 'Offres & Formules', path: '/dashboard/offers' },
     { icon: DollarSign, label: 'Finances', path: '/dashboard/finances' },
     { icon: Settings, label: 'Paramètres', path: '/dashboard/settings' },
   ];
+
+  // Hidden items (accessible by URL but not in menu)
+  // Marketplace, Affectations, Portail Client, Coûts
 
   // Filter menu items based on user role
   const menuItems = baseMenuItems.filter(item => {

@@ -6,7 +6,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Copy, Check } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 const ClientFormPage = () => {
   const navigate = useNavigate();
@@ -38,6 +46,12 @@ const ClientFormPage = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [tempCredentials, setTempCredentials] = useState<{
+    email: string;
+    password: string;
+  } | null>(null);
+  const [showCredentialsDialog, setShowCredentialsDialog] = useState(false);
+  const [copiedField, setCopiedField] = useState<'email' | 'password' | null>(null);
 
   useEffect(() => {
     if (clientData) {
@@ -60,6 +74,21 @@ const ClientFormPage = () => {
     }));
   };
 
+  const generateTempPassword = (): string => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%';
+    let password = '';
+    for (let i = 0; i < 12; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+  };
+
+  const copyToClipboard = (text: string, field: 'email' | 'password') => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -74,14 +103,18 @@ const ClientFormPage = () => {
           title: 'Client mis à jour',
           description: 'Les informations du client ont été mises à jour.',
         });
+        navigate('/dashboard/clients');
       } else {
         await createMutation.mutateAsync(formData);
-        toast({
-          title: 'Client créé',
-          description: 'Le client a été créé avec succès.',
+
+        // Generate temp credentials for new client
+        const tempPassword = generateTempPassword();
+        setTempCredentials({
+          email: formData.email || 'email@example.com',
+          password: tempPassword,
         });
+        setShowCredentialsDialog(true);
       }
-      navigate('/dashboard/clients');
     } catch (error) {
       toast({
         title: 'Erreur',
@@ -94,9 +127,77 @@ const ClientFormPage = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
+    <>
+      {/* Credentials Dialog */}
+      <AlertDialog open={showCredentialsDialog} onOpenChange={setShowCredentialsDialog}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Identifiants provisoires créés</AlertDialogTitle>
+            <AlertDialogDescription>
+              Les identifiants temporaires pour ce client ont été générés. Partagez-les avec le client.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          {tempCredentials && (
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Email</Label>
+                <div className="flex items-center gap-2 bg-muted p-3 rounded-lg">
+                  <code className="flex-1 text-sm font-mono">{tempCredentials.email}</code>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => copyToClipboard(tempCredentials.email, 'email')}
+                    className="h-8 w-8 p-0"
+                  >
+                    {copiedField === 'email' ? (
+                      <Check className="h-4 w-4 text-emerald-600" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Mot de passe temporaire</Label>
+                <div className="flex items-center gap-2 bg-muted p-3 rounded-lg">
+                  <code className="flex-1 text-sm font-mono break-all">{tempCredentials.password}</code>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => copyToClipboard(tempCredentials.password, 'password')}
+                    className="h-8 w-8 p-0 flex-shrink-0"
+                  >
+                    {copiedField === 'password' ? (
+                      <Check className="h-4 w-4 text-emerald-600" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+                <p className="text-xs text-amber-800 dark:text-amber-200">
+                  ⚠️ Le client devra modifier ce mot de passe lors de sa première connexion.
+                </p>
+              </div>
+            </div>
+          )}
+
+          <AlertDialogAction onClick={() => {
+            setShowCredentialsDialog(false);
+            navigate('/dashboard/clients');
+          }}>
+            Continuer
+          </AlertDialogAction>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center gap-4">
         <Button
           variant="ghost"
           size="sm"
@@ -376,6 +477,8 @@ const ClientFormPage = () => {
         </form>
       </div>
     </div>
+      </div>
+    </>
   );
 };
 

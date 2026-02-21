@@ -71,6 +71,14 @@ const HeroSection = () => (
           >
             <Link to="/contact">Nous contacter</Link>
           </Button>
+          <Button
+            asChild
+            variant="ghost"
+            size="lg"
+            className="text-foreground hover:text-primary hover:bg-primary/10 text-base px-8 py-6"
+          >
+            <Link to="/login">Accès entreprise</Link>
+          </Button>
         </div>
       </motion.div>
     </div>

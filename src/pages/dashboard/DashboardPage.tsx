@@ -70,77 +70,20 @@ const DashboardPage = () => {
       <div className="flex items-end justify-between">
         <div>
           <h1 className="text-3xl font-bold">Tableau de bord</h1>
-          <p className="text-muted-foreground text-sm">Support opérationnel et aide au pilotage</p>
-        </div>
-        <div className="text-right">
-          <p className="text-xs uppercase font-semibold text-muted-foreground">Statut</p>
-          <Badge className="bg-green-600 mt-1 text-xs">🟢 Système Actif</Badge>
+          <p className="text-muted-foreground text-sm">Suivez l'avancement et préparez vos prochaines sessions</p>
         </div>
       </div>
 
-      {/* Operational Health Overview - 16:9 optimized */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <StatCard
-          icon={Users}
-          label="Clients actifs / Total"
-          value={`${activeClients}/${totalClients}`}
-          color="bg-blue-500/10 text-blue-600 dark:text-blue-400"
-          trend={totalClients > 0 ? Math.round((activeClients / totalClients) * 100) : 0}
-        />
-        <StatCard
-          icon={Crosshair}
-          label="Opérateurs actifs / Total"
-          value={`${activeOperators}/${totalOperators}`}
-          color="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400"
-          trend={totalOperators > 0 ? Math.round((activeOperators / totalOperators) * 100) : 0}
-        />
-        <StatCard
-          icon={TrendingUp}
-          label="Prospects en attente"
-          value={prospectClients}
-          color="bg-orange-500/10 text-orange-600 dark:text-orange-400"
-        />
-      </div>
 
-      {/* Key Financial Metrics */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <StatCard
-          icon={DollarSign}
-          label="Coûts mensuels"
-          value={`${totalMonthlyCosts.toFixed(0)}€`}
-          color="bg-red-500/10 text-red-600 dark:text-red-400"
-        />
-        <StatCard
-          icon={Calendar}
-          label="Sessions à venir"
-          value={upcomingSessions.length}
-          color="bg-amber-500/10 text-amber-600 dark:text-amber-400"
-        />
-        <StatCard
-          icon={FileText}
-          label="Devis en cours"
-          value={recentQuotes.length}
-          color="bg-purple-500/10 text-purple-600 dark:text-purple-400"
-        />
-      </div>
-
-      {/* Main Content Grid - 16:9 Optimized */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Upcoming Sessions - Wider Column */}
-        <div className="lg:col-span-2 bg-card rounded-lg border-border border-border-border p-4">
+      {/* Main Content Grid - Simple Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Upcoming Sessions */}
+        <div className="bg-card rounded-lg border-border border-border-border p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Calendar className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-              <h2 className="text-lg font-bold">Sessions à venir (7 jours)</h2>
+              <h2 className="text-lg font-bold">Mes prochaines sessions</h2>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/dashboard/calendar')}
-              className="text-xs"
-            >
-              Voir calendrier →
-            </Button>
           </div>
           {upcomingSessions.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-6 text-muted-foreground">
@@ -174,11 +117,11 @@ const DashboardPage = () => {
           )}
         </div>
 
-        {/* Recent Clients - Side Column */}
+        {/* Recent Clients */}
         <div className="bg-card rounded-lg border-border border-border-border p-4">
           <div className="flex items-center gap-2 mb-3">
             <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-base font-bold">Derniers clients</h2>
+            <h2 className="text-lg font-bold">Clients récents</h2>
           </div>
           {clients.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-6 text-muted-foreground">
@@ -217,149 +160,43 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      {/* Recent Quotes & Financial Overview - 16:9 Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Recent Quotes */}
-        <div className="lg:col-span-2 bg-card rounded-lg border-border border-border-border p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-            <h2 className="text-base font-bold">Devis et factures récents</h2>
-          </div>
-          {recentQuotes.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-6 text-muted-foreground">
-              <FileText className="h-8 w-8 mb-2 opacity-40" />
-              <p className="text-sm">Aucun devis créé</p>
-              <Button
-                size="sm"
-                className="mt-2 bg-purple-600 hover:bg-purple-700 text-xs"
-                onClick={() => navigate('/dashboard/quotes/new')}
-              >
-                Créer un devis
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-1">
-              {recentQuotes.slice(0, 2).map((quote: any) => (
-                <div
-                  key={quote.id}
-                  className="p-2 rounded-lg bg-purple-50/50 dark:bg-purple-500/10 hover:bg-purple-100 dark:hover:bg-purple-500/20 transition-colors cursor-pointer"
-                  onClick={() => navigate(`/dashboard/quotes/${quote.id}/edit`)}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-xs">{quote.quote_number}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(quote.created_at).toLocaleDateString('fr-FR')}
-                      </p>
-                    </div>
-                    <div className="text-right flex-shrink-0">
-                      <p className="font-semibold text-xs">{quote.total_amount.toFixed(0)}€</p>
-                      <Badge variant="outline" className="text-xs">{quote.status}</Badge>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate('/dashboard/quotes')}
-                className="w-full text-xs"
-              >
-                Voir tous les devis
-              </Button>
-            </div>
-          )}
-        </div>
-
-      </div>
-
-      {/* Financial Summary - Two Cards with Visual Impact */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Revenue Card - Green Impact */}
-        <div className="bg-card rounded-lg border-2 border-green-500/60 dark:border-green-500/50 p-4 shadow-lg shadow-green-500/10">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-2 rounded-lg bg-green-500/10 dark:bg-green-500/15">
-              <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
-            </div>
-            <h2 className="text-base font-bold">Chiffre d'affaires</h2>
-          </div>
-          <p className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
-            {recentQuotes.reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0).toFixed(0)}€
-          </p>
-          <p className="text-xs text-muted-foreground">{recentQuotes.length} devis en cours</p>
-        </div>
-
-        {/* Costs Card - Red Impact */}
-        <div className="bg-card rounded-lg border-2 border-red-500/60 dark:border-red-500/50 p-4 shadow-lg shadow-red-500/10">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-2 rounded-lg bg-red-500/10 dark:bg-red-500/15">
-              <Calculator className="h-5 w-5 text-red-600 dark:text-red-400" />
-            </div>
-            <h2 className="text-base font-bold">Coûts mensuels</h2>
-          </div>
-          <p className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">
-            {totalMonthlyCosts.toFixed(0)}€
-          </p>
-          <p className="text-xs text-muted-foreground">Opérateurs et structure</p>
-        </div>
-      </div>
-
-      {/* Quick Actions - Compact 16:9 Layout */}
+      {/* Available Operators */}
       <div className="bg-card rounded-lg border-border border-border-border p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <Zap className="h-4 w-4 text-primary" />
-          <h2 className="text-base font-bold">Actions rapides</h2>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Crosshair className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+            <h2 className="text-lg font-bold">Opérateurs disponibles</h2>
+          </div>
           <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white flex flex-col gap-1 py-4"
-            onClick={() => navigate('/dashboard/clients/new')}
-          >
-            <Users className="h-4 w-4" />
-            <span className="text-xs font-medium">Client</span>
-          </Button>
-          <Button
-            variant="outline"
-            className="flex flex-col gap-1 py-4"
+            variant="ghost"
+            size="sm"
             onClick={() => navigate('/dashboard/operators')}
+            className="text-xs"
           >
-            <Crosshair className="h-4 w-4" />
-            <span className="text-xs font-medium">Opérateur</span>
-          </Button>
-          <Button
-            variant="outline"
-            className="flex flex-col gap-1 py-4"
-            onClick={() => navigate('/dashboard/calendar')}
-          >
-            <Calendar className="h-4 w-4" />
-            <span className="text-xs font-medium">Session</span>
-          </Button>
-          <Button
-            variant="outline"
-            className="flex flex-col gap-1 py-4"
-            onClick={() => navigate('/dashboard/quotes/new')}
-          >
-            <FileText className="h-4 w-4" />
-            <span className="text-xs font-medium">Devis</span>
-          </Button>
-          <Button
-            variant="outline"
-            className="flex flex-col gap-1 py-4"
-            onClick={() => navigate('/dashboard/costs')}
-          >
-            <Calculator className="h-4 w-4" />
-            <span className="text-xs font-medium">Coûts</span>
-          </Button>
-          <Button
-            variant="outline"
-            className="flex flex-col gap-1 py-4"
-            onClick={() => navigate('/dashboard/operators/analysis')}
-          >
-            <TrendingUp className="h-4 w-4" />
-            <span className="text-xs font-medium">Analyse</span>
+            Voir tous →
           </Button>
         </div>
+        {operators.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-6 text-muted-foreground">
+            <Crosshair className="h-8 w-8 mb-2 opacity-40" />
+            <p className="text-sm">Aucun opérateur</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {operators.slice(0, 4).map((operator: any) => (
+              <div
+                key={operator.id}
+                className="p-3 rounded-lg bg-cyan-50/50 dark:bg-cyan-500/10 hover:bg-cyan-100 dark:hover:bg-cyan-500/20 transition-colors cursor-pointer"
+                onClick={() => navigate(`/dashboard/operators/${operator.id}`)}
+              >
+                <p className="font-medium text-sm">{operator.first_name} {operator.last_name}</p>
+                <p className="text-xs text-muted-foreground">{operator.status || 'Disponible'}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+
 
     </div>
   );

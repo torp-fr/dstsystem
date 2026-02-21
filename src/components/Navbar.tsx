@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo_dst.png";
+import { useAuth } from "@/context/AuthContext";
 
 const navLinks = [
   { to: "/", label: "Accueil" },
@@ -18,6 +19,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -33,13 +35,14 @@ const Navbar = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
+      <div className="container mx-auto px-4 h-20 flex items-center justify-between gap-8">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 flex-shrink-0">
           <img src={logo} alt="DST-System" className="h-12 w-auto" />
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden lg:flex items-center gap-8">
+        {/* Desktop nav - centered */}
+        <div className="hidden lg:flex items-center gap-8 mx-auto">
           {navLinks.map((link) => (
             <Link
               key={link.to}
@@ -53,9 +56,18 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
+        </div>
+
+        {/* Desktop CTA buttons - right aligned */}
+        <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+          <Button asChild variant="ghost" className="text-foreground hover:text-primary">
             <Link to="/contact">Nous contacter</Link>
           </Button>
+          {!user && (
+            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Link to="/login">Connexion</Link>
+            </Button>
+          )}
         </div>
 
         {/* Mobile nav */}
@@ -81,14 +93,27 @@ const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
-              <Button
-                asChild
-                className="mt-4 bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
-                <Link to="/contact" onClick={() => setOpen(false)}>
-                  Nous contacter
-                </Link>
-              </Button>
+              <div className="flex flex-col gap-3 mt-6 pt-6 border-t border-border">
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="w-full text-foreground hover:text-primary"
+                >
+                  <Link to="/contact" onClick={() => setOpen(false)}>
+                    Nous contacter
+                  </Link>
+                </Button>
+                {!user && (
+                  <Button
+                    asChild
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                  >
+                    <Link to="/login" onClick={() => setOpen(false)}>
+                      Connexion
+                    </Link>
+                  </Button>
+                )}
+              </div>
             </div>
           </SheetContent>
         </Sheet>
