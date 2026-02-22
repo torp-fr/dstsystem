@@ -276,7 +276,7 @@ export default function EnterpriseCockpitPage() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {alerts.map(session => (
-                      <PlanningSessionCard key={session.id} session={session} />
+                      <PlanningSessionCard key={session.id} session={session} showQuickActions />
                     ))}
                   </div>
                 )}
@@ -303,7 +303,7 @@ export default function EnterpriseCockpitPage() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {upcomingSessions.map(session => (
-                      <PlanningSessionCard key={session.id} session={session} />
+                      <PlanningSessionCard key={session.id} session={session} showQuickActions />
                     ))}
                   </div>
                 )}

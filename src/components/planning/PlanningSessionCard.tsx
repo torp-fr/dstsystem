@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 import StatusBadge from '@/components/common/StatusBadge';
 
 /**
@@ -29,9 +30,10 @@ interface PlanningSessionCardProps {
     setupIds: string[];
     staffing: SessionStaffing;
   };
+  showQuickActions?: boolean;
 }
 
-export default function PlanningSessionCard({ session }: PlanningSessionCardProps) {
+export default function PlanningSessionCard({ session, showQuickActions }: PlanningSessionCardProps) {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
@@ -80,7 +82,7 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
   return (
     <div
       onClick={handleNavigate}
-      className="bg-card rounded-2xl shadow-sm border border-border p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
+      className="group bg-card rounded-2xl shadow-sm border border-border p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
     >
       {/* SECTION 1: DATE (PROMINENT) */}
       <div className="flex items-baseline justify-between gap-2">
@@ -137,6 +139,34 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
       <div className="flex justify-between items-center pt-2 border-t border-border">
         <StatusBadge status={session.status} type="session" size="sm" />
       </div>
+
+      {/* SECTION 6: QUICK ACTIONS */}
+      {showQuickActions && (
+        <div className="flex gap-2 mt-2 pt-2 border-t border-border opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/dashboard/sessions/${session.id}`);
+            }}
+          >
+            Ouvrir
+          </Button>
+
+          {session.status === 'pending_confirmation' && (
+            <Button
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/dashboard/sessions/${session.id}?action=confirm`);
+              }}
+            >
+              Valider
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
