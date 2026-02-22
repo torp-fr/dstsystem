@@ -97,8 +97,10 @@ export default function SessionDetailPage() {
       );
 
       if (!result) {
-        setError('Service not initialized');
+        // Runtime may be initializing — graceful fallback
+        // Do NOT display as error; show neutral loading state instead
         setSession(null);
+        setError(null);
         setOperators({ accepted: [], pending: [], rejected: [] });
         setStaffingState(null);
         setLoading(false);
@@ -149,15 +151,24 @@ export default function SessionDetailPage() {
   }
 
   // ============================================================
-  // ERROR STATE
+  // ERROR OR EMPTY STATE
   // ============================================================
 
-  if (error || !session || !staffingState) {
+  if (!session || !staffingState) {
+    // If no session loaded — show neutral state (not red error)
+    // This can happen during runtime initialization or if session doesn't exist
     return (
       <div className="flex flex-col gap-6 w-full">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
-          {error || 'Failed to load session'}
-        </div>
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+            {error}
+          </div>
+        )}
+        {!error && (
+          <div className="text-center py-12 text-gray-400">
+            Session not found or still loading...
+          </div>
+        )}
       </div>
     );
   }
