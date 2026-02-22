@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import StatusBadge from '@/components/common/StatusBadge';
 
 /**
@@ -79,26 +80,45 @@ export default function PlanningSessionCard({ session, showQuickActions }: Plann
 
   const badge = getOperationalBadge();
 
+  // PRIORITY SYSTEM — Pure UI logic
+  const isPending = session.status === 'pending_confirmation';
+  const isIncomplete = !session.staffing?.isOperational;
+
+  const priorityBorderClass = isPending
+    ? 'border-l-4 border-amber-500'
+    : isIncomplete
+    ? 'border-l-4 border-red-500'
+    : 'border-l-4 border-transparent';
+
   return (
     <div
       onClick={handleNavigate}
-      className="group bg-card rounded-2xl shadow-sm border border-border p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
+      className={`group bg-card rounded-2xl shadow-sm border border-border ${priorityBorderClass} p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-150`}
     >
       {/* SECTION 1: DATE (PROMINENT) */}
       <div className="flex items-baseline justify-between gap-2">
-        <div className="text-xl font-bold text-foreground">
-          {new Date(session.date).toLocaleDateString('fr-FR', {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-          })}
+        <div>
+          <div className="text-xl font-bold text-foreground">
+            {new Date(session.date).toLocaleDateString('fr-FR', {
+              weekday: 'short',
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            })}
+          </div>
+          {(isPending || isIncomplete) && (
+            <Badge className="mt-1" variant={isPending ? 'secondary' : 'destructive'}>
+              {isPending ? 'À valider' : 'Staffing'}
+            </Badge>
+          )}
         </div>
-        {session.marketplaceVisible && (
-          <span className="text-xs font-medium px-2 py-1 rounded bg-purple-600/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800">
-            Marketplace
-          </span>
-        )}
+        <div className="flex flex-col items-end gap-1">
+          {session.marketplaceVisible && (
+            <span className="text-xs font-medium px-2 py-1 rounded bg-purple-600/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800">
+              Marketplace
+            </span>
+          )}
+        </div>
       </div>
 
       {/* SECTION 2: REGION & CLIENT */}
