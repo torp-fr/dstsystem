@@ -7,6 +7,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { useTracking } from "@/hooks/useTracking";
 import { useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { ensureDomainLoaded } from "@/services/domainLoader";
 
 // Declare global window types for domain services
 declare global {
@@ -226,20 +227,25 @@ const AppRoutes = () => {
   );
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AuthProvider>
-        <BrowserRouter>
-          <AppErrorBoundary>
-            <AppRoutes />
-          </AppErrorBoundary>
-        </BrowserRouter>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  // Ensure Domain layer is loaded on app startup
+  ensureDomainLoaded();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <AuthProvider>
+          <BrowserRouter>
+            <AppErrorBoundary>
+              <AppRoutes />
+            </AppErrorBoundary>
+          </BrowserRouter>
+        </AuthProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
