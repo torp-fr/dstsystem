@@ -258,7 +258,7 @@ export default function OffersPage() {
                           </div>
                         )}
                         {offer.discount_percentage && (
-                          <div className="flex items-center justify-between bg-green-500/10 p-2 rounded">
+                          <div className="flex items-center justify-between bg-card0/10 p-2 rounded">
                             <span className="text-green-700">Réduction</span>
                             <span className="font-bold text-green-700">
                               -{offer.discount_percentage}%
@@ -283,7 +283,7 @@ export default function OffersPage() {
                           </div>
                         )}
                         {offer.discount_percentage && (
-                          <div className="flex items-center justify-between bg-green-500/10 p-2 rounded">
+                          <div className="flex items-center justify-between bg-card0/10 p-2 rounded">
                             <span className="text-green-700">Économies</span>
                             <span className="font-bold text-green-700">
                               -{offer.discount_percentage}%

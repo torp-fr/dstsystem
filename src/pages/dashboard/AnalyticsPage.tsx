@@ -84,7 +84,7 @@ const AnalyticsPage = () => {
               <p className="text-sm text-muted-foreground mb-2">Pays uniques</p>
               <p className="text-3xl font-bold">{stats.uniqueCountries.length}</p>
             </div>
-            <div className="p-3 rounded-lg bg-green-500/10 text-green-600 dark:text-green-400">
+            <div className="p-3 rounded-lg bg-card0/10 text-green-600 dark:text-green-400">
               <Globe className="h-6 w-6" />
             </div>
           </div>

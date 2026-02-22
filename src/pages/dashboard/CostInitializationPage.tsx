@@ -252,7 +252,7 @@ export default function CostInitializationPage() {
                 <p className="text-2xl font-bold text-blue-600">{totalMonthly}€</p>
               </div>
 
-              <div className="bg-green-50 p-3 rounded-lg border-border border-green-200">
+              <div className="bg-card p-3 rounded-lg border-border border-border">
                 <p className="text-sm text-gray-600">Coûts annuels totaux</p>
                 <p className="text-2xl font-bold text-green-600">{totalAnnual}€</p>
               </div>

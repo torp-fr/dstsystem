@@ -94,7 +94,7 @@ export default function AmendmentsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold">Avenants</h1>
-          <p className="text-gray-600">Modifications de devis et factures</p>
+          <p className="text-muted-foreground">Modifications de devis et factures</p>
         </div>
         <Button onClick={() => navigate('/dashboard/amendments/new')} className="gap-2">
           <Plus className="h-4 w-4" />
@@ -105,15 +105,15 @@ export default function AmendmentsPage() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-card p-4 rounded-lg border-border">
-          <p className="text-sm text-gray-600">Total avenants</p>
+          <p className="text-sm text-muted-foreground">Total avenants</p>
           <p className="text-2xl font-bold">{totalAmendments}</p>
         </div>
         <div className="bg-card p-4 rounded-lg border-border">
-          <p className="text-sm text-gray-600">Montant total des modifications</p>
+          <p className="text-sm text-muted-foreground">Montant total des modifications</p>
           <p className="text-2xl font-bold">{totalAmount.toFixed(2)}€</p>
         </div>
         <div className="bg-card p-4 rounded-lg border-border">
-          <p className="text-sm text-gray-600">Acceptés</p>
+          <p className="text-sm text-muted-foreground">Acceptés</p>
           <p className="text-2xl font-bold text-green-600">{acceptedAmount.toFixed(2)}€</p>
         </div>
       </div>
@@ -153,11 +153,11 @@ export default function AmendmentsPage() {
       {/* Amendments List */}
       {isLoading ? (
         <div className="flex items-center justify-center p-8">
-          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : filteredAmendments.length === 0 ? (
-        <div className="text-center p-8 bg-gray-50 rounded-lg">
-          <p className="text-gray-600">Aucun avenant trouvé</p>
+        <div className="text-center p-8 bg-card rounded-lg border border-border">
+          <p className="text-muted-foreground">Aucun avenant trouvé</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -181,26 +181,26 @@ export default function AmendmentsPage() {
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div>
-                      <span className="text-gray-600">Client:</span>
+                      <span className="text-muted-foreground">Client:</span>
                       <p className="font-medium">
                         {getClientName(amendment.client_id)}
                       </p>
                     </div>
                     <div>
-                      <span className="text-gray-600">Modification:</span>
+                      <span className="text-muted-foreground">Modification:</span>
                       <p className={`font-bold ${amendment.amount_change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                         {amendment.amount_change > 0 ? '+' : ''}
                         {amendment.amount_change.toFixed(2)}€
                       </p>
                     </div>
                     <div>
-                      <span className="text-gray-600">Nouveau total:</span>
+                      <span className="text-muted-foreground">Nouveau total:</span>
                       <p className="font-bold">
                         {amendment.new_total?.toFixed(2) || 'N/A'}€
                       </p>
                     </div>
                     <div>
-                      <span className="text-gray-600">Description:</span>
+                      <span className="text-muted-foreground">Description:</span>
                       <p className="font-medium truncate">
                         {amendment.changes_description}
                       </p>

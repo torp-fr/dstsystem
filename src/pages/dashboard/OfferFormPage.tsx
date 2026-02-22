@@ -332,7 +332,7 @@ export default function OfferFormPage() {
 
               {/* Package */}
               <TabsContent value="package" className="space-y-4 border-t pt-4">
-                <div className="bg-green-50 p-4 rounded-lg border-border border-green-200 mb-4">
+                <div className="bg-card p-4 rounded-lg border-border border-border mb-4">
                   <p className="text-sm font-medium text-green-900">Forfait</p>
                   <p className="text-sm text-green-700">
                     Offre groupée avec X sessions à un prix global

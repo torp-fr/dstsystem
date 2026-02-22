@@ -198,10 +198,10 @@ const ClientsPage = () => {
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           client.status === 'active'
-                            ? 'bg-green-500/10 text-green-600 dark:text-green-400'
+                            ? 'bg-card0/10 text-green-600 dark:text-green-400'
                             : client.status === 'prospect'
                               ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
-                              : 'bg-gray-500/10 text-gray-600 dark:text-gray-400'
+                              : 'bg-card border border-border0/10 text-gray-600 dark:text-muted-foreground'
                         }`}
                       >
                         {client.status === 'active'

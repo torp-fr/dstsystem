@@ -15,7 +15,7 @@ export default function StaffingEmptyState() {
         <h3 className="text-lg font-semibold text-gray-700 mb-2">
           Aucune session en attente de staffing
         </h3>
-        <p className="text-gray-500 max-w-md">
+        <p className="text-muted-foreground max-w-md">
           Toutes les sessions marketplace actuelles sont opérationnelles ou complètement staffées.
         </p>
       </div>

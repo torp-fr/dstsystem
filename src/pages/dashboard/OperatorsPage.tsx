@@ -136,7 +136,7 @@ export default function OperatorsPage() {
       {/* Operators List */}
       {isLoading ? (
         <div className="flex items-center justify-center p-8">
-          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : operators.length === 0 ? (
         <div className="text-center p-8 bg-card rounded-lg space-y-4">
@@ -196,7 +196,7 @@ export default function OperatorsPage() {
                     )}
                   </div>
                   {operator.notes && (
-                    <p className="text-sm text-gray-500 mt-2">{operator.notes}</p>
+                    <p className="text-sm text-muted-foreground mt-2">{operator.notes}</p>
                   )}
                 </div>
                 <div className="flex gap-2 ml-4">

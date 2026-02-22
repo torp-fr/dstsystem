@@ -178,9 +178,9 @@ export default function SessionOperatorsList({
     status: 'accepted' | 'pending' | 'rejected';
   }) => {
     const statusColors = {
-      accepted: 'bg-green-50 border-green-200',
+      accepted: 'bg-card border-border',
       pending: 'bg-yellow-50 border-yellow-200',
-      rejected: 'bg-red-50 border-red-200'
+      rejected: 'bg-card border-border'
     };
 
     const statusBadgeColors = {
@@ -234,14 +234,14 @@ export default function SessionOperatorsList({
             )}
             <div className="flex items-center gap-2 mt-2">
               <StatusBadge status={status} type="staffing" size="sm" />
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-muted-foreground">
                 {formatDate(dateField[status])}
               </span>
             </div>
 
             {/* Error Message */}
             {hasError && (
-              <div className="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded">
+              <div className="text-xs text-red-600 mt-2 bg-card p-2 rounded">
                 {hasError}
               </div>
             )}
@@ -282,7 +282,7 @@ export default function SessionOperatorsList({
   if (accepted.length === 0 && pending.length === 0 && rejected.length === 0) {
     return (
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
-        <p className="text-gray-500">
+        <p className="text-muted-foreground">
           Aucune candidature pour cette session
         </p>
       </div>
@@ -347,8 +347,8 @@ export default function SessionOperatorsList({
       </div>
 
       {isEnterprise && pending.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          <p className="text-xs text-gray-500">
+        <div className="mt-4 pt-4 border-t border-border">
+          <p className="text-xs text-muted-foreground">
             💡 Acceptez ou rejetez les candidatures en attente
           </p>
         </div>

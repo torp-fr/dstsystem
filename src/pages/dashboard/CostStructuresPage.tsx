@@ -266,7 +266,7 @@ export default function CostStructuresPage() {
       {/* Cost List */}
       {isLoading ? (
         <div className="flex items-center justify-center p-8">
-          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : filteredCosts.length === 0 ? (
         <div className="text-center p-8 bg-muted rounded-lg space-y-4">

@@ -283,7 +283,7 @@ export default function OperatorFormPage() {
   if (operatorLoading && isEditing) {
     return (
       <div className="p-6 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -639,7 +639,7 @@ export default function OperatorFormPage() {
               {/* Rates List */}
               <div className="space-y-2">
                 {rates.length === 0 ? (
-                  <p className="text-sm text-gray-500">Aucun tarif défini</p>
+                  <p className="text-sm text-muted-foreground">Aucun tarif défini</p>
                 ) : (
                   rates.map((rate) => (
                     <div
