@@ -858,3 +858,77 @@ const SupabaseAdapter = (function() {
 if (typeof window !== 'undefined') {
   window.SupabaseAdapter = SupabaseAdapter;
 }
+
+// Backward compatibility layer for PlanningStateService
+if (typeof SupabaseAdapter !== 'undefined') {
+  // Add legacy query() method if not present
+  if (typeof SupabaseAdapter.query !== 'function') {
+    SupabaseAdapter.query = async function(config) {
+      try {
+        // Check if Supabase is initialized
+        if (!window.supabase) {
+          console.warn('[SupabaseAdapter.query] window.supabase not ready');
+          return [];
+        }
+
+        // Extract query configuration
+        const { table, select = '*', filters = [] } = config || {};
+
+        // Validate table name
+        if (!table) {
+          console.warn('[SupabaseAdapter.query] table name required');
+          return [];
+        }
+
+        // Build Supabase query
+        let query = window.supabase.from(table).select(select);
+
+        // Apply filters
+        if (Array.isArray(filters)) {
+          filters.forEach(filter => {
+            if (filter && filter.field && filter.operator && filter.value !== undefined) {
+              switch (filter.operator) {
+                case 'eq':
+                  query = query.eq(filter.field, filter.value);
+                  break;
+                case 'neq':
+                  query = query.neq(filter.field, filter.value);
+                  break;
+                case 'gt':
+                  query = query.gt(filter.field, filter.value);
+                  break;
+                case 'lt':
+                  query = query.lt(filter.field, filter.value);
+                  break;
+                case 'gte':
+                  query = query.gte(filter.field, filter.value);
+                  break;
+                case 'lte':
+                  query = query.lte(filter.field, filter.value);
+                  break;
+                case 'in':
+                  query = query.in(filter.field, filter.value);
+                  break;
+              }
+            }
+          });
+        }
+
+        // Execute query
+        const { data, error } = await query;
+
+        // Handle errors gracefully
+        if (error) {
+          console.warn('[SupabaseAdapter.query] Supabase error:', error.message);
+          return [];
+        }
+
+        // Return data or empty array
+        return data || [];
+      } catch (err) {
+        console.warn('[SupabaseAdapter.query] Exception:', err.message);
+        return [];
+      }
+    };
+  }
+}
