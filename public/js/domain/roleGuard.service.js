@@ -38,7 +38,7 @@
 
    ============================================================ */
 
-const RoleGuardService = (function() {
+function RoleGuardService() {
   'use strict';
 
   /**
@@ -46,45 +46,45 @@ const RoleGuardService = (function() {
    * @param {Object} account - Account object
    * @returns {boolean} Account is valid
    */
-  function _isValidAccount(account) {
+  const _isValidAccount = (account) => {
     return account && account.role && account.isActive !== false;
-  }
+  };
 
   /**
    * Check if session is valid
    * @param {Object} session - Session object
    * @returns {boolean} Session is valid
    */
-  function _isValidSession(session) {
+  const _isValidSession = (session) => {
     return session && session.id;
-  }
+  };
 
   /**
    * Check if account is enterprise
    * @param {Object} account - Account object
    * @returns {boolean} Is enterprise
    */
-  function _isEnterprise(account) {
+  const _isEnterprise = (account) => {
     return account && account.role === 'enterprise';
-  }
+  };
 
   /**
    * Check if account is operator
    * @param {Object} account - Account object
    * @returns {boolean} Is operator
    */
-  function _isOperator(account) {
+  const _isOperator = (account) => {
     return account && account.role === 'operator';
-  }
+  };
 
   /**
    * Check if account is client
    * @param {Object} account - Account object
    * @returns {boolean} Is client
    */
-  function _isClient(account) {
+  const _isClient = (account) => {
     return account && account.role === 'client';
-  }
+  };
 
   /**
    * Check if operator is assigned to session
@@ -92,12 +92,12 @@ const RoleGuardService = (function() {
    * @param {Object} session - Session object
    * @returns {boolean} Is assigned
    */
-  function _isOperatorAssigned(account, session) {
+  const _isOperatorAssigned = (account, session) => {
     if (!account || !account.linkedEntityId || !session) return false;
 
     const operatorIds = session.operatorIds || [];
     return operatorIds.includes(account.linkedEntityId);
-  }
+  };
 
   /**
    * Check if client owns session
@@ -105,18 +105,18 @@ const RoleGuardService = (function() {
    * @param {Object} session - Session object
    * @returns {boolean} Client owns session
    */
-  function _isClientOwner(account, session) {
+  const _isClientOwner = (account, session) => {
     if (!account || !account.linkedEntityId || !session) return false;
 
     return session.clientId === account.linkedEntityId;
-  }
+  };
 
   /**
    * Check if session is visible on marketplace
    * @param {Object} session - Session object
    * @returns {boolean} Is marketplace visible
    */
-  function _isMarketplaceVisible(session) {
+  const _isMarketplaceVisible = (session) => {
     if (!session) return false;
 
     // Session must be confirmed
@@ -130,7 +130,7 @@ const RoleGuardService = (function() {
     if (setupIds.length === 0) return false;
 
     return true;
-  }
+  };
 
   /**
    * Can account view this session
@@ -156,7 +156,7 @@ const RoleGuardService = (function() {
    *     reason?: string
    *   }
    */
-  function canViewSession(account, session) {
+  this.canViewSession = (account, session) => {
     try {
       if (!_isValidAccount(account)) {
         return {
@@ -243,7 +243,7 @@ const RoleGuardService = (function() {
         reason: error.message
       };
     }
-  }
+  };
 
   /**
    * Can account edit this session
@@ -260,7 +260,7 @@ const RoleGuardService = (function() {
    *     reason?: string
    *   }
    */
-  function canEditSession(account, session) {
+  this.canEditSession = (account, session) => {
     try {
       if (!_isValidAccount(account)) {
         return {
@@ -300,7 +300,7 @@ const RoleGuardService = (function() {
         reason: error.message
       };
     }
-  }
+  };
 
   /**
    * Can account access marketplace
@@ -316,7 +316,7 @@ const RoleGuardService = (function() {
    *     reason?: string
    *   }
    */
-  function canAccessMarketplace(account) {
+  this.canAccessMarketplace = (account) => {
     try {
       if (!_isValidAccount(account)) {
         return {
@@ -348,7 +348,7 @@ const RoleGuardService = (function() {
         reason: error.message
       };
     }
-  }
+  };
 
   /**
    * Can account apply to marketplace session
@@ -366,7 +366,7 @@ const RoleGuardService = (function() {
    *     reason?: string
    *   }
    */
-  function canApplyMarketplace(account, session) {
+  this.canApplyMarketplace = (account, session) => {
     try {
       if (!_isValidAccount(account)) {
         return {
@@ -407,7 +407,7 @@ const RoleGuardService = (function() {
         reason: error.message
       };
     }
-  }
+  };
 
   /**
    * Can account manage accounts
@@ -423,7 +423,7 @@ const RoleGuardService = (function() {
    *     reason?: string
    *   }
    */
-  function canManageAccounts(account) {
+  this.canManageAccounts = (account) => {
     try {
       if (!_isValidAccount(account)) {
         return {
@@ -455,7 +455,7 @@ const RoleGuardService = (function() {
         reason: error.message
       };
     }
-  }
+  };
 
   /**
    * Can account confirm session
@@ -471,7 +471,7 @@ const RoleGuardService = (function() {
    *     reason?: string
    *   }
    */
-  function canConfirmSession(account) {
+  this.canConfirmSession = (account) => {
     try {
       if (!_isValidAccount(account)) {
         return {
@@ -503,7 +503,7 @@ const RoleGuardService = (function() {
         reason: error.message
       };
     }
-  }
+  };
 
   /**
    * Get sessions visible to account
@@ -524,7 +524,7 @@ const RoleGuardService = (function() {
    *     role: string
    *   }
    */
-  function getVisibleSessions(account, allSessions) {
+  this.getVisibleSessions = (account, allSessions) => {
     try {
       if (!_isValidAccount(account)) {
         return {
@@ -626,7 +626,7 @@ const RoleGuardService = (function() {
         count: 0
       };
     }
-  }
+  };
 
   /**
    * Get all permissions for account
@@ -636,7 +636,7 @@ const RoleGuardService = (function() {
    * @param {Object} account - Account object
    * @returns {Object} Permissions summary
    */
-  function getAccountPermissions(account) {
+  this.getAccountPermissions = (account) => {
     try {
       if (!_isValidAccount(account)) {
         return {
@@ -645,12 +645,12 @@ const RoleGuardService = (function() {
         };
       }
 
-      const canView = canViewSession(account, { id: 'dummy' });
-      const canEdit = canEditSession(account, { id: 'dummy' });
-      const canAccess = canAccessMarketplace(account);
-      const canApply = canApplyMarketplace(account);
-      const canManage = canManageAccounts(account);
-      const canConfirm = canConfirmSession(account);
+      const canView = this.canViewSession(account, { id: 'dummy' });
+      const canEdit = this.canEditSession(account, { id: 'dummy' });
+      const canAccess = this.canAccessMarketplace(account);
+      const canApply = this.canApplyMarketplace(account);
+      const canManage = this.canManageAccounts(account);
+      const canConfirm = this.canConfirmSession(account);
 
       return {
         success: true,
@@ -677,22 +677,11 @@ const RoleGuardService = (function() {
         error: error.message
       };
     }
-  }
-
-  // Public API
-  return {
-    canViewSession,
-    canEditSession,
-    canAccessMarketplace,
-    canApplyMarketplace,
-    canManageAccounts,
-    canConfirmSession,
-    getVisibleSessions,
-    getAccountPermissions
   };
-})();
+}
 
-// Expose globally for Domain runtime
+// Instantiate and expose globally for Domain runtime
+const roleGuardService = new RoleGuardService();
 if (typeof window !== 'undefined') {
-  window.RoleGuardService = RoleGuardService;
+  window.RoleGuardService = roleGuardService;
 }
