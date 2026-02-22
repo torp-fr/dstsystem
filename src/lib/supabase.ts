@@ -72,6 +72,15 @@ if (!supabaseClient) {
 // Export client with guard in place
 export const supabase = supabaseClient;
 
+// ============================================================
+// EXPOSE SUPABASE TO DOMAIN RUNTIME
+// ============================================================
+// Domain services (/js/domain/*.js) expect window.supabase
+// This makes the client globally available for Domain initialization
+if (typeof window !== 'undefined') {
+  (window as any).supabase = supabase;
+}
+
 // Development info logging
 if (typeof window !== 'undefined' && USE_SUPABASE) {
   console.info('[DST-SYSTEM] ✅ Supabase production runtime is active');
