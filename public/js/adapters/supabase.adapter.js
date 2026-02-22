@@ -858,3 +858,218 @@ const SupabaseAdapter = (function() {
 if (typeof window !== 'undefined') {
   window.SupabaseAdapter = SupabaseAdapter;
 }
+
+// ============================================================
+// QUERY BUILDER — Chainable fluent API for PlanningStateService
+// ============================================================
+
+/**
+ * SupabaseQueryBuilder
+ *
+ * Wraps Supabase queries in a chainable builder pattern.
+ * Enables: adapter.query('table').eq(...).order(...).execute()
+ *
+ * @param {string} table - Table name
+ * @param {string} select - Fields to select (defaults to '*')
+ */
+function SupabaseQueryBuilder(table, select = '*') {
+  'use strict';
+
+  // Validate table name
+  if (!table) {
+    throw new Error('[SupabaseQueryBuilder] Table name is required');
+  }
+
+  if (!window.supabase) {
+    console.warn('[SupabaseQueryBuilder] window.supabase not initialized');
+  }
+
+  // Store Supabase query builder internally
+  this._table = table;
+  this._select = select;
+  this._query = null;
+
+  // Initialize the Supabase query
+  if (window.supabase) {
+    this._query = window.supabase.from(table).select(select);
+  }
+}
+
+/**
+ * Add equality filter
+ * @param {string} field - Field name
+ * @param {*} value - Value to match
+ * @returns {SupabaseQueryBuilder} this for chaining
+ */
+SupabaseQueryBuilder.prototype.eq = function(field, value) {
+  if (this._query) {
+    this._query = this._query.eq(field, value);
+  }
+  return this;
+};
+
+/**
+ * Add not-equal filter
+ * @param {string} field - Field name
+ * @param {*} value - Value to not match
+ * @returns {SupabaseQueryBuilder} this for chaining
+ */
+SupabaseQueryBuilder.prototype.neq = function(field, value) {
+  if (this._query) {
+    this._query = this._query.neq(field, value);
+  }
+  return this;
+};
+
+/**
+ * Add greater-than filter
+ * @param {string} field - Field name
+ * @param {*} value - Value to compare
+ * @returns {SupabaseQueryBuilder} this for chaining
+ */
+SupabaseQueryBuilder.prototype.gt = function(field, value) {
+  if (this._query) {
+    this._query = this._query.gt(field, value);
+  }
+  return this;
+};
+
+/**
+ * Add less-than filter
+ * @param {string} field - Field name
+ * @param {*} value - Value to compare
+ * @returns {SupabaseQueryBuilder} this for chaining
+ */
+SupabaseQueryBuilder.prototype.lt = function(field, value) {
+  if (this._query) {
+    this._query = this._query.lt(field, value);
+  }
+  return this;
+};
+
+/**
+ * Add greater-than-or-equal filter
+ * @param {string} field - Field name
+ * @param {*} value - Value to compare
+ * @returns {SupabaseQueryBuilder} this for chaining
+ */
+SupabaseQueryBuilder.prototype.gte = function(field, value) {
+  if (this._query) {
+    this._query = this._query.gte(field, value);
+  }
+  return this;
+};
+
+/**
+ * Add less-than-or-equal filter
+ * @param {string} field - Field name
+ * @param {*} value - Value to compare
+ * @returns {SupabaseQueryBuilder} this for chaining
+ */
+SupabaseQueryBuilder.prototype.lte = function(field, value) {
+  if (this._query) {
+    this._query = this._query.lte(field, value);
+  }
+  return this;
+};
+
+/**
+ * Add "in array" filter
+ * @param {string} field - Field name
+ * @param {array} values - Array of values
+ * @returns {SupabaseQueryBuilder} this for chaining
+ */
+SupabaseQueryBuilder.prototype.in = function(field, values) {
+  if (this._query) {
+    this._query = this._query.in(field, values);
+  }
+  return this;
+};
+
+/**
+ * Order results
+ * @param {string} field - Field to order by
+ * @param {object} options - { ascending: true/false }
+ * @returns {SupabaseQueryBuilder} this for chaining
+ */
+SupabaseQueryBuilder.prototype.order = function(field, options) {
+  if (this._query) {
+    this._query = this._query.order(field, options);
+  }
+  return this;
+};
+
+/**
+ * Fetch single result
+ * @returns {Promise<object|null>} Single result or null
+ */
+SupabaseQueryBuilder.prototype.single = async function() {
+  try {
+    if (!this._query) {
+      console.warn('[SupabaseQueryBuilder.single] Query not initialized');
+      return null;
+    }
+
+    const { data, error } = await this._query.single();
+
+    if (error) {
+      console.warn('[SupabaseQueryBuilder.single]', error.message);
+      return null;
+    }
+
+    return data;
+  } catch (err) {
+    console.warn('[SupabaseQueryBuilder.single] Exception:', err.message);
+    return null;
+  }
+};
+
+/**
+ * Execute query and fetch all results
+ * @returns {Promise<array>} Array of results or empty array on error
+ */
+SupabaseQueryBuilder.prototype.execute = async function() {
+  try {
+    if (!this._query) {
+      console.warn('[SupabaseQueryBuilder.execute] Query not initialized');
+      return [];
+    }
+
+    const { data, error } = await this._query;
+
+    if (error) {
+      console.warn('[SupabaseQueryBuilder.execute]', error.message);
+      return [];
+    }
+
+    return data || [];
+  } catch (err) {
+    console.warn('[SupabaseQueryBuilder.execute] Exception:', err.message);
+    return [];
+  }
+};
+
+// ============================================================
+// PATCH: query() method for PlanningStateService
+// ============================================================
+
+if (typeof SupabaseAdapter !== 'undefined') {
+  /**
+   * Query builder for chainable fluent API
+   *
+   * Usage:
+   *   adapter.query('shooting_sessions')
+   *     .eq('status', 'confirmed')
+   *     .order('date', { ascending: true })
+   *     .execute()
+   *
+   * @param {string} table - Table name
+   * @returns {SupabaseQueryBuilder} Chainable query builder
+   */
+  SupabaseAdapter.query = function(table) {
+    if (!window.supabase) {
+      console.warn('[SupabaseAdapter.query] window.supabase not ready');
+    }
+    return new SupabaseQueryBuilder(table);
+  };
+}

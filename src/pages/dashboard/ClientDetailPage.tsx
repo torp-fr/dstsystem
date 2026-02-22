@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -20,7 +21,8 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useClients } from '@/hooks/useClients';
 import { useQuotes, useDeleteQuote, useAmendments, useDeposits } from '@/hooks/useQuotes';
-import { ArrowLeft, FileText, Receipt, CreditCard, DollarSign, Users, Settings, Zap, Trash2, Edit2 } from 'lucide-react';
+import { ArrowLeft, FileText, Receipt, CreditCard, DollarSign, Users, Settings, Zap, Trash2, Edit2, Calendar, MapPin } from 'lucide-react';
+import { getClientPlanningSafe } from '@/services/planningBridge.service';
 import ClientFinancialSummary from '@/components/ClientFinancialSummary';
 import ClientSubscriptionManager from '@/components/ClientSubscriptionManager';
 import ClientAdminInfo from '@/components/client/ClientAdminInfo';
@@ -36,6 +38,34 @@ export default function ClientDetailPage() {
   const { data: amendments = [] } = useAmendments({ client_id: id });
   const { data: deposits = [] } = useDeposits({ client_id: id });
   const deleteQuote = useDeleteQuote();
+
+  // Client sessions/missions
+  const [clientSessions, setClientSessions] = useState<any[]>([]);
+  const [sessionsLoading, setSessionsLoading] = useState(false);
+
+  // Fetch client sessions
+  useEffect(() => {
+    if (!id) return;
+
+    setSessionsLoading(true);
+    try {
+      const result = getClientPlanningSafe(id);
+      if (result?.success) {
+        // Sort by date DESC (most recent first)
+        const sorted = [...(result.sessions || [])].sort((a, b) =>
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        setClientSessions(sorted);
+      } else {
+        setClientSessions([]);
+      }
+    } catch (error) {
+      console.error('[ClientDetail] Error loading sessions:', error);
+      setClientSessions([]);
+    } finally {
+      setSessionsLoading(false);
+    }
+  }, [id]);
 
   const client = clientsData.find((c) => c.id === id);
   const clientQuotes = quotesData || [];
@@ -195,8 +225,12 @@ export default function ClientDetailPage() {
       </Card>
 
       {/* Main Tabs */}
-      <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+      <Tabs defaultValue="missions" className="w-full">
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="missions" className="gap-2">
+            <Calendar className="h-4 w-4" />
+            Missions
+          </TabsTrigger>
           <TabsTrigger value="profile" className="gap-2">
             <Settings className="h-4 w-4" />
             Profil
@@ -218,6 +252,127 @@ export default function ClientDetailPage() {
             Documents
           </TabsTrigger>
         </TabsList>
+
+        {/* Missions Tab */}
+        <TabsContent value="missions" className="space-y-4">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Toutes les missions du client</h2>
+            <span className="text-sm text-muted-foreground">{clientSessions.length} session(s)</span>
+          </div>
+
+          {sessionsLoading ? (
+            <div className="text-center py-12 text-muted-foreground">
+              <p>Chargement des missions...</p>
+            </div>
+          ) : clientSessions.length === 0 ? (
+            <Card>
+              <CardContent className="pt-6 text-center py-12">
+                <p className="text-muted-foreground">Aucune mission pour ce client</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-3">
+              {clientSessions.map((session: any) => {
+                // Find quote linked to this session
+                const linkedQuote = clientQuotes.find((q: any) => q.session_id === session.sessionId);
+
+                return (
+                  <Card
+                    key={session.sessionId}
+                    className="hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => navigate(`/dashboard/sessions/${session.sessionId}`)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        {/* Date & Status */}
+                        <div className="md:col-span-3">
+                          <div className="flex items-start gap-3">
+                            <Calendar className="h-4 w-4 mt-1 text-muted-foreground flex-shrink-0" />
+                            <div>
+                              <p className="font-medium text-sm">
+                                {new Date(session.date).toLocaleDateString('fr-FR', {
+                                  weekday: 'short',
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </p>
+                              <Badge className="mt-1" variant={
+                                session.status === 'pending_confirmation' ? 'secondary' :
+                                session.status === 'confirmed' ? 'default' :
+                                session.status === 'completed' ? 'outline' : 'secondary'
+                              }>
+                                {session.status === 'pending_confirmation' && 'En attente'}
+                                {session.status === 'confirmed' && 'Confirmée'}
+                                {session.status === 'completed' && 'Complétée'}
+                                {!['pending_confirmation', 'confirmed', 'completed'].includes(session.status) && session.status}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Modules */}
+                        <div className="md:col-span-2">
+                          {session.setupIds && session.setupIds.length > 0 ? (
+                            <div className="flex items-start gap-2">
+                              <MapPin className="h-4 w-4 mt-0.5 text-muted-foreground flex-shrink-0" />
+                              <div>
+                                <p className="text-xs text-muted-foreground">Modules</p>
+                                <p className="text-sm font-medium truncate">
+                                  {session.setupIds.join(', ')}
+                                </p>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-xs text-muted-foreground">-</div>
+                          )}
+                        </div>
+
+                        {/* Operators */}
+                        <div className="md:col-span-2">
+                          <div className="flex items-start gap-2">
+                            <Users className="h-4 w-4 mt-0.5 text-muted-foreground flex-shrink-0" />
+                            <div>
+                              <p className="text-xs text-muted-foreground">Opérateurs</p>
+                              <p className="text-sm font-medium">
+                                {session.operatorCount}/{session.minRequired}
+                                <span className={`ml-1 text-xs ${session.isOperational ? 'text-green-600' : 'text-orange-600'}`}>
+                                  {session.isOperational ? '✓' : '⚠'}
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Business Value */}
+                        <div className="md:col-span-2">
+                          {linkedQuote ? (
+                            <div className="flex items-start gap-2">
+                              <DollarSign className="h-4 w-4 mt-0.5 text-green-600 flex-shrink-0" />
+                              <div>
+                                <p className="text-xs text-muted-foreground">Valeur</p>
+                                <p className="text-sm font-bold text-green-600">
+                                  {linkedQuote.total_amount.toFixed(2)}€
+                                </p>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-xs text-muted-foreground">-</div>
+                          )}
+                        </div>
+
+                        {/* Session ID */}
+                        <div className="md:col-span-1">
+                          <p className="text-xs text-muted-foreground truncate">{session.sessionId}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
+        </TabsContent>
 
         {/* Profile Tab */}
         <TabsContent value="profile" className="space-y-4">
