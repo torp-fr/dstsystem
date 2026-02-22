@@ -121,6 +121,16 @@ export default function EnterpriseCockpitPage() {
   const coverage = totalRequired > 0 ? totalConfirmed / totalRequired : 0;
   const coveragePercent = Math.round(coverage * 100);
 
+  // RISK SIGNAL — Sessions with incomplete staffing in next 72 hours
+  const riskSoonCount = sessions.filter(session => {
+    if (!session.staffing) return false;
+    const incomplete = session.staffing.acceptedOperators < session.staffing.minOperators;
+    const sessionDate = new Date(session.date);
+    const now = new Date();
+    const diffHours = (sessionDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+    return incomplete && diffHours >= 0 && diffHours <= 72;
+  }).length;
+
   // ============================================================
   // FINANCES DATA
   // ============================================================
@@ -248,6 +258,11 @@ export default function EnterpriseCockpitPage() {
               <p className="text-xs text-muted-foreground">
                 {totalConfirmed} / {totalRequired} opérateurs confirmés
               </p>
+              {riskSoonCount > 0 && (
+                <p className="text-xs text-amber-600">
+                  ⚠️ {riskSoonCount} mission{riskSoonCount > 1 ? 's' : ''} à risque proche
+                </p>
+              )}
             </div>
           </CardContent>
         </Card>
