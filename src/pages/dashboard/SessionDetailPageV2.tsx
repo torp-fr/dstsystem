@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -36,12 +36,17 @@ export default function SessionDetailPageV2() {
   const { id: sessionId } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
 
   const [session, setSession] = useState<SessionDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [operators, setOperators] = useState<any>({ accepted: [], pending: [], rejected: [] });
   const [staffingState, setStaffingState] = useState<any>(null);
   const [businessData, setBusinessData] = useState<Quote | null>(null);
+
+  // Assign mode detection
+  const assignMode = searchParams.get('action') === 'assign';
+  const operatorsRef = useRef<HTMLDivElement | null>(null);
 
   // Fetch quotes to find one linked to this session
   const { data: quotes = [] } = useQuotes();
@@ -87,6 +92,19 @@ export default function SessionDetailPageV2() {
       setLoading(false);
     }
   }, [sessionId, quotes]);
+
+  // ============================================================
+  // ASSIGN MODE — Auto-scroll to operators section
+  // ============================================================
+
+  useEffect(() => {
+    if (assignMode && operatorsRef.current) {
+      operatorsRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    }
+  }, [assignMode]);
 
   // ============================================================
   // LOADING STATE
@@ -255,7 +273,10 @@ export default function SessionDetailPageV2() {
         </div>
 
         {/* RIGHT: OPERATORS SECTION */}
-        <div className="lg:col-span-2 space-y-4">
+        <div
+          ref={operatorsRef}
+          className={`lg:col-span-2 space-y-4 ${assignMode ? 'ring-2 ring-amber-400 transition-all duration-500 p-4 rounded-lg' : ''}`}
+        >
           {/* Operators Header */}
           <div>
             <h3 className="text-lg font-semibold flex items-center gap-2 mb-4">
