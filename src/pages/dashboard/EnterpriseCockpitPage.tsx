@@ -40,6 +40,7 @@ interface PlanningSession {
 export default function EnterpriseCockpitPage() {
   const [sessions, setSessions] = useState<PlanningSession[]>([]);
   const [loading, setLoading] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<'all' | 'operational' | 'pending' | 'incomplete'>('all');
   const health = useRuntimeHealth();
   const overallHealth = getOverallHealth(health);
   const healthIndicator = getHealthIndicator(overallHealth);
@@ -81,20 +82,54 @@ export default function EnterpriseCockpitPage() {
   // OPERATIONS DATA — Alerts & Upcoming
   // ============================================================
 
-  // ALERTS: Sessions needing action
-  const alerts = sessions.filter(
-    s => s.status === 'pending_confirmation' || !s.staffing.isOperational
-  );
-
-  // UPCOMING: Sessions sorted by date (next ones first)
-  const upcomingSessions = [...sessions]
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .slice(0, 5); // Show next 5
-
-  // OPERATIONAL STATUS — UI-only calculations
+  // OPERATIONAL STATUS — UI-only calculations (from all sessions)
   const operationalCount = sessions.filter(s => s.staffing?.isOperational).length;
   const pendingConfirmationCount = sessions.filter(s => s.status === 'pending_confirmation').length;
   const staffingIncompleteCount = sessions.filter(s => !s.staffing?.isOperational).length;
+
+  // STATUS FILTER HANDLER
+  const handleStatusFilterClick = (filter: 'operational' | 'pending' | 'incomplete') => {
+    // Toggle: clicking same filter again resets to 'all'
+    if (statusFilter === filter) {
+      setStatusFilter('all');
+    } else {
+      setStatusFilter(filter);
+    }
+  };
+
+  // FILTERED SESSIONS — Apply status filter
+  const filteredSessions = sessions.filter(session => {
+    if (statusFilter === 'operational') return session.staffing?.isOperational;
+    if (statusFilter === 'pending') return session.status === 'pending_confirmation';
+    if (statusFilter === 'incomplete') return !session.staffing?.isOperational;
+    return true; // 'all' filter
+  });
+
+  // ALERTS: Sessions needing action (from filtered sessions)
+  const alerts = filteredSessions.filter(
+    s => s.status === 'pending_confirmation' || !s.staffing.isOperational
+  );
+
+  // UPCOMING: Sessions sorted by date (next ones first) (from filtered sessions)
+  const upcomingSessions = [...filteredSessions]
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 5); // Show next 5
+
+  // OPERATOR COVERAGE — UI-only calculation (from all sessions)
+  const totalRequired = sessions.reduce((sum, s) => sum + (s.staffing?.minOperators || 0), 0);
+  const totalConfirmed = sessions.reduce((sum, s) => sum + (s.staffing?.acceptedOperators || 0), 0);
+  const coverage = totalRequired > 0 ? totalConfirmed / totalRequired : 0;
+  const coveragePercent = Math.round(coverage * 100);
+
+  // RISK SIGNAL — Sessions with incomplete staffing in next 72 hours
+  const riskSoonCount = sessions.filter(session => {
+    if (!session.staffing) return false;
+    const incomplete = session.staffing.acceptedOperators < session.staffing.minOperators;
+    const sessionDate = new Date(session.date);
+    const now = new Date();
+    const diffHours = (sessionDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+    return incomplete && diffHours >= 0 && diffHours <= 72;
+  }).length;
 
   // ============================================================
   // FINANCES DATA
@@ -145,7 +180,14 @@ export default function EnterpriseCockpitPage() {
       {/* Operational Status Bar */}
       <div className="grid grid-cols-3 gap-3">
         {/* Operational */}
-        <Card className="bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
+        <Card
+          className={`bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800 cursor-pointer transition-all ${
+            statusFilter === 'operational'
+              ? 'ring-2 ring-green-500 shadow-lg'
+              : 'hover:shadow-md'
+          }`}
+          onClick={() => handleStatusFilterClick('operational')}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="text-2xl">🟢</div>
@@ -158,7 +200,14 @@ export default function EnterpriseCockpitPage() {
         </Card>
 
         {/* Pending Confirmation */}
-        <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
+        <Card
+          className={`bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800 cursor-pointer transition-all ${
+            statusFilter === 'pending'
+              ? 'ring-2 ring-amber-500 shadow-lg'
+              : 'hover:shadow-md'
+          }`}
+          onClick={() => handleStatusFilterClick('pending')}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="text-2xl">🟡</div>
@@ -171,7 +220,14 @@ export default function EnterpriseCockpitPage() {
         </Card>
 
         {/* Staffing Incomplete */}
-        <Card className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800">
+        <Card
+          className={`bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800 cursor-pointer transition-all ${
+            statusFilter === 'incomplete'
+              ? 'ring-2 ring-red-500 shadow-lg'
+              : 'hover:shadow-md'
+          }`}
+          onClick={() => handleStatusFilterClick('incomplete')}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="text-2xl">🔴</div>
@@ -183,6 +239,34 @@ export default function EnterpriseCockpitPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Operator Coverage Indicator */}
+      {totalRequired > 0 && (
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-foreground">Couverture opérateurs</h3>
+                <span className="text-sm font-bold text-primary">{coveragePercent}%</span>
+              </div>
+              <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-primary transition-none"
+                  style={{ width: `${Math.min(coverage * 100, 100)}%` }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {totalConfirmed} / {totalRequired} opérateurs confirmés
+              </p>
+              {riskSoonCount > 0 && (
+                <p className="text-xs text-amber-600">
+                  ⚠️ {riskSoonCount} mission{riskSoonCount > 1 ? 's' : ''} à risque proche
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Tabs */}
       <Tabs defaultValue="operations" className="w-full flex-1 flex flex-col">
@@ -236,7 +320,7 @@ export default function EnterpriseCockpitPage() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {alerts.map(session => (
-                      <PlanningSessionCard key={session.id} session={session} />
+                      <PlanningSessionCard key={session.id} session={session} showQuickActions />
                     ))}
                   </div>
                 )}
@@ -263,7 +347,7 @@ export default function EnterpriseCockpitPage() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {upcomingSessions.map(session => (
-                      <PlanningSessionCard key={session.id} session={session} />
+                      <PlanningSessionCard key={session.id} session={session} showQuickActions />
                     ))}
                   </div>
                 )}

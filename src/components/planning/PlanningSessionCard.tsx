@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import StatusBadge from '@/components/common/StatusBadge';
 
 /**
@@ -29,9 +31,10 @@ interface PlanningSessionCardProps {
     setupIds: string[];
     staffing: SessionStaffing;
   };
+  showQuickActions?: boolean;
 }
 
-export default function PlanningSessionCard({ session }: PlanningSessionCardProps) {
+export default function PlanningSessionCard({ session, showQuickActions }: PlanningSessionCardProps) {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
@@ -77,26 +80,52 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
 
   const badge = getOperationalBadge();
 
+  // PRIORITY SYSTEM — Pure UI logic
+  const isPending = session.status === 'pending_confirmation';
+  const isIncomplete = !session.staffing?.isOperational;
+
+  const priorityBorderClass = isPending
+    ? 'border-l-4 border-amber-500'
+    : isIncomplete
+    ? 'border-l-4 border-red-500'
+    : 'border-l-4 border-transparent';
+
   return (
     <div
       onClick={handleNavigate}
-      className="bg-card rounded-2xl shadow-sm border border-border p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md transition-shadow"
+      className={`group bg-card rounded-2xl shadow-sm border border-border ${priorityBorderClass} p-4 flex flex-col gap-4 cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-150`}
     >
       {/* SECTION 1: DATE (PROMINENT) */}
       <div className="flex items-baseline justify-between gap-2">
-        <div className="text-xl font-bold text-foreground">
-          {new Date(session.date).toLocaleDateString('fr-FR', {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-          })}
+        <div>
+          <div className="text-xl font-bold text-foreground">
+            {new Date(session.date).toLocaleDateString('fr-FR', {
+              weekday: 'short',
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            })}
+          </div>
+          {(isPending || isIncomplete) && (
+            <Badge className="mt-1" variant={isPending ? 'secondary' : 'destructive'}>
+              {isPending ? 'À valider' : 'Staffing'}
+            </Badge>
+          )}
         </div>
-        {session.marketplaceVisible && (
-          <span className="text-xs font-medium px-2 py-1 rounded bg-purple-600/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800">
-            Marketplace
-          </span>
-        )}
+        <div className="flex flex-col items-end gap-1">
+          {session.marketplaceVisible && (
+            <span className="text-xs font-medium px-2 py-1 rounded bg-purple-600/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800">
+              Marketplace
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* SECTION 1B: MICRO-SUMMARY */}
+      <div className="text-xs text-muted-foreground truncate leading-tight">
+        {session.staffing.acceptedOperators}/{session.staffing.minOperators} opérateurs
+        {session.setupIds && session.setupIds.length > 0 && ` — ${session.setupIds.join(', ')}`}
+        {session.regionId && ` — ${session.regionId}`}
       </div>
 
       {/* SECTION 2: REGION & CLIENT */}
@@ -137,6 +166,47 @@ export default function PlanningSessionCard({ session }: PlanningSessionCardProp
       <div className="flex justify-between items-center pt-2 border-t border-border">
         <StatusBadge status={session.status} type="session" size="sm" />
       </div>
+
+      {/* SECTION 6: QUICK ACTIONS */}
+      {showQuickActions && (
+        <div className="flex gap-2 mt-2 pt-2 border-t border-border opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/dashboard/sessions/${session.id}`);
+            }}
+          >
+            Ouvrir
+          </Button>
+
+          {session.status === 'pending_confirmation' && (
+            <Button
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/dashboard/sessions/${session.id}?action=confirm`);
+              }}
+            >
+              Valider
+            </Button>
+          )}
+
+          {!session.staffing?.isOperational && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/dashboard/sessions/${session.id}?action=assign`);
+              }}
+            >
+              Affecter
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
