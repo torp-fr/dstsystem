@@ -33,7 +33,11 @@ interface CalendarDay {
   sessions: any[];
 }
 
-export default function CalendarPage() {
+interface CalendarPageProps {
+  onSessionClick?: (session: any) => void;
+}
+
+export default function CalendarPage({ onSessionClick }: CalendarPageProps) {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
@@ -293,7 +297,13 @@ export default function CalendarPage() {
                           {day.sessions.slice(0, 1).map((session) => (
                             <div
                               key={session.id}
-                              onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+                              onClick={() => {
+                                if (onSessionClick) {
+                                  onSessionClick(session);
+                                } else {
+                                  navigate(`/dashboard/sessions/${session.id}`);
+                                }
+                              }}
                               className={`text-xs p-0.5 rounded cursor-pointer transition-all hover:shadow-md ${
                                 statusColors[session.status] || 'bg-blue-600/20 text-blue-700 dark:text-blue-300'
                               } truncate`}
@@ -354,7 +364,13 @@ export default function CalendarPage() {
                             daySessions.map((session) => (
                               <div
                                 key={session.id}
-                                onClick={() => navigate(`/dashboard/sessions/${session.id}`)}
+                                onClick={() => {
+                                  if (onSessionClick) {
+                                    onSessionClick(session);
+                                  } else {
+                                    navigate(`/dashboard/sessions/${session.id}`);
+                                  }
+                                }}
                                 className={`text-xs p-2 rounded cursor-pointer transition-all hover:shadow-md border-l-2 ${
                                   statusColors[session.status] || 'bg-blue-600/20 text-blue-700'
                                 }`}

@@ -42,7 +42,6 @@ import StaffingPage from "./pages/dashboard/StaffingPage";
 import ClientPage from "./pages/dashboard/ClientPage";
 import EnterpriseCockpitPage from "./pages/dashboard/EnterpriseCockpitPage";
 import SessionFormPage from "./pages/dashboard/SessionFormPage";
-import SessionDetailPageV2 from "./pages/dashboard/SessionDetailPageV2";
 import QuotesPage from "./pages/dashboard/QuotesPage";
 import QuoteFormPage from "./pages/dashboard/QuoteFormPage";
 import QuoteDetailPage from "./pages/dashboard/QuoteDetailPage";
@@ -200,7 +199,6 @@ const AppRoutes = () => {
         />
         <Route path="sessions/new" element={<SessionFormPage />} />
         <Route path="sessions/:id/edit" element={<SessionFormPage />} />
-        <Route path="sessions/:id" element={<SessionDetailPageV2 />} />
         <Route path="quotes" element={<QuotesPage />} />
         <Route path="quotes/new" element={<QuoteFormPage />} />
         <Route path="quotes/:id" element={<QuoteDetailPage />} />

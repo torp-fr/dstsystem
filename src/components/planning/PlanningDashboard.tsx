@@ -39,7 +39,11 @@ interface FilterState {
   status?: string;
 }
 
-export default function PlanningDashboard() {
+interface PlanningDashboardProps {
+  onSessionClick?: (session: PlanningSession) => void;
+}
+
+export default function PlanningDashboard({ onSessionClick }: PlanningDashboardProps) {
   const [sessions, setSessions] = useState<PlanningSession[]>([]);
   const [filters, setFilters] = useState<FilterState>({});
   const [loading, setLoading] = useState(false);
@@ -156,7 +160,11 @@ export default function PlanningDashboard() {
       {!loading && sessions.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {sessions.map(session => (
-            <PlanningSessionCard key={session.id} session={session} />
+            <PlanningSessionCard
+              key={session.id}
+              session={session}
+              onSessionClick={onSessionClick}
+            />
           ))}
         </div>
       )}
