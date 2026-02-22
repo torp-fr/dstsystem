@@ -25,8 +25,13 @@
 
     <!-- Domain Services: Loaded before React app for global window access -->
     <!-- These are static JS files served from /public/js/ - NOT bundled by Vite -->
-    <script src="/js/domain/index.js"></script>
+    <!-- LOAD ORDER CRITICAL: Services must load in dependency order -->
+    <script src="/js/domain/setup.repository.js"></script>
+    <script src="/js/domain/operatorAvailability.repository.js"></script>
+    <script src="/js/domain/roleGuard.service.js"></script>
     <script src="/js/domain/planningRealtime.service.js"></script>
+    <script src="/js/domain/planningState.service.js"></script>
+    <script src="/js/domain/index.js"></script>
 
     <!-- React Application -->
     <script type="module" src="/src/main.tsx"></script>

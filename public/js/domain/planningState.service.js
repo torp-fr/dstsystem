@@ -19,6 +19,20 @@ const PlanningStateService = (function() {
   'use strict';
 
   // ============================================================
+  // GUARD: Check required dependencies
+  // ============================================================
+
+  if (typeof RoleGuardService === 'undefined') {
+    console.warn('[PlanningStateService] RoleGuardService missing — abort init');
+    return null;
+  }
+
+  if (typeof SupabaseAdapter === 'undefined') {
+    console.warn('[PlanningStateService] SupabaseAdapter missing — abort init');
+    return null;
+  }
+
+  // ============================================================
   // CONSTANTS
   // ============================================================
 
