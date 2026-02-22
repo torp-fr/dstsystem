@@ -115,6 +115,12 @@ export default function EnterpriseCockpitPage() {
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 5); // Show next 5
 
+  // OPERATOR COVERAGE — UI-only calculation (from all sessions)
+  const totalRequired = sessions.reduce((sum, s) => sum + (s.staffing?.minOperators || 0), 0);
+  const totalConfirmed = sessions.reduce((sum, s) => sum + (s.staffing?.acceptedOperators || 0), 0);
+  const coverage = totalRequired > 0 ? totalConfirmed / totalRequired : 0;
+  const coveragePercent = Math.round(coverage * 100);
+
   // ============================================================
   // FINANCES DATA
   // ============================================================
@@ -223,6 +229,29 @@ export default function EnterpriseCockpitPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Operator Coverage Indicator */}
+      {totalRequired > 0 && (
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-foreground">Couverture opérateurs</h3>
+                <span className="text-sm font-bold text-primary">{coveragePercent}%</span>
+              </div>
+              <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-primary transition-none"
+                  style={{ width: `${Math.min(coverage * 100, 100)}%` }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {totalConfirmed} / {totalRequired} opérateurs confirmés
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Tabs */}
       <Tabs defaultValue="operations" className="w-full flex-1 flex flex-col">
