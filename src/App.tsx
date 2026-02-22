@@ -7,6 +7,17 @@ import { AuthProvider } from "@/context/AuthContext";
 import { useTracking } from "@/hooks/useTracking";
 import { useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+
+// Declare global window types for domain services
+declare global {
+  interface Window {
+    PlanningRealtimeService?: {
+      initialize: () => Promise<void>;
+      cleanup: () => Promise<void>;
+      _initialized?: boolean;
+    };
+  }
+}
 import Index from "./pages/Index";
 import Solutions from "./pages/Solutions";
 import Programs from "./pages/Programs";
@@ -71,6 +82,28 @@ const AppRoutes = () => {
     if (supabase) {
       console.info('[APP] Supabase initialized for auth state tracking');
     }
+
+    // Initialize Planning Realtime Service for dashboard data synchronization
+    const initializePlanningService = async () => {
+      try {
+        if (
+          typeof window !== 'undefined' &&
+          window.PlanningRealtimeService &&
+          !window.PlanningRealtimeService._initialized
+        ) {
+          console.info('[APP] Initializing PlanningRealtimeService...');
+          await window.PlanningRealtimeService.initialize();
+          // Mark as initialized to prevent duplicate initialization
+          window.PlanningRealtimeService._initialized = true;
+          console.info('[APP] ✓ PlanningRealtimeService initialized successfully');
+        }
+      } catch (error) {
+        console.warn('[APP] PlanningRealtimeService initialization warning:', error);
+        // Non-critical: service may not be essential for all pages
+      }
+    };
+
+    initializePlanningService();
   }, []);
 
   return (

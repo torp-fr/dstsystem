@@ -237,7 +237,21 @@ export default function ClientDetailPage() {
 
         {/* Analytics Tab */}
         <TabsContent value="analytics">
-          <ClientFinancialSummary clientId={id!} />
+          <Card>
+            <CardHeader>
+              <CardTitle>Analyses Financières</CardTitle>
+              <CardDescription>Récapitulatif des activités et performances du client</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {ClientFinancialSummary ? (
+                <ClientFinancialSummary clientId={id!} />
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <p>Analyses financières en cours de chargement...</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* Documents Tab */}

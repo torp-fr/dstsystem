@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PlanningSessionCard from '@/components/planning/PlanningSessionCard';
 import SkeletonCard from '@/components/common/SkeletonCard';
 import { useRuntimeHealth, getHealthIndicator, getOverallHealth } from '@/hooks/useRuntimeHealth';
+import { getPlanningSessionsSafe } from '@/services/planningBridge.service';
 
 /**
  * EnterpriseCockpitPage — Enterprise Operations Overview
@@ -48,10 +49,11 @@ export default function EnterpriseCockpitPage() {
 
     try {
       // Get all planning sessions without filters
-      const result = (window as any).Domain?.PlanningStateService?.getPlanningSessions();
+      const result = getPlanningSessionsSafe();
 
       if (!result) {
-        setError('Le service n\'est pas initialisé');
+        // Service not initialized — graceful fallback
+        // Display empty state without error banner
         setSessions([]);
         setLoading(false);
         return;
