@@ -291,62 +291,75 @@ export default function SessionDetailPageV2() {
               Opérateurs
             </h3>
 
-            {operators.accepted.length === 0 && operators.pending.length === 0 && (
-              <Card>
-                <CardContent className="pt-6 text-center text-muted-foreground py-12">
-                  <p>Aucun opérateur pour cette session</p>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Accepted Operators */}
-            {operators.accepted.length > 0 && (
-              <div className="mb-4">
-                <p className="text-sm font-medium text-green-600 mb-2">
-                  Confirmés ({operators.accepted.length})
+            {/* Assign Mode Action Header */}
+            {assignMode && (
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-sm font-medium text-amber-700">
+                  Affectation rapide des opérateurs
                 </p>
-                <div className="space-y-2">
-                  {operators.accepted.map((op: any) => (
-                    <div
-                      key={op.operatorId}
-                      className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
-                    >
-                      <div>
-                        <p className="font-medium text-sm">{op.name}</p>
-                        <p className="text-xs text-muted-foreground">{op.email}</p>
-                      </div>
-                      <Badge variant="default" className="bg-green-600">
-                        Accepté
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
               </div>
             )}
 
-            {/* Pending Operators */}
-            {operators.pending.length > 0 && (
-              <div>
-                <p className="text-sm font-medium text-blue-600 mb-2">
-                  En Attente ({operators.pending.length})
-                </p>
-                <div className="space-y-2">
-                  {operators.pending.map((op: any) => (
-                    <div
-                      key={op.operatorId}
-                      className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
-                    >
-                      <div>
-                        <p className="font-medium text-sm">{op.name}</p>
-                        <p className="text-xs text-muted-foreground">{op.email}</p>
+            {/* Operators Content Container */}
+            <div className={`space-y-4 ${
+              assignMode ? 'bg-amber-50/40 rounded-xl p-4' : ''
+            }`}>
+              {operators.accepted.length === 0 && operators.pending.length === 0 && (
+                <Card>
+                  <CardContent className="pt-6 text-center text-muted-foreground py-12">
+                    <p>Aucun opérateur pour cette session</p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Accepted Operators */}
+              {operators.accepted.length > 0 && (
+                <div className="mb-4">
+                  <p className="text-sm font-medium text-green-600 mb-2">
+                    Confirmés ({operators.accepted.length})
+                  </p>
+                  <div className="space-y-2">
+                    {operators.accepted.map((op: any) => (
+                      <div
+                        key={op.operatorId}
+                        className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+                      >
+                        <div>
+                          <p className="font-medium text-sm">{op.name}</p>
+                          <p className="text-xs text-muted-foreground">{op.email}</p>
+                        </div>
+                        <Badge variant="default" className="bg-green-600">
+                          Accepté
+                        </Badge>
                       </div>
-                      <Badge variant="secondary">En attente</Badge>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+
+              {/* Pending Operators */}
+              {operators.pending.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium text-blue-600 mb-2">
+                    En Attente ({operators.pending.length})
+                  </p>
+                  <div className="space-y-2">
+                    {operators.pending.map((op: any) => (
+                      <div
+                        key={op.operatorId}
+                        className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
+                      >
+                        <div>
+                          <p className="font-medium text-sm">{op.name}</p>
+                          <p className="text-xs text-muted-foreground">{op.email}</p>
+                        </div>
+                        <Badge variant="secondary">En attente</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
         </div>
       </div>
 
