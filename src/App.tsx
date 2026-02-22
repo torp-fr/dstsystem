@@ -41,7 +41,7 @@ import StaffingPage from "./pages/dashboard/StaffingPage";
 import ClientPage from "./pages/dashboard/ClientPage";
 import EnterpriseCockpitPage from "./pages/dashboard/EnterpriseCockpitPage";
 import SessionFormPage from "./pages/dashboard/SessionFormPage";
-import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
+import SessionDetailPageV2 from "./pages/dashboard/SessionDetailPageV2";
 import QuotesPage from "./pages/dashboard/QuotesPage";
 import QuoteFormPage from "./pages/dashboard/QuoteFormPage";
 import QuoteDetailPage from "./pages/dashboard/QuoteDetailPage";
@@ -84,26 +84,36 @@ const AppRoutes = () => {
     }
 
     // Initialize Planning Realtime Service for dashboard data synchronization
-    const initializePlanningService = async () => {
+    // With delayed retry if Supabase not ready on first attempt
+    let retryTimer: any;
+
+    const tryInitRealtime = async () => {
+      const service = (window as any).PlanningRealtimeService;
+
+      if (!service || service._initialized) {
+        return;
+      }
+
       try {
-        if (
-          typeof window !== 'undefined' &&
-          window.PlanningRealtimeService &&
-          !window.PlanningRealtimeService._initialized
-        ) {
-          console.info('[APP] Initializing PlanningRealtimeService...');
-          await window.PlanningRealtimeService.initialize();
-          // Mark as initialized to prevent duplicate initialization
-          window.PlanningRealtimeService._initialized = true;
-          console.info('[APP] ✓ PlanningRealtimeService initialized successfully');
-        }
+        console.info('[APP] Attempting to initialize PlanningRealtimeService...');
+        await service.initialize();
+        service._initialized = true;
+        console.info('[APP] ✓ PlanningRealtimeService initialized successfully');
       } catch (error) {
-        console.warn('[APP] PlanningRealtimeService initialization warning:', error);
-        // Non-critical: service may not be essential for all pages
+        console.warn('[APP] PlanningRealtimeService init failed — will retry in 1.5s:', error);
+        // Retry after delay if initialization fails
+        retryTimer = setTimeout(tryInitRealtime, 1500);
       }
     };
 
-    initializePlanningService();
+    tryInitRealtime();
+
+    // Cleanup: clear retry timer on unmount
+    return () => {
+      if (retryTimer) {
+        clearTimeout(retryTimer);
+      }
+    };
   }, []);
 
   return (
@@ -189,7 +199,7 @@ const AppRoutes = () => {
         />
         <Route path="sessions/new" element={<SessionFormPage />} />
         <Route path="sessions/:id/edit" element={<SessionFormPage />} />
-        <Route path="sessions/:id" element={<SessionDetailPage />} />
+        <Route path="sessions/:id" element={<SessionDetailPageV2 />} />
         <Route path="quotes" element={<QuotesPage />} />
         <Route path="quotes/new" element={<QuoteFormPage />} />
         <Route path="quotes/:id" element={<QuoteDetailPage />} />
@@ -216,20 +226,22 @@ const AppRoutes = () => {
   );
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AuthProvider>
-        <BrowserRouter>
-          <AppErrorBoundary>
-            <AppRoutes />
-          </AppErrorBoundary>
-        </BrowserRouter>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <AuthProvider>
+          <BrowserRouter>
+            <AppErrorBoundary>
+              <AppRoutes />
+            </AppErrorBoundary>
+          </BrowserRouter>
+        </AuthProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

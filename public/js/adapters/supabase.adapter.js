@@ -29,7 +29,9 @@ const SupabaseAdapter = (function() {
   const supabase = window.supabase;
 
   if (!supabase) {
-    throw new Error('[SupabaseAdapter] Supabase client not found. Include Supabase SDK first.');
+    console.warn('[SupabaseAdapter] Waiting for window.supabase...');
+    setTimeout(() => window.location.reload(), 200);
+    throw new Error('[SupabaseAdapter] Supabase not ready yet');
   }
 
   // ============================================================
