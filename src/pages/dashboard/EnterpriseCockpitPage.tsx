@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import PlanningSessionCard from '@/components/planning/PlanningSessionCard';
 import SkeletonCard from '@/components/common/SkeletonCard';
+import { AlertCircle, Calendar, DollarSign, Users, TrendingUp } from 'lucide-react';
 import { useRuntimeHealth, getHealthIndicator, getOverallHealth } from '@/hooks/useRuntimeHealth';
 import { getPlanningSessionsSafe } from '@/services/planningBridge.service';
+import { useQuotes } from '@/hooks/useQuotes';
+import { useCostStructures } from '@/hooks/useCostStructures';
+import { useOperators } from '@/hooks/useOperators';
 
 /**
- * EnterpriseCockpitPage — Enterprise Operations Overview
+ * EnterpriseCockpitPage — Operations Command Center
  *
- * Central hub displaying:
- * - Sessions awaiting staffing
- * - Operational sessions
- * - Sessions pending confirmation
+ * Two-tab view:
+ * 1. OPERATIONS — Alerts + Upcoming planning
+ * 2. FINANCES — Revenue, costs, operators
  *
  * PURE READ-ONLY LAYER - no business logic, no automation
  */
@@ -34,26 +40,26 @@ interface PlanningSession {
 export default function EnterpriseCockpitPage() {
   const [sessions, setSessions] = useState<PlanningSession[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const health = useRuntimeHealth();
   const overallHealth = getOverallHealth(health);
   const healthIndicator = getHealthIndicator(overallHealth);
 
+  // Finance data
+  const { data: quotes = [] } = useQuotes();
+  const { data: costs = [] } = useCostStructures();
+  const { data: operators = [] } = useOperators();
+
   // ============================================================
-  // FETCH DATA FROM PlanningStateService
+  // FETCH SESSIONS DATA
   // ============================================================
 
   useEffect(() => {
     setLoading(true);
-    setError(null);
 
     try {
-      // Get all planning sessions without filters
       const result = getPlanningSessionsSafe();
 
       if (!result) {
-        // Service not initialized — graceful fallback
-        // Display empty state without error banner
         setSessions([]);
         setLoading(false);
         return;
@@ -62,11 +68,9 @@ export default function EnterpriseCockpitPage() {
       if (result.success) {
         setSessions(result.sessions || []);
       } else {
-        setError(result.error || 'Impossible de charger les sessions');
         setSessions([]);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setSessions([]);
     } finally {
       setLoading(false);
@@ -74,65 +78,29 @@ export default function EnterpriseCockpitPage() {
   }, []);
 
   // ============================================================
-  // CATEGORIZE SESSIONS (UI ONLY)
+  // OPERATIONS DATA — Alerts & Upcoming
   // ============================================================
 
-  const categorizedSessions = {
-    awaitingStaffing: sessions.filter(
-      s => !s.staffing.isOperational && s.status !== 'pending_confirmation'
-    ),
-    operational: sessions.filter(s => s.staffing.isOperational),
-    pendingConfirmation: sessions.filter(s => s.status === 'pending_confirmation')
-  };
+  // ALERTS: Sessions needing action
+  const alerts = sessions.filter(
+    s => s.status === 'pending_confirmation' || !s.staffing.isOperational
+  );
+
+  // UPCOMING: Sessions sorted by date (next ones first)
+  const upcomingSessions = [...sessions]
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 5); // Show next 5
 
   // ============================================================
-  // RENDER SECTION
+  // FINANCES DATA
   // ============================================================
 
-  const renderSection = (title: string, subtitle: string, sessionList: PlanningSession[], color: string) => {
-    // Theme-aware color mapping
-    const colorMap = {
-      orange: {
-        bg: 'bg-destructive/5 border-destructive/30',
-        text: 'text-destructive',
-      },
-      green: {
-        bg: 'bg-emerald-600/5 border-emerald-600/30',
-        text: 'text-emerald-600 dark:text-emerald-400',
-      },
-      blue: {
-        bg: 'bg-blue-600/5 border-blue-600/30',
-        text: 'text-blue-600 dark:text-blue-400',
-      }
-    };
-
-    const currentColor = colorMap[color as keyof typeof colorMap] || colorMap.orange;
-
-    return (
-      <div className="flex flex-col gap-4">
-        <div className={`rounded-lg border p-4 ${currentColor.bg}`}>
-          <h2 className={`text-lg font-semibold ${currentColor.text}`}>
-            {title}
-          </h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            {subtitle} ({sessionList.length})
-          </p>
-        </div>
-
-        {sessionList.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground">
-            Aucune session dans cette catégorie.
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {sessionList.map(session => (
-              <PlanningSessionCard key={session.id} session={session} />
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
+  const totalRevenue = quotes.reduce((sum: number, q: any) => sum + (q.total_amount || 0), 0);
+  const totalMonthlyCosts = costs
+    .filter((c: any) => c.is_active)
+    .reduce((sum: number, c: any) => sum + (c.monthly_amount || 0), 0);
+  const netProfit = totalRevenue - totalMonthlyCosts;
+  const activeOperators = operators.filter((o: any) => o.status === 'active').length;
 
   // ============================================================
   // PAGE RENDER
@@ -140,16 +108,14 @@ export default function EnterpriseCockpitPage() {
 
   return (
     <div className="flex flex-col gap-6 w-full h-full">
-      {/* Page Header */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Cockpit</h1>
-          <p className="text-muted-foreground mt-1">
-            Vue globale — Quoi est prêt, quoi bloque, quoi attend validation
-          </p>
+          <p className="text-muted-foreground mt-1">Centre de pilotage opérationnel</p>
         </div>
 
-        {/* System Health Indicator - Subtle Non-Technical */}
+        {/* System Health */}
         <div className="flex flex-col items-end gap-0.5">
           <div className="text-xs text-muted-foreground font-medium opacity-50">
             État système
@@ -171,55 +137,153 @@ export default function EnterpriseCockpitPage() {
         </div>
       </div>
 
-      {/* ERROR STATE */}
-      {error && (
-        <div className="bg-destructive/5 border border-destructive/30 rounded-lg p-4 text-destructive text-sm">
-          {error}
-        </div>
-      )}
+      {/* Tabs */}
+      <Tabs defaultValue="operations" className="w-full flex-1 flex flex-col">
+        <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsTrigger value="operations" className="gap-2">
+            <AlertCircle className="h-4 w-4" />
+            Opérations
+          </TabsTrigger>
+          <TabsTrigger value="finances" className="gap-2">
+            <DollarSign className="h-4 w-4" />
+            Finances
+          </TabsTrigger>
+        </TabsList>
 
-      {/* LOADING STATE */}
-      {loading && (
-        <div className="flex flex-col gap-12">
-          {Array.from({ length: 3 }).map((_, idx) => (
-            <div key={idx} className="flex flex-col gap-4">
-              <div className="bg-muted animate-pulse rounded-lg border p-4 h-16" />
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                <SkeletonCard count={3} />
-              </div>
+        {/* TAB: OPERATIONS */}
+        <TabsContent value="operations" className="flex-1 space-y-6">
+          {/* LOADING STATE */}
+          {loading && (
+            <div className="flex flex-col gap-12">
+              {Array.from({ length: 2 }).map((_, idx) => (
+                <div key={idx} className="flex flex-col gap-4">
+                  <div className="bg-muted animate-pulse rounded-lg border p-4 h-16" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <SkeletonCard count={2} />
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
-
-      {/* COCKPIT SECTIONS */}
-      {!loading && (
-        <div className="flex flex-col gap-12">
-          {/* SECTION 1: AWAITING STAFFING */}
-          {renderSection(
-            '⚠️ Opérateurs manquants',
-            'Sessions bloquées en attente d\'affectations',
-            categorizedSessions.awaitingStaffing,
-            'orange'
           )}
 
-          {/* SECTION 2: OPERATIONAL */}
-          {renderSection(
-            '✓ Prêtes à démarrer',
-            'Toutes les affectations confirmées',
-            categorizedSessions.operational,
-            'green'
-          )}
+          {!loading && (
+            <>
+              {/* BLOC A: ALERTS / NOTIFICATIONS */}
+              <div className="flex flex-col gap-4">
+                <div className="rounded-lg border p-4 bg-destructive/5 border-destructive/30">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="h-5 w-5 text-destructive" />
+                    <h2 className="text-lg font-semibold text-destructive">
+                      Notifications
+                    </h2>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Actions requises ({alerts.length})
+                  </p>
+                </div>
 
-          {/* SECTION 3: PENDING CONFIRMATION */}
-          {renderSection(
-            '⏳ En validation',
-            'Client ou administrateur doit confirmer',
-            categorizedSessions.pendingConfirmation,
-            'blue'
+                {alerts.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground bg-card rounded-lg border">
+                    <Badge variant="outline" className="mx-auto">Aucune action requise</Badge>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {alerts.map(session => (
+                      <PlanningSessionCard key={session.id} session={session} />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* BLOC B: UPCOMING PLANNING */}
+              <div className="flex flex-col gap-4">
+                <div className="rounded-lg border p-4 bg-blue-600/5 border-blue-600/30">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    <h2 className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                      Planning à venir
+                    </h2>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {upcomingSessions.length} sessions programmées
+                  </p>
+                </div>
+
+                {upcomingSessions.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground bg-card rounded-lg border">
+                    <p>Aucune session programmée</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {upcomingSessions.map(session => (
+                      <PlanningSessionCard key={session.id} session={session} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
           )}
-        </div>
-      )}
+        </TabsContent>
+
+        {/* TAB: FINANCES */}
+        <TabsContent value="finances" className="flex-1">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Revenue Card */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium flex items-center gap-2">
+                  <DollarSign className="h-4 w-4 text-green-600" />
+                  Chiffre d'affaires
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-green-600">
+                  {totalRevenue.toFixed(0)}€
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {quotes.length} devis
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Net Profit Card */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-emerald-600" />
+                  Résultat net
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className={`text-3xl font-bold ${netProfit >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                  {netProfit.toFixed(0)}€
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Coûts: {totalMonthlyCosts.toFixed(0)}€/mois
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Active Operators Card */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium flex items-center gap-2">
+                  <Users className="h-4 w-4 text-blue-600" />
+                  Opérateurs actifs
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-blue-600">
+                  {activeOperators}
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {operators.length} total
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
