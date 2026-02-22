@@ -192,6 +192,19 @@ export default function PlanningSessionCard({ session, showQuickActions }: Plann
               Valider
             </Button>
           )}
+
+          {!session.staffing?.isOperational && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/dashboard/sessions/${session.id}?action=assign`);
+              }}
+            >
+              Affecter
+            </Button>
+          )}
         </div>
       )}
     </div>
