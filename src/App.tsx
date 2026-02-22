@@ -84,26 +84,36 @@ const AppRoutes = () => {
     }
 
     // Initialize Planning Realtime Service for dashboard data synchronization
-    const initializePlanningService = async () => {
+    // With delayed retry if Supabase not ready on first attempt
+    let retryTimer: any;
+
+    const tryInitRealtime = async () => {
+      const service = (window as any).PlanningRealtimeService;
+
+      if (!service || service._initialized) {
+        return;
+      }
+
       try {
-        if (
-          typeof window !== 'undefined' &&
-          window.PlanningRealtimeService &&
-          !window.PlanningRealtimeService._initialized
-        ) {
-          console.info('[APP] Initializing PlanningRealtimeService...');
-          await window.PlanningRealtimeService.initialize();
-          // Mark as initialized to prevent duplicate initialization
-          window.PlanningRealtimeService._initialized = true;
-          console.info('[APP] ✓ PlanningRealtimeService initialized successfully');
-        }
+        console.info('[APP] Attempting to initialize PlanningRealtimeService...');
+        await service.initialize();
+        service._initialized = true;
+        console.info('[APP] ✓ PlanningRealtimeService initialized successfully');
       } catch (error) {
-        console.warn('[APP] PlanningRealtimeService initialization warning:', error);
-        // Non-critical: service may not be essential for all pages
+        console.warn('[APP] PlanningRealtimeService init failed — will retry in 1.5s:', error);
+        // Retry after delay if initialization fails
+        retryTimer = setTimeout(tryInitRealtime, 1500);
       }
     };
 
-    initializePlanningService();
+    tryInitRealtime();
+
+    // Cleanup: clear retry timer on unmount
+    return () => {
+      if (retryTimer) {
+        clearTimeout(retryTimer);
+      }
+    };
   }, []);
 
   return (
