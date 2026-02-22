@@ -691,3 +691,8 @@ const RoleGuardService = (function() {
     getAccountPermissions
   };
 })();
+
+// Expose globally for Domain runtime
+if (typeof window !== 'undefined') {
+  window.RoleGuardService = RoleGuardService;
+}
