@@ -185,6 +185,13 @@ export default function SessionDetailPageV2() {
         </div>
       </div>
 
+      {/* Assign Mode Context Banner */}
+      {assignMode && (
+        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-700">
+          Mode Affectation opérateurs actif
+        </div>
+      )}
+
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT: OPERATIONAL INFO */}
