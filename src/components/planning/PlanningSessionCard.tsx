@@ -121,6 +121,13 @@ export default function PlanningSessionCard({ session, showQuickActions }: Plann
         </div>
       </div>
 
+      {/* SECTION 1B: MICRO-SUMMARY */}
+      <div className="text-xs text-muted-foreground truncate leading-tight">
+        {session.staffing.acceptedOperators}/{session.staffing.minOperators} opérateurs
+        {session.setupIds && session.setupIds.length > 0 && ` — ${session.setupIds.join(', ')}`}
+        {session.regionId && ` — ${session.regionId}`}
+      </div>
+
       {/* SECTION 2: REGION & CLIENT */}
       <div className="flex flex-col gap-1 text-sm">
         <div className="text-muted-foreground capitalize">
