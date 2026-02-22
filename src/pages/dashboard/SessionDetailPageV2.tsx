@@ -291,6 +291,13 @@ export default function SessionDetailPageV2() {
               Opérateurs
             </h3>
 
+            {/* Staffing Pressure Indicator */}
+            {assignMode && session?.staffing && (
+              <p className="text-xs text-muted-foreground mb-3">
+                {session.staffing.acceptedOperators}/{session.staffing.minOperators} opérateurs confirmés
+              </p>
+            )}
+
             {/* Assign Mode Action Header */}
             {assignMode && (
               <div className="flex items-center justify-between mb-3">
