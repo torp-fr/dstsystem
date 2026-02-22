@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PlanningDashboard } from '@/components/planning';
 import CalendarPage from './CalendarPage';
 import { Button } from '@/components/ui/button';
-import { LayoutGrid, Calendar } from 'lucide-react';
+import { LayoutGrid, Calendar, Plus } from 'lucide-react';
 
 /**
  * SessionsPage — Unified Sessions Management
@@ -17,6 +18,7 @@ type ViewMode = 'grid' | 'calendar';
 
 export default function SessionsPage() {
   const [view, setView] = useState<ViewMode>('grid');
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col gap-6 w-full h-full">
@@ -29,8 +31,18 @@ export default function SessionsPage() {
           </p>
         </div>
 
-        {/* View Toggle - Grid vs Calendar */}
-        <div className="flex gap-2 bg-muted p-1 rounded-lg">
+        {/* Actions and View Toggle */}
+        <div className="flex items-center gap-4">
+          <Button
+            onClick={() => navigate('/dashboard/sessions/new')}
+            className="gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Nouvelle session
+          </Button>
+
+          {/* View Toggle - Grid vs Calendar */}
+          <div className="flex gap-2 bg-muted p-1 rounded-lg">
           <Button
             variant={view === 'grid' ? 'default' : 'ghost'}
             size="sm"
@@ -49,6 +61,7 @@ export default function SessionsPage() {
             <Calendar className="h-4 w-4" />
             Vue Calendrier
           </Button>
+          </div>
         </div>
       </div>
 
