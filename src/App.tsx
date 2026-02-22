@@ -7,7 +7,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { useTracking } from "@/hooks/useTracking";
 import { useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { ensureDomainLoaded } from "@/services/domainLoader";
+import { ensureDomainBootstrap } from "@/domain/domainBootstrap";
 
 // Declare global window types for domain services
 declare global {
@@ -77,6 +77,9 @@ const AppRoutes = () => {
   useEffect(() => {
     initializeRuntimeLock(); // FINAL LOCK - must run first
     initializeMonitoring(); // Global error handlers
+
+    // Bootstrap Domain services (MUST be before realtime init)
+    ensureDomainBootstrap();
 
     // Initialize Supabase connection - needed before role checks
     // This ensures auth state is available to RoleRouteGuard
@@ -228,9 +231,6 @@ const AppRoutes = () => {
 };
 
 const App = () => {
-  // Ensure Domain layer is loaded on app startup
-  ensureDomainLoaded();
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
