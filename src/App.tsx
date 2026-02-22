@@ -7,7 +7,6 @@ import { AuthProvider } from "@/context/AuthContext";
 import { useTracking } from "@/hooks/useTracking";
 import { useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { ensureDomainBootstrap } from "@/domain/domainBootstrap";
 
 // Declare global window types for domain services
 declare global {
@@ -42,7 +41,7 @@ import StaffingPage from "./pages/dashboard/StaffingPage";
 import ClientPage from "./pages/dashboard/ClientPage";
 import EnterpriseCockpitPage from "./pages/dashboard/EnterpriseCockpitPage";
 import SessionFormPage from "./pages/dashboard/SessionFormPage";
-import SessionDetailPage from "./pages/dashboard/SessionDetailPage";
+import SessionDetailPageV2 from "./pages/dashboard/SessionDetailPageV2";
 import QuotesPage from "./pages/dashboard/QuotesPage";
 import QuoteFormPage from "./pages/dashboard/QuoteFormPage";
 import QuoteDetailPage from "./pages/dashboard/QuoteDetailPage";
@@ -77,9 +76,6 @@ const AppRoutes = () => {
   useEffect(() => {
     initializeRuntimeLock(); // FINAL LOCK - must run first
     initializeMonitoring(); // Global error handlers
-
-    // Bootstrap Domain services (MUST be before realtime init)
-    ensureDomainBootstrap();
 
     // Initialize Supabase connection - needed before role checks
     // This ensures auth state is available to RoleRouteGuard
@@ -203,7 +199,7 @@ const AppRoutes = () => {
         />
         <Route path="sessions/new" element={<SessionFormPage />} />
         <Route path="sessions/:id/edit" element={<SessionFormPage />} />
-        <Route path="sessions/:id" element={<SessionDetailPage />} />
+        <Route path="sessions/:id" element={<SessionDetailPageV2 />} />
         <Route path="quotes" element={<QuotesPage />} />
         <Route path="quotes/new" element={<QuoteFormPage />} />
         <Route path="quotes/:id" element={<QuoteDetailPage />} />

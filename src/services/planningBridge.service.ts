@@ -38,6 +38,18 @@ interface ClientPlanningResult {
   error?: string;
 }
 
+interface SessionPlanningDetails {
+  success: boolean;
+  session?: any;
+  operators?: {
+    accepted: any[];
+    pending: any[];
+    rejected: any[];
+  };
+  staffingState?: any;
+  error?: string;
+}
+
 /**
  * Safe accessor for PlanningStateService
  * Returns null if service not available
@@ -117,6 +129,33 @@ export function getClientPlanningSafe(clientId: string): ClientPlanningResult | 
 }
 
 /**
+ * Get session planning details with safe fallback
+ *
+ * @param sessionId Session identifier
+ * @returns Session details or null if service unavailable
+ */
+export function getSessionPlanningDetailsSafe(sessionId: string): SessionPlanningDetails | null {
+  try {
+    if (!sessionId) {
+      console.debug('[PlanningBridge] sessionId required');
+      return null;
+    }
+
+    const service = getPlanningService();
+    if (!service) {
+      return null;
+    }
+
+    // Call service method
+    const result = service.getSessionPlanningDetails(sessionId);
+    return result;
+  } catch (error) {
+    console.warn('[PlanningBridge] Error calling getSessionPlanningDetails:', error);
+    return null;
+  }
+}
+
+/**
  * Check if PlanningStateService is available
  * Useful for conditional rendering or early returns
  */
@@ -152,6 +191,7 @@ export function getEmptyClientPlanningResult(): ClientPlanningResult {
 export default {
   getPlanningSessionsSafe,
   getClientPlanningSafe,
+  getSessionPlanningDetailsSafe,
   isPlanningServiceAvailable,
   getEmptyPlanningResult,
   getEmptyClientPlanningResult,
