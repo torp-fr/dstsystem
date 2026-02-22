@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -36,9 +36,20 @@ interface CalendarDay {
 export default function CalendarPage() {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
   const [viewMode, setViewMode] = useState<'monthly' | 'weekly' | 'annual'>('monthly');
+
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
+
+  // Set week start to Monday
+  useMemo(() => {
+    const date = new Date(currentDate);
+    const day = date.getDay();
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    const monday = new Date(date.setDate(diff));
+    setCurrentWeekStart(monday);
+  }, [currentDate]);
 
   const { data: sessions = [], isLoading: sessionsLoading } = useSessionsByMonth(year, month);
   const { data: clients = [] } = useClients();
@@ -121,6 +132,20 @@ export default function CalendarPage() {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
   };
 
+  const previousWeek = () => {
+    const newDate = new Date(currentWeekStart);
+    newDate.setDate(newDate.getDate() - 7);
+    setCurrentWeekStart(newDate);
+    setCurrentDate(newDate);
+  };
+
+  const nextWeek = () => {
+    const newDate = new Date(currentWeekStart);
+    newDate.setDate(newDate.getDate() + 7);
+    setCurrentWeekStart(newDate);
+    setCurrentDate(newDate);
+  };
+
   const today = new Date();
   const isCurrentMonth =
     today.getFullYear() === currentDate.getFullYear() &&
@@ -136,7 +161,7 @@ export default function CalendarPage() {
   if (sessionsLoading) {
     return (
       <div className="p-6 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -187,24 +212,41 @@ export default function CalendarPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-bold">
-                {viewMode === 'annual' ? currentDate.getFullYear() : `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`}
+                {viewMode === 'annual'
+                  ? currentDate.getFullYear()
+                  : viewMode === 'weekly'
+                  ? `Semaine du ${currentWeekStart.toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric' })}`
+                  : `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`}
               </h2>
             </div>
             <div className="flex gap-1">
-              <Button variant="outline" size="sm" onClick={previousMonth} className="h-8 w-8 p-0">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={viewMode === 'weekly' ? previousWeek : previousMonth}
+                className="h-8 w-8 p-0"
+              >
                 <ChevronLeft className="h-3 w-3" />
               </Button>
               {!isCurrentMonth && (
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentDate(new Date())}
+                  onClick={() => {
+                    setCurrentDate(new Date());
+                    setCurrentWeekStart(new Date());
+                  }}
                   className="text-xs h-8"
                 >
                   Aujourd'hui
                 </Button>
               )}
-              <Button variant="outline" size="sm" onClick={nextMonth} className="h-8 w-8 p-0">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={viewMode === 'weekly' ? nextWeek : nextMonth}
+                className="h-8 w-8 p-0"
+              >
                 <ChevronRight className="h-3 w-3" />
               </Button>
             </div>

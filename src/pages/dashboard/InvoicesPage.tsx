@@ -210,7 +210,7 @@ export default function InvoicesPage() {
               key={invoice.id}
               className={`${
                 isOverdue(invoice.due_date, invoice.status)
-                  ? 'border-red-200 bg-red-50'
+                  ? 'border-border bg-card'
                   : ''
               } cursor-pointer hover:shadow-md transition-shadow`}
               onClick={() => navigate(`/dashboard/invoices/${invoice.id}`)}

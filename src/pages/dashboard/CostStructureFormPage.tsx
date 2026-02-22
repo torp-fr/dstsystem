@@ -148,7 +148,7 @@ export default function CostStructureFormPage() {
   if (costLoading && isEditing) {
     return (
       <div className="p-6 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -199,7 +199,7 @@ export default function CostStructureFormPage() {
                     type="button"
                     onClick={handleToggle}
                     className={`w-12 h-6 rounded-full transition-colors ${
-                      formData.is_active ? 'bg-green-500' : 'bg-gray-300'
+                      formData.is_active ? 'bg-card0' : 'bg-gray-300'
                     }`}
                   >
                     <div

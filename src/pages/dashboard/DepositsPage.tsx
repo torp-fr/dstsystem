@@ -136,11 +136,11 @@ export default function DepositsPage() {
           <p className="text-sm text-gray-600">Montant total</p>
           <p className="text-2xl font-bold">{totalAmount.toFixed(2)}€</p>
         </div>
-        <div className="bg-green-50 p-4 rounded-lg border-border border-green-200">
+        <div className="bg-card p-4 rounded-lg border-border border-border">
           <p className="text-sm text-gray-600">Payés</p>
           <p className="text-2xl font-bold text-green-600">{paidAmount.toFixed(2)}€</p>
         </div>
-        <div className="bg-yellow-50 p-4 rounded-lg border-border border-yellow-200">
+        <div className="bg-card p-4 rounded-lg border-border border-yellow-200">
           <p className="text-sm text-gray-600">En attente</p>
           <p className="text-2xl font-bold text-yellow-600">{pendingAmount.toFixed(2)}€</p>
         </div>
@@ -170,10 +170,10 @@ export default function DepositsPage() {
       {/* Deposits List */}
       {isLoading ? (
         <div className="flex items-center justify-center p-8">
-          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : filteredDeposits.length === 0 ? (
-        <div className="text-center p-8 bg-gray-50 rounded-lg">
+        <div className="text-center p-8 bg-card border border-border rounded-lg">
           <p className="text-gray-600">Aucun acompte trouvé</p>
         </div>
       ) : (
@@ -188,7 +188,7 @@ export default function DepositsPage() {
               <div
                 key={deposit.id}
                 className={`p-4 rounded-lg border-border hover:shadow-md transition-shadow ${
-                  isOverdue ? 'bg-red-50 border-red-200' : 'bg-card'
+                  isOverdue ? 'bg-card border-border' : 'bg-card'
                 }`}
               >
                 <div className="flex items-start justify-between">

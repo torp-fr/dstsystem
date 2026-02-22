@@ -124,10 +124,10 @@ export default function QuotesPage() {
       {/* Quotes List */}
       {isLoading ? (
         <div className="flex items-center justify-center p-8">
-          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : filteredQuotes.length === 0 ? (
-        <div className="text-center p-8 bg-gray-50 rounded-lg">
+        <div className="text-center p-8 bg-card border border-border rounded-lg">
           <p className="text-gray-600">Aucun devis trouvé</p>
         </div>
       ) : (

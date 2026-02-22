@@ -235,7 +235,7 @@ export default function OperatorInitializationPage() {
                 <p className="text-2xl font-bold text-blue-600">{salaryCount}</p>
               </div>
 
-              <div className="bg-green-50 p-3 rounded-lg border-border border-green-200">
+              <div className="bg-card p-3 rounded-lg border-border border-border">
                 <p className="text-sm text-gray-600">Freelances</p>
                 <p className="text-2xl font-bold text-green-600">{freelanceCount}</p>
               </div>

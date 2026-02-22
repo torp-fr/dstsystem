@@ -148,7 +148,7 @@ export default function StaffingSessionCard({
       </div>
 
       {/* STAFFING SUMMARY */}
-      <div className="bg-gray-50 rounded-lg p-3 flex flex-col gap-2">
+      <div className="bg-card border border-border rounded-lg p-3 flex flex-col gap-2">
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Required:</span>
           <span className="font-semibold text-gray-800">
@@ -177,9 +177,9 @@ export default function StaffingSessionCard({
       </div>
 
       {/* CLIENT INFO */}
-      <div className="text-xs text-gray-500 pt-2 border-t border-gray-100">
+      <div className="text-xs text-muted-foreground pt-2 border-t border-gray-100">
         <div>Client: {session.clientId}</div>
-        <div className="text-gray-400 mt-1">{session.id}</div>
+        <div className="text-muted-foreground mt-1">{session.id}</div>
       </div>
 
       {/* OPERATORS LIST */}
@@ -246,7 +246,7 @@ export default function StaffingSessionCard({
           {operators.accepted.length === 0 &&
             operators.pending.length === 0 &&
             operators.rejected.length === 0 && (
-              <div className="text-center py-4 text-gray-400 text-xs">
+              <div className="text-center py-4 text-muted-foreground text-xs">
                 No applications yet
               </div>
             )}
@@ -254,7 +254,7 @@ export default function StaffingSessionCard({
       )}
 
       {loading && (
-        <div className="text-center py-4 text-gray-400 text-sm">
+        <div className="text-center py-4 text-muted-foreground text-sm">
           Loading operators...
         </div>
       )}

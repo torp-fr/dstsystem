@@ -204,7 +204,7 @@ export default function QuoteFormPage() {
   if (quoteLoading && isEditing) {
     return (
       <div className="p-6 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -517,7 +517,7 @@ export default function QuoteFormPage() {
                   </Button>
                 )}
 
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-muted-foreground">
                   <p>Créé: {new Date(quote.created_at).toLocaleDateString('fr-FR')}</p>
                   {quote.updated_at !== quote.created_at && (
                     <p>

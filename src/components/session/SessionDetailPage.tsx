@@ -143,7 +143,7 @@ export default function SessionDetailPage() {
   if (loading) {
     return (
       <div className="flex flex-col gap-6 w-full">
-        <div className="text-center py-12 text-gray-500">
+        <div className="text-center py-12 text-muted-foreground">
           Chargement de la session...
         </div>
       </div>
@@ -160,12 +160,12 @@ export default function SessionDetailPage() {
     return (
       <div className="flex flex-col gap-6 w-full">
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+          <div className="bg-card border border-border rounded-lg p-4 text-red-700 text-sm">
             {error}
           </div>
         )}
         {!error && (
-          <div className="text-center py-12 text-gray-400">
+          <div className="text-center py-12 text-muted-foreground">
             Session not found or still loading...
           </div>
         )}

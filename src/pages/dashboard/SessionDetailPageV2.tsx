@@ -291,6 +291,13 @@ export default function SessionDetailPageV2() {
               Opérateurs
             </h3>
 
+            {/* Staffing Pressure Indicator */}
+            {assignMode && session?.staffing && (
+              <p className="text-xs text-muted-foreground mb-3">
+                {session.staffing.acceptedOperators}/{session.staffing.minOperators} opérateurs confirmés
+              </p>
+            )}
+
             {/* Assign Mode Action Header */}
             {assignMode && (
               <div className="flex items-center justify-between mb-3">
@@ -322,7 +329,7 @@ export default function SessionDetailPageV2() {
                     {operators.accepted.map((op: any) => (
                       <div
                         key={op.operatorId}
-                        className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+                        className="flex items-center justify-between p-3 bg-card dark:bg-green-900/20 rounded-lg border border-border dark:border-green-800"
                       >
                         <div>
                           <p className="font-medium text-sm">{op.name}</p>

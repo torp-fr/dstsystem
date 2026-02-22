@@ -254,7 +254,7 @@ export default function DepositFormPage() {
                     onChange={handleInputChange}
                     placeholder="ex. 30"
                   />
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     ex. 30% pour 30% du montant total du devis
                   </p>
                 </div>

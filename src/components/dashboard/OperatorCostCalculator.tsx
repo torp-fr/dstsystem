@@ -189,7 +189,7 @@ export const OperatorCostCalculator = () => {
                 {comparisons.map((comp, index) => (
                   <tr
                     key={comp.type}
-                    className={`border-b ${index === cheapestIndex ? 'bg-green-50' : ''}`}
+                    className={`border-b ${index === cheapestIndex ? 'bg-card' : ''}`}
                   >
                     <td className="py-3 px-4 font-medium">{comp.label}</td>
                     <td className={`text-right py-3 px-4 font-mono ${index === cheapestIndex ? 'font-bold text-green-600' : ''}`}>
@@ -219,7 +219,7 @@ export const OperatorCostCalculator = () => {
         {comparisons.map((comp, index) => (
           <Card
             key={comp.type}
-            className={index === cheapestIndex ? 'border-green-200 bg-green-50' : ''}
+            className={index === cheapestIndex ? 'border-border bg-card' : ''}
           >
             <CardHeader>
               <CardTitle className="text-lg">{comp.label}</CardTitle>

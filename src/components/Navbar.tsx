@@ -60,9 +60,6 @@ const Navbar = () => {
 
         {/* Desktop CTA buttons - right aligned */}
         <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-          <Button asChild variant="ghost" className="text-foreground hover:text-primary">
-            <Link to="/contact">Nous contacter</Link>
-          </Button>
           {!user && (
             <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
               <Link to="/login">Connexion</Link>
@@ -94,15 +91,6 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="flex flex-col gap-3 mt-6 pt-6 border-t border-border">
-                <Button
-                  asChild
-                  variant="ghost"
-                  className="w-full text-foreground hover:text-primary"
-                >
-                  <Link to="/contact" onClick={() => setOpen(false)}>
-                    Nous contacter
-                  </Link>
-                </Button>
                 {!user && (
                   <Button
                     asChild

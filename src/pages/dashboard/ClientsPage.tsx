@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useClients, useDeleteClient } from '@/hooks/useClients';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -98,6 +99,30 @@ const ClientsPage = () => {
         </select>
       </div>
 
+      {/* Statistics Card */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="grid grid-cols-3 gap-6">
+            <div className="flex flex-col">
+              <p className="text-sm text-muted-foreground font-medium">Total clients</p>
+              <p className="text-3xl font-bold mt-2">{clients.length}</p>
+            </div>
+            <div className="flex flex-col">
+              <p className="text-sm text-muted-foreground font-medium">Clients actifs</p>
+              <p className="text-3xl font-bold text-green-600 mt-2">
+                {clients.filter((c: any) => c.status === 'active').length}
+              </p>
+            </div>
+            <div className="flex flex-col">
+              <p className="text-sm text-muted-foreground font-medium">Prospects</p>
+              <p className="text-3xl font-bold text-blue-600 mt-2">
+                {clients.filter((c: any) => c.status === 'prospect').length}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Clients Table/List */}
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
@@ -173,10 +198,10 @@ const ClientsPage = () => {
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           client.status === 'active'
-                            ? 'bg-green-500/10 text-green-600 dark:text-green-400'
+                            ? 'bg-card0/10 text-green-600 dark:text-green-400'
                             : client.status === 'prospect'
                               ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
-                              : 'bg-gray-500/10 text-gray-600 dark:text-gray-400'
+                              : 'bg-card border border-border0/10 text-gray-600 dark:text-muted-foreground'
                         }`}
                       >
                         {client.status === 'active'

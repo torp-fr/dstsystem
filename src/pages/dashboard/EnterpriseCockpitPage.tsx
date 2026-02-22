@@ -181,7 +181,7 @@ export default function EnterpriseCockpitPage() {
       <div className="grid grid-cols-3 gap-3">
         {/* Operational */}
         <Card
-          className={`bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800 cursor-pointer transition-all ${
+          className={`bg-card border-border cursor-pointer transition-all ${
             statusFilter === 'operational'
               ? 'ring-2 ring-green-500 shadow-lg'
               : 'hover:shadow-md'
@@ -201,7 +201,7 @@ export default function EnterpriseCockpitPage() {
 
         {/* Pending Confirmation */}
         <Card
-          className={`bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800 cursor-pointer transition-all ${
+          className={`bg-card border-border cursor-pointer transition-all ${
             statusFilter === 'pending'
               ? 'ring-2 ring-amber-500 shadow-lg'
               : 'hover:shadow-md'
@@ -221,7 +221,7 @@ export default function EnterpriseCockpitPage() {
 
         {/* Staffing Incomplete */}
         <Card
-          className={`bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800 cursor-pointer transition-all ${
+          className={`bg-card border-border cursor-pointer transition-all ${
             statusFilter === 'incomplete'
               ? 'ring-2 ring-red-500 shadow-lg'
               : 'hover:shadow-md'
