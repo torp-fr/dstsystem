@@ -15,40 +15,40 @@
 
 const Domain = {
   // Setup Management
-  SetupRepository,
+  SetupRepository: typeof SetupRepository !== 'undefined' ? SetupRepository : null,
 
   // Operator Planning
-  OperatorAvailabilityRepository,
+  OperatorAvailabilityRepository: typeof OperatorAvailabilityRepository !== 'undefined' ? OperatorAvailabilityRepository : null,
 
   // Session Booking & Availability
-  AvailabilityEngine,
+  AvailabilityEngine: typeof AvailabilityEngine !== 'undefined' ? AvailabilityEngine : null,
 
   // Capacity Constraints
-  ModuleCapacityService,
+  ModuleCapacityService: typeof ModuleCapacityService !== 'undefined' ? ModuleCapacityService : null,
 
   // Session ↔ Setup Resource Binding
-  SessionResourceService,
+  SessionResourceService: typeof SessionResourceService !== 'undefined' ? SessionResourceService : null,
 
   // Migration Helpers
-  SessionMigrationHelper,
+  SessionMigrationHelper: typeof SessionMigrationHelper !== 'undefined' ? SessionMigrationHelper : null,
 
   // Account Management
-  AccountRepository,
+  AccountRepository: typeof AccountRepository !== 'undefined' ? AccountRepository : null,
 
   // Access Control Layer
-  RoleGuardService,
+  RoleGuardService: typeof RoleGuardService !== 'undefined' ? RoleGuardService : null,
 
   // Real-time Planning Engine
-  PlanningRealtimeService,
+  PlanningRealtimeService: typeof PlanningRealtimeService !== 'undefined' ? PlanningRealtimeService : null,
 
   // Operator Auto-Match Intelligence
-  OperatorAutoMatchEngine,
+  OperatorAutoMatchEngine: typeof OperatorAutoMatchEngine !== 'undefined' ? OperatorAutoMatchEngine : null,
 
   // Staffing Risk Analysis
-  StaffingRiskEngine,
+  StaffingRiskEngine: typeof StaffingRiskEngine !== 'undefined' ? StaffingRiskEngine : null,
 
   // Planning State Projection (READ-ONLY dashboard view)
-  PlanningStateService,
+  PlanningStateService: typeof PlanningStateService !== 'undefined' ? PlanningStateService : null,
 
   // Helper: Get all services at once
   getServices() {

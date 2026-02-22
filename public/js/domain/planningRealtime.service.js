@@ -68,7 +68,22 @@ const PlanningRealtimeService = (function() {
   const supabase = window.supabase;
 
   if (!supabase) {
-    throw new Error('[PlanningRealtimeService] Supabase client not found');
+    console.warn('[PlanningRealtimeService] Supabase client not ready — delaying init');
+    // Return a stub object to prevent crashes
+    return {
+      initialize: async () => {
+        console.warn('[PlanningRealtimeService] Service not initialized — Supabase not available');
+        return;
+      },
+      cleanup: async () => {},
+      getDailyPlanning: () => ({ date: '', sessions: [], operatorsBusy: [], setupsBusy: [] }),
+      getOperatorLoad: () => [],
+      isSetupAvailable: () => false,
+      getAvailableOperatorsForSession: () => [],
+      getSessionOperators: () => [],
+      getMonitor: () => ({}),
+      getRawState: () => ({})
+    };
   }
 
   // ============================================================
