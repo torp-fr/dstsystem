@@ -40,6 +40,7 @@ interface PlanningSession {
 export default function EnterpriseCockpitPage() {
   const [sessions, setSessions] = useState<PlanningSession[]>([]);
   const [loading, setLoading] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<'all' | 'operational' | 'pending' | 'incomplete'>('all');
   const health = useRuntimeHealth();
   const overallHealth = getOverallHealth(health);
   const healthIndicator = getHealthIndicator(overallHealth);
@@ -81,20 +82,38 @@ export default function EnterpriseCockpitPage() {
   // OPERATIONS DATA — Alerts & Upcoming
   // ============================================================
 
-  // ALERTS: Sessions needing action
-  const alerts = sessions.filter(
-    s => s.status === 'pending_confirmation' || !s.staffing.isOperational
-  );
-
-  // UPCOMING: Sessions sorted by date (next ones first)
-  const upcomingSessions = [...sessions]
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .slice(0, 5); // Show next 5
-
-  // OPERATIONAL STATUS — UI-only calculations
+  // OPERATIONAL STATUS — UI-only calculations (from all sessions)
   const operationalCount = sessions.filter(s => s.staffing?.isOperational).length;
   const pendingConfirmationCount = sessions.filter(s => s.status === 'pending_confirmation').length;
   const staffingIncompleteCount = sessions.filter(s => !s.staffing?.isOperational).length;
+
+  // STATUS FILTER HANDLER
+  const handleStatusFilterClick = (filter: 'operational' | 'pending' | 'incomplete') => {
+    // Toggle: clicking same filter again resets to 'all'
+    if (statusFilter === filter) {
+      setStatusFilter('all');
+    } else {
+      setStatusFilter(filter);
+    }
+  };
+
+  // FILTERED SESSIONS — Apply status filter
+  const filteredSessions = sessions.filter(session => {
+    if (statusFilter === 'operational') return session.staffing?.isOperational;
+    if (statusFilter === 'pending') return session.status === 'pending_confirmation';
+    if (statusFilter === 'incomplete') return !session.staffing?.isOperational;
+    return true; // 'all' filter
+  });
+
+  // ALERTS: Sessions needing action (from filtered sessions)
+  const alerts = filteredSessions.filter(
+    s => s.status === 'pending_confirmation' || !s.staffing.isOperational
+  );
+
+  // UPCOMING: Sessions sorted by date (next ones first) (from filtered sessions)
+  const upcomingSessions = [...filteredSessions]
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 5); // Show next 5
 
   // ============================================================
   // FINANCES DATA
@@ -145,7 +164,14 @@ export default function EnterpriseCockpitPage() {
       {/* Operational Status Bar */}
       <div className="grid grid-cols-3 gap-3">
         {/* Operational */}
-        <Card className="bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
+        <Card
+          className={`bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800 cursor-pointer transition-all ${
+            statusFilter === 'operational'
+              ? 'ring-2 ring-green-500 shadow-lg'
+              : 'hover:shadow-md'
+          }`}
+          onClick={() => handleStatusFilterClick('operational')}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="text-2xl">🟢</div>
@@ -158,7 +184,14 @@ export default function EnterpriseCockpitPage() {
         </Card>
 
         {/* Pending Confirmation */}
-        <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
+        <Card
+          className={`bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800 cursor-pointer transition-all ${
+            statusFilter === 'pending'
+              ? 'ring-2 ring-amber-500 shadow-lg'
+              : 'hover:shadow-md'
+          }`}
+          onClick={() => handleStatusFilterClick('pending')}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="text-2xl">🟡</div>
@@ -171,7 +204,14 @@ export default function EnterpriseCockpitPage() {
         </Card>
 
         {/* Staffing Incomplete */}
-        <Card className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800">
+        <Card
+          className={`bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800 cursor-pointer transition-all ${
+            statusFilter === 'incomplete'
+              ? 'ring-2 ring-red-500 shadow-lg'
+              : 'hover:shadow-md'
+          }`}
+          onClick={() => handleStatusFilterClick('incomplete')}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="text-2xl">🔴</div>
