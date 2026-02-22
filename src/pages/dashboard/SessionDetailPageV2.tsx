@@ -360,6 +360,7 @@ export default function SessionDetailPageV2() {
                 </div>
               )}
             </div>
+          </div>
         </div>
       </div>
 
