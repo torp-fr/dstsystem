@@ -3,9 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, Users, Calendar } from 'lucide-react';
+import { ArrowLeft, MapPin, Users, Calendar, DollarSign } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { getSessionPlanningDetailsSafe } from '@/services/planningBridge.service';
+import { useQuotes, type Quote } from '@/hooks/useQuotes';
 
 /**
  * SessionDetailPageV2 — Safe, Robust Session Detail View
@@ -40,6 +41,10 @@ export default function SessionDetailPageV2() {
   const [loading, setLoading] = useState(true);
   const [operators, setOperators] = useState<any>({ accepted: [], pending: [], rejected: [] });
   const [staffingState, setStaffingState] = useState<any>(null);
+  const [businessData, setBusinessData] = useState<Quote | null>(null);
+
+  // Fetch quotes to find one linked to this session
+  const { data: quotes = [] } = useQuotes();
 
   // ============================================================
   // FETCH SESSION DETAILS VIA BRIDGE
@@ -68,6 +73,10 @@ export default function SessionDetailPageV2() {
         setSession(result.session || null);
         setOperators(result.operators || { accepted: [], pending: [], rejected: [] });
         setStaffingState(result.staffingState || null);
+
+        // Find quote linked to this session
+        const linkedQuote = quotes.find((q: Quote) => q.session_id === sessionId);
+        setBusinessData(linkedQuote || null);
       } else {
         setSession(null);
       }
@@ -77,7 +86,7 @@ export default function SessionDetailPageV2() {
     } finally {
       setLoading(false);
     }
-  }, [sessionId]);
+  }, [sessionId, quotes]);
 
   // ============================================================
   // LOADING STATE
@@ -160,18 +169,19 @@ export default function SessionDetailPageV2() {
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* LEFT: SESSION INFO */}
+        {/* LEFT: OPERATIONAL INFO */}
         <div className="lg:col-span-1 space-y-4">
-          {/* Date & Location */}
+          {/* Operational Card */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm">Date & Lieu</CardTitle>
+              <CardTitle className="text-sm">Opérationnel</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-start gap-3">
                 <Calendar className="h-4 w-4 mt-1 text-muted-foreground" />
                 <div>
-                  <p className="font-medium">
+                  <p className="text-xs text-muted-foreground mb-1">Date</p>
+                  <p className="font-medium text-sm">
                     {new Date(session.date).toLocaleDateString('fr-FR', {
                       weekday: 'long',
                       year: 'numeric',
@@ -185,44 +195,58 @@ export default function SessionDetailPageV2() {
                 <div className="flex items-start gap-3">
                   <MapPin className="h-4 w-4 mt-1 text-muted-foreground" />
                   <div>
+                    <p className="text-xs text-muted-foreground mb-1">Modules</p>
                     <p className="text-sm text-muted-foreground">
                       {session.setupIds.join(', ')}
                     </p>
                   </div>
                 </div>
               )}
+              {staffingState && (
+                <div className="pt-2 border-t">
+                  <p className="text-xs text-muted-foreground mb-2">Affectations</p>
+                  <Badge
+                    variant={staffingState.isOperational ? 'default' : 'secondary'}
+                    className="w-full text-center justify-center"
+                  >
+                    {staffingState.isOperational ? 'Opérationnelle' : 'Incomplète'}
+                  </Badge>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {staffingState.acceptedCount}/{staffingState.minOperators} opérateurs
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
-          {/* Staffing Info */}
-          {staffingState && (
+          {/* Business Card (Mini) */}
+          {businessData && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-sm">Affectations</CardTitle>
+                <CardTitle className="text-sm">Business</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Opérateurs requis:</span>
-                  <span className="font-medium">{staffingState.minOperators}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Devis:</span>
+                  <span className="font-medium">{businessData.quote_number}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Acceptés:</span>
-                  <span className="font-medium text-green-600">
-                    {staffingState.acceptedCount}
+                <div className="flex justify-between items-center pt-2 border-t">
+                  <span className="flex items-center gap-1 text-muted-foreground">
+                    <DollarSign className="h-3 w-3" />
+                    Montant
+                  </span>
+                  <span className="font-bold text-green-600">
+                    {businessData.total_amount.toFixed(2)}€
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">En attente:</span>
-                  <span className="font-medium text-blue-600">
-                    {staffingState.pendingCount}
-                  </span>
-                </div>
-                <div className="flex justify-between pt-2 border-t">
-                  <span className="text-muted-foreground">État:</span>
-                  <Badge
-                    variant={staffingState.isOperational ? 'default' : 'secondary'}
-                  >
-                    {staffingState.isOperational ? 'Opérationnelle' : 'Incomplète'}
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Statut:</span>
+                  <Badge variant="outline" className="text-xs">
+                    {businessData.status === 'draft' && 'Brouillon'}
+                    {businessData.status === 'sent' && 'Envoyé'}
+                    {businessData.status === 'accepted' && 'Accepté'}
+                    {businessData.status === 'rejected' && 'Rejeté'}
+                    {businessData.status === 'converted_to_invoice' && 'Facturé'}
                   </Badge>
                 </div>
               </CardContent>
@@ -230,18 +254,29 @@ export default function SessionDetailPageV2() {
           )}
         </div>
 
-        {/* RIGHT: OPERATORS LIST */}
+        {/* RIGHT: OPERATORS SECTION */}
         <div className="lg:col-span-2 space-y-4">
-          {/* Accepted Operators */}
-          {operators.accepted.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  Opérateurs Confirmés ({operators.accepted.length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+          {/* Operators Header */}
+          <div>
+            <h3 className="text-lg font-semibold flex items-center gap-2 mb-4">
+              <Users className="h-5 w-5" />
+              Opérateurs
+            </h3>
+
+            {operators.accepted.length === 0 && operators.pending.length === 0 && (
+              <Card>
+                <CardContent className="pt-6 text-center text-muted-foreground py-12">
+                  <p>Aucun opérateur pour cette session</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Accepted Operators */}
+            {operators.accepted.length > 0 && (
+              <div className="mb-4">
+                <p className="text-sm font-medium text-green-600 mb-2">
+                  Confirmés ({operators.accepted.length})
+                </p>
                 <div className="space-y-2">
                   {operators.accepted.map((op: any) => (
                     <div
@@ -258,20 +293,15 @@ export default function SessionDetailPageV2() {
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+            )}
 
-          {/* Pending Operators */}
-          {operators.pending.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Users className="h-4 w-4" />
+            {/* Pending Operators */}
+            {operators.pending.length > 0 && (
+              <div>
+                <p className="text-sm font-medium text-blue-600 mb-2">
                   En Attente ({operators.pending.length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </p>
                 <div className="space-y-2">
                   {operators.pending.map((op: any) => (
                     <div
@@ -286,39 +316,17 @@ export default function SessionDetailPageV2() {
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* No Operators */}
-          {operators.accepted.length === 0 && operators.pending.length === 0 && (
-            <Card>
-              <CardContent className="pt-6 text-center text-muted-foreground py-12">
-                <p>Aucun opérateur pour cette session</p>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Notes Section */}
-      {session.notes && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">Notes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-              {session.notes}
-            </p>
-          </CardContent>
-        </Card>
-      )}
-
       {/* Actions */}
-      <div className="flex gap-3">
+      <div className="flex gap-3 pt-4">
         <Button variant="outline" onClick={() => navigate(-1)}>
-          Fermer
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Retour
         </Button>
       </div>
     </div>

@@ -144,9 +144,9 @@ export default function EnterpriseCockpitPage() {
             <AlertCircle className="h-4 w-4" />
             Opérations
           </TabsTrigger>
-          <TabsTrigger value="finances" className="gap-2">
-            <DollarSign className="h-4 w-4" />
-            Finances
+          <TabsTrigger value="performance" className="gap-2">
+            <TrendingUp className="h-4 w-4" />
+            Performance
           </TabsTrigger>
         </TabsList>
 
@@ -168,17 +168,17 @@ export default function EnterpriseCockpitPage() {
 
           {!loading && (
             <>
-              {/* BLOC A: ALERTS / NOTIFICATIONS */}
+              {/* BLOC A: ACTIONS REQUISES */}
               <div className="flex flex-col gap-4">
                 <div className="rounded-lg border p-4 bg-destructive/5 border-destructive/30">
                   <div className="flex items-center gap-2">
                     <AlertCircle className="h-5 w-5 text-destructive" />
                     <h2 className="text-lg font-semibold text-destructive">
-                      Notifications
+                      Actions Requises
                     </h2>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Actions requises ({alerts.length})
+                    {alerts.length > 0 ? `${alerts.length} session(s) en attente` : 'Aucune action requise'}
                   </p>
                 </div>
 
@@ -195,17 +195,17 @@ export default function EnterpriseCockpitPage() {
                 )}
               </div>
 
-              {/* BLOC B: UPCOMING PLANNING */}
+              {/* BLOC B: MISSIONS PROCHAINES */}
               <div className="flex flex-col gap-4">
                 <div className="rounded-lg border p-4 bg-blue-600/5 border-blue-600/30">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     <h2 className="text-lg font-semibold text-blue-600 dark:text-blue-400">
-                      Planning à venir
+                      Missions Prochaines
                     </h2>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {upcomingSessions.length} sessions programmées
+                    {upcomingSessions.length > 0 ? `${upcomingSessions.length} sessions programmées` : 'Aucune session prochaine'}
                   </p>
                 </div>
 
@@ -225,8 +225,8 @@ export default function EnterpriseCockpitPage() {
           )}
         </TabsContent>
 
-        {/* TAB: FINANCES */}
-        <TabsContent value="finances" className="flex-1">
+        {/* TAB: PERFORMANCE */}
+        <TabsContent value="performance" className="flex-1">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Revenue Card */}
             <Card>
