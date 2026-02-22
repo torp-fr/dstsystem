@@ -14,6 +14,7 @@ declare global {
     PlanningRealtimeService?: {
       initialize: () => Promise<void>;
       cleanup: () => Promise<void>;
+      _initialized?: boolean;
     };
   }
 }
@@ -85,9 +86,15 @@ const AppRoutes = () => {
     // Initialize Planning Realtime Service for dashboard data synchronization
     const initializePlanningService = async () => {
       try {
-        if (typeof window !== 'undefined' && window.PlanningRealtimeService) {
+        if (
+          typeof window !== 'undefined' &&
+          window.PlanningRealtimeService &&
+          !window.PlanningRealtimeService._initialized
+        ) {
           console.info('[APP] Initializing PlanningRealtimeService...');
           await window.PlanningRealtimeService.initialize();
+          // Mark as initialized to prevent duplicate initialization
+          window.PlanningRealtimeService._initialized = true;
           console.info('[APP] ✓ PlanningRealtimeService initialized successfully');
         }
       } catch (error) {

@@ -1,47 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import DashboardSidebar from './DashboardSidebar';
 import DashboardTopNav from './DashboardTopNav';
 
-declare global {
-  interface Window {
-    Domain?: {
-      PlanningRealtimeService?: {
-        initialize: () => Promise<void>;
-        cleanup: () => Promise<void>;
-      };
-    };
-  }
-}
+/**
+ * DashboardLayout — Pure UI container
+ *
+ * Service initialization is handled by App.tsx (root level)
+ * Only manages layout state (sidebar toggle)
+ */
 
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
-  // Initialize real-time planning service on dashboard load
-  useEffect(() => {
-    const initializeRealtimeService = async () => {
-      try {
-        if (window.Domain?.PlanningRealtimeService?.initialize) {
-          await window.Domain.PlanningRealtimeService.initialize();
-        }
-      } catch (error) {
-        console.error('[DashboardLayout] Failed to initialize PlanningRealtimeService:', error);
-      }
-    };
-
-    initializeRealtimeService();
-
-    // Cleanup when leaving dashboard
-    return async () => {
-      try {
-        if (window.Domain?.PlanningRealtimeService?.cleanup) {
-          await window.Domain.PlanningRealtimeService.cleanup();
-        }
-      } catch (error) {
-        console.error('[DashboardLayout] Error cleaning up PlanningRealtimeService:', error);
-      }
-    };
-  }, []);
 
   return (
     <div className="flex min-h-screen bg-background">

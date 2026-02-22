@@ -4,6 +4,7 @@ import PlanningFilters from './PlanningFilters';
 import PlanningSessionCard from './PlanningSessionCard';
 import EmptyState from '@/components/common/EmptyState';
 import SkeletonCard from '@/components/common/SkeletonCard';
+import { getPlanningSessionsSafe } from '@/services/planningBridge.service';
 
 /**
  * PlanningDashboard — Enterprise/Client Planning View
@@ -53,11 +54,12 @@ export default function PlanningDashboard() {
     setError(null);
 
     try {
-      // Call service with filters
-      const result = (window as any).Domain?.PlanningStateService?.getPlanningSessions(filters);
+      // Call service with filters via bridge
+      const result = getPlanningSessionsSafe(filters);
 
       if (!result) {
-        setError('Le service n\'est pas initialisé');
+        // Service not initialized — graceful fallback
+        // Display empty state without error banner
         setSessions([]);
         setLoading(false);
         return;

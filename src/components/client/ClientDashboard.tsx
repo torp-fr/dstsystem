@@ -4,6 +4,7 @@ import ClientSessionCard from './ClientSessionCard';
 import ClientCreateSessionForm from './ClientCreateSessionForm';
 import EmptyState from '@/components/common/EmptyState';
 import SkeletonCard from '@/components/common/SkeletonCard';
+import { getClientPlanningSafe } from '@/services/planningBridge.service';
 
 /**
  * ClientDashboard — Client Portal Interface
@@ -46,10 +47,11 @@ export default function ClientDashboard({ clientId }: ClientDashboardProps) {
     setError(null);
 
     try {
-      const result = (window as any).Domain?.PlanningStateService?.getClientPlanning(clientId);
+      const result = getClientPlanningSafe(clientId);
 
       if (!result) {
-        setError('Le service n\'est pas initialisé');
+        // Service not initialized — graceful fallback
+        // Display empty state without error banner
         setSessions([]);
         setLoading(false);
         return;
