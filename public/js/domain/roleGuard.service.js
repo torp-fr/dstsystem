@@ -685,3 +685,54 @@ const roleGuardService = new RoleGuardService();
 if (typeof window !== 'undefined') {
   window.RoleGuardService = roleGuardService;
 }
+
+// Backward compatibility layer for PlanningStateService
+if (typeof window !== 'undefined' && window.RoleGuardService) {
+  const svc = window.RoleGuardService;
+
+  // Add legacy can() method if not present
+  if (typeof svc.can !== 'function') {
+    svc.can = function(permission, context) {
+      // Map legacy permission names to modern methods
+      switch (permission) {
+        case 'view_planning_sessions':
+        case 'view_session':
+          if (typeof svc.canViewSession === 'function') {
+            const result = svc.canViewSession(context?.account, context?.session);
+            return result?.allowed !== false;
+          }
+          return true;
+
+        case 'edit_session':
+          if (typeof svc.canEditSession === 'function') {
+            const result = svc.canEditSession(context?.account, context?.session);
+            return result?.allowed !== false;
+          }
+          return true;
+
+        case 'view_session_details':
+        case 'view_operator_planning':
+        case 'view_client_planning':
+          // These are view operations, default to true if no context
+          if (context?.account && typeof svc.canViewSession === 'function') {
+            const result = svc.canViewSession(context.account, context.session);
+            return result?.allowed !== false;
+          }
+          return true;
+
+        default:
+          // Safe fallback - log warning but don't break
+          console.warn('[RoleGuardService.can] Unknown permission:', permission);
+          return true;
+      }
+    };
+  }
+
+  // Add getCurrentUser() stub if not present
+  if (typeof svc.getCurrentUser !== 'function') {
+    svc.getCurrentUser = function() {
+      // Return empty user object - will be populated by application layer
+      return {};
+    };
+  }
+}
