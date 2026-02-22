@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Select,
   SelectContent,
@@ -66,6 +67,15 @@ export default function OperatorFormPage() {
     notes: '',
     avatar_url: '',
     created_by: null,
+    // Pricing
+    tarif_horaire_brut: '',
+    tarif_facture_freelance: '',
+    // Company info (for freelance)
+    company_name: '',
+    siret: '',
+    email_facturation: '',
+    // Profile lock
+    is_profile_locked: false,
   });
 
   const [rateForm, setRateForm] = useState({
@@ -90,6 +100,12 @@ export default function OperatorFormPage() {
         notes: operator.notes || '',
         avatar_url: (operator as any).avatar_url || '',
         created_by: operator.created_by,
+        tarif_horaire_brut: (operator as any).tarif_horaire_brut || '',
+        tarif_facture_freelance: (operator as any).tarif_facture_freelance || '',
+        company_name: (operator as any).company_name || '',
+        siret: (operator as any).siret || '',
+        email_facturation: (operator as any).email_facturation || '',
+        is_profile_locked: (operator as any).is_profile_locked || false,
       });
     }
   }, [operator]);
@@ -151,6 +167,12 @@ export default function OperatorFormPage() {
         status: formData.status,
         notes: formData.notes || null,
         ...(formData.avatar_url && { avatar_url: formData.avatar_url }),
+        tarif_horaire_brut: formData.tarif_horaire_brut ? parseFloat(formData.tarif_horaire_brut) : null,
+        tarif_facture_freelance: formData.tarif_facture_freelance ? parseFloat(formData.tarif_facture_freelance) : null,
+        company_name: formData.company_name || null,
+        siret: formData.siret || null,
+        email_facturation: formData.email_facturation || null,
+        is_profile_locked: formData.is_profile_locked,
       };
 
       if (isEditing) {
@@ -398,6 +420,99 @@ export default function OperatorFormPage() {
                   rows={3}
                   className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all"
                 />
+              </div>
+
+              {/* Pricing Section */}
+              <div className="border-t pt-4">
+                <h3 className="text-sm font-semibold mb-3">Tarification</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium">Tarif horaire brut (€)</label>
+                    <Input
+                      name="tarif_horaire_brut"
+                      type="number"
+                      step="0.01"
+                      value={formData.tarif_horaire_brut}
+                      onChange={handleInputChange}
+                      placeholder="35.50"
+                      disabled={formData.is_profile_locked}
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">Tarif facture freelance (€)</label>
+                    <Input
+                      name="tarif_facture_freelance"
+                      type="number"
+                      step="0.01"
+                      value={formData.tarif_facture_freelance}
+                      onChange={handleInputChange}
+                      placeholder="50.00"
+                      disabled={formData.is_profile_locked}
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Company Info Section (Freelance) */}
+              {formData.employment_type === 'freelance' && (
+                <div className="border-t pt-4">
+                  <h3 className="text-sm font-semibold mb-3">Société facturante</h3>
+                  <div>
+                    <label className="text-sm font-medium">Nom de la société</label>
+                    <Input
+                      name="company_name"
+                      value={formData.company_name}
+                      onChange={handleInputChange}
+                      placeholder="Mon Entreprise SARL"
+                      disabled={formData.is_profile_locked}
+                      className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all disabled:opacity-50 mb-4"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium">SIRET</label>
+                      <Input
+                        name="siret"
+                        value={formData.siret}
+                        onChange={handleInputChange}
+                        placeholder="12345678901234"
+                        disabled={formData.is_profile_locked}
+                        className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all disabled:opacity-50"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Email facturation</label>
+                      <Input
+                        name="email_facturation"
+                        type="email"
+                        value={formData.email_facturation}
+                        onChange={handleInputChange}
+                        placeholder="facturation@example.com"
+                        disabled={formData.is_profile_locked}
+                        className="border-blue-200/40 bg-gradient-to-br from-blue-50/30 to-blue-50/10 focus:border-blue-300/60 focus:bg-blue-50/40 transition-all disabled:opacity-50"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Profile Lock Section */}
+              <div className="border-t pt-4 flex items-center gap-2">
+                <Checkbox
+                  id="is_profile_locked"
+                  checked={formData.is_profile_locked}
+                  onCheckedChange={(checked) =>
+                    setFormData(prev => ({
+                      ...prev,
+                      is_profile_locked: checked === true,
+                    }))
+                  }
+                />
+                <label htmlFor="is_profile_locked" className="text-sm font-medium cursor-pointer">
+                  Verrouiller le profil (désactive tous les champs)
+                </label>
               </div>
 
               <div className="flex gap-2 pt-4">
