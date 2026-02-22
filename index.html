@@ -26,6 +26,7 @@
     <!-- Domain Services: Loaded before React app for global window access -->
     <!-- These are static JS files served from /public/js/ - NOT bundled by Vite -->
     <!-- LOAD ORDER CRITICAL: Services must load in dependency order -->
+    <script src="/js/adapters/supabase.adapter.js"></script>
     <script src="/js/domain/setup.repository.js"></script>
     <script src="/js/domain/operatorAvailability.repository.js"></script>
     <script src="/js/domain/roleGuard.service.js"></script>
