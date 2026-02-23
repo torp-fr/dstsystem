@@ -55,8 +55,7 @@ export default function SessionsOperationalView({
   // ============================================================
 
   useEffect(() => {
-    const fetchSessions = async (retryCount = 0) => {
-      const MAX_RETRIES = 1;
+    const fetchSessions = async () => {
       setLoading(true);
       setError(null);
 
@@ -64,26 +63,16 @@ export default function SessionsOperationalView({
         console.log('[SessionsOperational] Fetching sessions from PlanningStateService...');
         // Call service (no filters for full view)
         const result = await getPlanningSessionsSafe({});
-        console.log('[SessionsOperational] Result:', result?.sessions?.length || 0, 'sessions');
+        console.log('[SessionsOperational] Result:', result.sessions?.length || 0, 'sessions');
 
-        if (result?.success) {
+        if (result.success) {
           setSessions(result.sessions || []);
           console.log('[SessionsOperational] ✓ Sessions loaded');
-        } else if (retryCount < MAX_RETRIES) {
-          // Retry once after 100ms if no result
-          console.warn('[SessionsOperational] No result, retrying in 100ms...');
-          await new Promise(r => setTimeout(r, 100));
-          return fetchSessions(retryCount + 1);
         } else {
-          setError(result?.error || 'Impossible de charger les sessions');
+          setError(result.error || 'Impossible de charger les sessions');
           setSessions([]);
         }
       } catch (err) {
-        if (retryCount < MAX_RETRIES) {
-          console.warn('[SessionsOperational] Error, retrying in 100ms:', err);
-          await new Promise(r => setTimeout(r, 100));
-          return fetchSessions(retryCount + 1);
-        }
         console.error('[SessionsOperational] Error:', err);
         setError(err instanceof Error ? err.message : 'Une erreur est survenue');
         setSessions([]);

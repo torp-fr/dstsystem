@@ -76,21 +76,42 @@ export async function loadInitialState() {
   try {
     console.log('[PlanningState] Loading initial state...');
 
-    // Load all sessions into cache
-    const result = await getPlanningSessions({});
+    // Direct query to supabase adapter
+    const { data, error } = await supabaseAdapter
+      .from('sessions')
+      .select('*')
+      .order('date', { ascending: true });
 
-    if (result.success) {
-      _cachedSessions = result.sessions;
-      _hydrated = true;
-      console.info(`[PlanningState] ✓ Hydrated with ${_cachedSessions.length} sessions`);
-      return true;
+    if (error) {
+      console.warn('[PlanningState] No sessions returned from adapter', error);
+      _cachedSessions = [];
     } else {
-      console.warn('[PlanningState] Initial load failed:', result.error);
-      _hydrated = true; // Mark as hydrated even on error to avoid infinite retry
-      return false;
+      // Transform response to match interface
+      const sessions = (data || []).map((session: any) => ({
+        id: session.id,
+        date: session.date,
+        regionId: session.region_id,
+        clientId: session.client_id,
+        status: session.status,
+        marketplaceVisible: session.marketplace_visible,
+        setupIds: session.setup_ids || [],
+        staffing: {
+          minOperators: session.min_operators || 0,
+          acceptedOperators: session.accepted_operators || 0,
+          pendingApplications: session.pending_applications || 0,
+          isOperational: session.is_operational || false,
+        },
+      }));
+
+      _cachedSessions = sessions;
     }
+
+    _hydrated = true;
+    console.log('[PlanningState] Hydration complete:', _cachedSessions.length);
+    return true;
   } catch (error) {
     console.error('[PlanningState] Hydration error:', error);
+    _cachedSessions = [];
     _hydrated = true; // Mark as hydrated even on error
     return false;
   }
@@ -112,6 +133,7 @@ export function isHydrated(): boolean {
 
 /**
  * Get all planning sessions
+ * ALWAYS returns an array, never null
  */
 export async function getPlanningSessions(filters?: {
   dateFrom?: string;
@@ -169,7 +191,7 @@ export async function getPlanningSessions(filters?: {
     }));
 
     console.log(`[PlanningState] Retrieved ${sessions.length} sessions`);
-    return { success: true, sessions, count };
+    return { success: true, sessions: sessions ?? [], count };
   } catch (error) {
     console.error('[PlanningState] Fetch error:', error);
     return { success: false, sessions: [], error: error instanceof Error ? error.message : 'Unknown error' };
