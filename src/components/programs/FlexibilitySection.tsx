@@ -48,7 +48,7 @@ const FlexibilitySection = () => (
           },
           {
             icon: CheckCircle,
-            title: "Tous publics armés",
+            title: "Services opérationnels",
             description: "Adaptation à tous les contextes institutionnels",
           },
         ].map((item, i) => (

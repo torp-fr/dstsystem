@@ -129,6 +129,22 @@ const Solutions = () => (
         </section>
       ))}
 
+      {/* Link to Methodology */}
+      <section className="py-12 border-t border-border-border">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center">
+              <p className="text-muted-foreground text-sm">
+                Vous souhaitez comprendre la méthodologie en détail ?{" "}
+                <Link to="/methodologie" className="text-primary hover:underline font-medium">
+                  Découvrir la méthodologie complète →
+                </Link>
+              </p>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-20 border-t border-border-border">
         <div className="container mx-auto px-4">

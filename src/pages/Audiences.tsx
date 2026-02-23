@@ -82,9 +82,9 @@ const coreAudiences = [
 const Audiences = () => (
   <>
     <SEOHead
-      title="Tous publics armés - Entraînement opérationnel | DST-System"
-      description="DST-System pour tous les publics armés : armée, police, gendarmerie, douanes, administration pénitentiaire, sécurité privée, collectivités."
-      keywords="tous publics armés, entraînement opérationnel, forces de sécurité"
+      title="Professionnels armés et services opérationnels | DST-System"
+      description="DST-System pour professionnels armés et services opérationnels : armée, police, gendarmerie, douanes, administration pénitentiaire, sécurité privée, collectivités."
+      keywords="professionnels armés, services opérationnels, entraînement opérationnel"
     />
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -97,13 +97,13 @@ const Audiences = () => (
                 Publics Cibles
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                Une méthode pour tous les
+                Une méthode pour les professionnels
                 <br />
-                <span className="text-primary">publics armés</span>
+                <span className="text-primary">armés et services opérationnels</span>
               </h1>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                DST-System s'adresse à tous les publics armés : armée, police, gendarmerie,
-                douanes, administration pénitentiaire, sécurité privée et collectivités.
+                DST-System s'adresse aux professionnels armés et services opérationnels : armée, police,
+                gendarmerie, douanes, administration pénitentiaire, sécurité privée et collectivités.
                 Une approche pédagogique professionnelle adaptée à chaque contexte.
               </p>
             </div>

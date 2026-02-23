@@ -16,14 +16,14 @@ const AudiencesPreview = () => (
       <AnimatedSection>
         <div className="text-center mb-16">
           <span className="text-primary text-sm font-medium tracking-wider uppercase">
-            Tous publics armés
+            Professionnels armés
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4">
-            Une méthode pour tous les opérateurs
+            Une méthode pour tous les services opérationnels
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            DST-System est conçue pour tous les publics armés : armée, police, gendarmerie,
-            douanes, administration pénitentiaire, sécurité privée et collectivités territoriales.
+            DST-System est conçue pour les professionnels armés et services opérationnels :
+            armée, police, gendarmerie, douanes, administration pénitentiaire, sécurité privée et collectivités.
           </p>
         </div>
       </AnimatedSection>

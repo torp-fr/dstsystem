@@ -203,6 +203,22 @@ const About = () => (
         </div>
       </section>
 
+      {/* Link to Methodology */}
+      <section className="py-12 border-t border-border-border">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center">
+              <p className="text-muted-foreground text-sm">
+                Comprendre la méthode DST en détail{" "}
+                <Link to="/methodologie" className="text-primary hover:underline font-medium">
+                  Comprendre la méthode DST →
+                </Link>
+              </p>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-20 bg-card border-t border-border-border">
         <div className="container mx-auto px-4">

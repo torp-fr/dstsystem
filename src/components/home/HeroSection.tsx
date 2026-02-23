@@ -89,7 +89,7 @@ const HeroSection = () => (
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <Shield className="h-4 w-4 text-primary" />
-            Tous publics armés
+            Services opérationnels
           </motion.div>
         </div>
 

@@ -9,7 +9,7 @@ const Methodology = () => (
   <>
     <SEOHead
       title="Méthodologie DST - Approche pédagogique d'entraînement opérationnel | DST-System"
-      description="Découvrez la méthodologie DST : une approche pédagogique professionnelle issue du terrain, conçue pour tous publics armés. Flexible, adaptable, multi-opérateurs."
+      description="Découvrez la méthodologie DST : une approche pédagogique professionnelle issue du terrain, conçue pour professionnels armés et services opérationnels. Flexible, adaptable, multi-opérateurs."
       keywords="méthodologie DST, entraînement opérationnel, approche pédagogique, pédagogie du terrain"
     />
     <div className="min-h-screen bg-background">
