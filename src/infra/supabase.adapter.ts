@@ -21,6 +21,30 @@ import { createClient } from '@supabase/supabase-js';
 import { USE_SUPABASE } from '@/config/runtime';
 
 /**
+ * HARD LOCK — Prevent global SupabaseAdapter usage
+ * This file is the ONLY source of Supabase instantiation
+ */
+if (typeof window !== 'undefined') {
+  const global = window as any;
+
+  // Prevent accidental re-assignment
+  Object.defineProperty(global, 'SupabaseAdapter', {
+    value: null,
+    writable: false,
+    configurable: false,
+  });
+
+  // Warn if something tries to attach a global adapter
+  if (global.SupabaseAdapter !== undefined && global.SupabaseAdapter !== null) {
+    console.error(
+      '[⛔ HARD LOCK] Attempt to create global SupabaseAdapter. ' +
+      'This violates Planning invariant. Use infra/supabase.adapter.ts as single source.'
+    );
+    throw new Error('[HARD LOCK] Global SupabaseAdapter forbidden.');
+  }
+}
+
+/**
  * Global Network Timeout Protection
  * Ensures requests don't hang indefinitely
  */

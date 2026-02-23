@@ -6,6 +6,10 @@ import EmptyState from '@/components/common/EmptyState';
 import SkeletonTable from '@/components/common/SkeletonTable';
 import { getPlanningSessionsSafe } from '@/services/planningBridge.service';
 import StatusBadge from '@/components/common/StatusBadge';
+import { assertPlanningInvariant } from '@/infra/guards/planningInvariant.guard';
+
+// HARD LOCK — Ensure SessionsOperationalView respects Planning invariant
+assertPlanningInvariant('SessionsOperationalView');
 
 /**
  * SessionsOperationalView — Table-based Operational Sessions View

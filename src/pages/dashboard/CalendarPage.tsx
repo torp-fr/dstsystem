@@ -12,6 +12,10 @@ import {
 import { getPlanningSessionsSafe } from '@/services/planningBridge.service';
 import { useClients } from '@/hooks/useClients';
 import { Loader2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { assertPlanningInvariant } from '@/infra/guards/planningInvariant.guard';
+
+// HARD LOCK — Ensure CalendarPage respects Planning invariant
+assertPlanningInvariant('CalendarPage');
 
 const statusColors: Record<string, string> = {
   scheduled: 'bg-blue-600/20 text-blue-700 dark:text-blue-300 border-l-4 border-blue-500',
