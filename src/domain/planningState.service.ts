@@ -76,11 +76,11 @@ export async function loadInitialState() {
   try {
     console.log('[PlanningState] Loading initial state...');
 
-    // Direct query to supabase adapter
+    // Direct query to training_sessions table
     const { data, error } = await supabaseAdapter
-      .from('sessions')
+      .from('training_sessions')
       .select('*')
-      .order('session_date', { ascending: true });
+      .order('date', { ascending: true });
 
     if (error) {
       console.warn('[PlanningState] No sessions returned from adapter', error);
@@ -89,16 +89,16 @@ export async function loadInitialState() {
       // Transform response to match interface
       const sessions = (data || []).map((session: any) => ({
         id: session.id,
-        date: session.session_date,
+        date: session.date,
         regionId: session.region_id,
         clientId: session.client_id,
         status: session.status,
-        marketplaceVisible: session.marketplace_visible,
+        marketplaceVisible: session.marketplace || false,
         setupIds: session.setup_ids || [],
         staffing: {
           minOperators: session.min_operators || 0,
           acceptedOperators: session.accepted_operators || 0,
-          pendingApplications: session.pending_applications || 0,
+          pendingApplications: session.pending_operators || 0,
           isOperational: session.is_operational || false,
         },
       }));
@@ -107,7 +107,7 @@ export async function loadInitialState() {
     }
 
     _hydrated = true;
-    console.log('[PlanningState] Rows returned:', data?.length);
+    console.log('[PlanningState] training_sessions rows:', data?.length);
     console.log('[PlanningState] Hydration complete:', _cachedSessions.length);
     return true;
   } catch (error) {
@@ -149,16 +149,16 @@ export async function getPlanningSessions(filters?: {
     }
 
     let query = supabaseAdapter
-      .from('sessions')
+      .from('training_sessions')
       .select('*')
-      .order('session_date', { ascending: true });
+      .order('date', { ascending: true });
 
     // Apply filters if provided
     if (filters?.dateFrom) {
-      query = query.gte('session_date', filters.dateFrom);
+      query = query.gte('date', filters.dateFrom);
     }
     if (filters?.dateTo) {
-      query = query.lte('session_date', filters.dateTo);
+      query = query.lte('date', filters.dateTo);
     }
     if (filters?.region) {
       query = query.eq('region_id', filters.region);
@@ -177,21 +177,21 @@ export async function getPlanningSessions(filters?: {
     // Transform response to match interface
     const sessions = (data || []).map((session: any) => ({
       id: session.id,
-      date: session.session_date,
+      date: session.date,
       regionId: session.region_id,
       clientId: session.client_id,
       status: session.status,
-      marketplaceVisible: session.marketplace_visible,
+      marketplaceVisible: session.marketplace || false,
       setupIds: session.setup_ids || [],
       staffing: {
         minOperators: session.min_operators || 0,
         acceptedOperators: session.accepted_operators || 0,
-        pendingApplications: session.pending_applications || 0,
+        pendingApplications: session.pending_operators || 0,
         isOperational: session.is_operational || false,
       },
     }));
 
-    console.log('[PlanningState] Rows returned:', data?.length);
+    console.log('[PlanningState] training_sessions rows:', data?.length);
     console.log(`[PlanningState] Retrieved ${sessions.length} sessions`);
     return { success: true, sessions: sessions ?? [], count };
   } catch (error) {
@@ -215,10 +215,10 @@ export async function getClientPlanning(clientId: string) {
     }
 
     const { data, error } = await supabaseAdapter
-      .from('sessions')
+      .from('training_sessions')
       .select('*')
       .eq('client_id', clientId)
-      .order('session_date', { ascending: true });
+      .order('date', { ascending: true });
 
     if (error) {
       console.error('[PlanningState] Client query error:', error);
@@ -228,21 +228,21 @@ export async function getClientPlanning(clientId: string) {
     // Transform response to match interface
     const sessions = (data || []).map((session: any) => ({
       id: session.id,
-      date: session.session_date,
+      date: session.date,
       regionId: session.region_id,
       clientId: session.client_id,
       status: session.status,
-      marketplaceVisible: session.marketplace_visible,
+      marketplaceVisible: session.marketplace || false,
       setupIds: session.setup_ids || [],
       staffing: {
         minOperators: session.min_operators || 0,
         acceptedOperators: session.accepted_operators || 0,
-        pendingApplications: session.pending_applications || 0,
+        pendingApplications: session.pending_operators || 0,
         isOperational: session.is_operational || false,
       },
     }));
 
-    console.log('[PlanningState] Rows returned:', data?.length);
+    console.log('[PlanningState] training_sessions rows:', data?.length);
     return { success: true, sessions: sessions || [] };
   } catch (error) {
     console.error('[PlanningState] Client fetch error:', error);
@@ -265,7 +265,7 @@ export async function getSessionPlanningDetails(sessionId: string) {
     }
 
     const { data, error } = await supabaseAdapter
-      .from('sessions')
+      .from('training_sessions')
       .select('*')
       .eq('id', sessionId)
       .single();
@@ -275,6 +275,7 @@ export async function getSessionPlanningDetails(sessionId: string) {
       return { success: false, error: error.message };
     }
 
+    console.log('[PlanningState] training_sessions single row');
     return { success: true, session: data };
   } catch (error) {
     console.error('[PlanningState] Detail fetch error:', error);
@@ -297,7 +298,7 @@ export async function deleteSession(sessionId: string) {
     }
 
     const { error } = await supabaseAdapter
-      .from('sessions')
+      .from('training_sessions')
       .delete()
       .eq('id', sessionId);
 
@@ -306,7 +307,7 @@ export async function deleteSession(sessionId: string) {
       return { success: false, error: error.message };
     }
 
-    console.log(`[PlanningState] Session ${sessionId} deleted`);
+    console.log(`[PlanningState] training_sessions session ${sessionId} deleted`);
     return { success: true };
   } catch (error) {
     console.error('[PlanningState] Delete operation error:', error);
