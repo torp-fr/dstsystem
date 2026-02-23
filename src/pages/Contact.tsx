@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ContactVisual from "@/components/contact/FranceMap";
@@ -15,7 +22,10 @@ const Contact = () => {
     name: "",
     email: "",
     phone: "",
-    organization: "",
+    typeStructure: "",
+    nombreAgents: "",
+    localisation: "",
+    programmeEnvisage: "",
     message: "",
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +50,16 @@ const Contact = () => {
           title: "Message envoyé avec succès !",
           description: "Nous vous répondrons dans les meilleurs délais.",
         });
-        setFormData({ name: "", email: "", phone: "", organization: "", message: "" });
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          typeStructure: "",
+          nombreAgents: "",
+          localisation: "",
+          programmeEnvisage: "",
+          message: "",
+        });
       } else {
         toast({
           title: "Erreur",
@@ -72,11 +91,11 @@ const Contact = () => {
                   Contact
                 </span>
                 <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                  Contactez-nous
+                  Demande d'étude de besoin
                 </h1>
                 <p className="text-muted-foreground text-lg leading-relaxed">
-                  Une question ? Un projet ? N'hésitez pas à nous contacter pour
-                  discuter de vos besoins.
+                  Remplissez ce formulaire pour que nous analysons vos besoins
+                  opérationnels et vous proposions un programme adapté.
                 </p>
               </div>
             </AnimatedSection>
@@ -131,25 +150,79 @@ const Contact = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="organization">Organisation</Label>
-                    <Input
-                      id="organization"
-                      placeholder="Votre organisation ou unité"
-                      value={formData.organization}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          organization: e.target.value,
-                        })
+                    <Label htmlFor="typeStructure">Type de structure</Label>
+                    <Select
+                      value={formData.typeStructure}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, typeStructure: value })
                       }
-                      className="bg-card border-border-border"
-                    />
+                    >
+                      <SelectTrigger className="bg-card border-border-border">
+                        <SelectValue placeholder="Sélectionnez votre type de structure" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="police">Police nationale</SelectItem>
+                        <SelectItem value="gendarmerie">Gendarmerie</SelectItem>
+                        <SelectItem value="armée">Armée</SelectItem>
+                        <SelectItem value="forces-spéciales">Forces spéciales</SelectItem>
+                        <SelectItem value="police-municipale">Police municipale</SelectItem>
+                        <SelectItem value="collectivité">Collectivité locale</SelectItem>
+                        <SelectItem value="sécurité-privée">Sécurité privée armée</SelectItem>
+                        <SelectItem value="autre">Autre</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="nombreAgents">Nombre d'agents</Label>
+                      <Input
+                        id="nombreAgents"
+                        placeholder="Ex: 20"
+                        type="number"
+                        value={formData.nombreAgents}
+                        onChange={(e) =>
+                          setFormData({ ...formData, nombreAgents: e.target.value })
+                        }
+                        className="bg-card border-border-border"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="localisation">Localisation</Label>
+                      <Input
+                        id="localisation"
+                        placeholder="Région ou département"
+                        value={formData.localisation}
+                        onChange={(e) =>
+                          setFormData({ ...formData, localisation: e.target.value })
+                        }
+                        className="bg-card border-border-border"
+                      />
+                    </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
+                    <Label htmlFor="programmeEnvisage">Programme envisagé</Label>
+                    <Select
+                      value={formData.programmeEnvisage}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, programmeEnvisage: value })
+                      }
+                    >
+                      <SelectTrigger className="bg-card border-border-border">
+                        <SelectValue placeholder="Quel programme vous intéresse ?" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="maintien">Maintien opérationnel</SelectItem>
+                        <SelectItem value="progression">Progression dynamique</SelectItem>
+                        <SelectItem value="tactique">Tactique avancée</SelectItem>
+                        <SelectItem value="personnalisé">Programme personnalisé</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Informations complémentaires</Label>
                     <Textarea
                       id="message"
-                      placeholder="Décrivez votre projet ou posez votre question..."
+                      placeholder="Décrivez vos objectifs opérationnels spécifiques et vos contraintes logistiques..."
                       rows={6}
                       value={formData.message}
                       onChange={(e) =>
@@ -165,7 +238,7 @@ const Contact = () => {
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50"
                   >
                     <Send className="mr-2 h-4 w-4" />
-                    {isLoading ? "Envoi en cours..." : "Envoyer le message"}
+                    {isLoading ? "Envoi en cours..." : "Envoyer la demande"}
                   </Button>
                 </form>
               </AnimatedSection>

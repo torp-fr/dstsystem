@@ -37,20 +37,20 @@ const HeroSection = () => (
         </div>
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-          Entraînez-vous,
+          Maintien opérationnel
           <br />
-          <span className="text-primary">Partout. Sans contrainte.</span>
+          <span className="text-primary">Entraînement mobile. Compétences durables.</span>
         </h1>
 
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
-          DST-System déploie un simulateur de tir laser directement dans vos
-          locaux — entraînement au tir opérationnel, zéro munition, zéro
-          infrastructure lourde. Maintenez les compétences avec
-          une solution mobile et immédiate.
+          DST-System apporte la solution d'entraînement opérationnel directement
+          dans vos locaux. Programmes structurés, suivi individualisé, sans tir
+          réel. Maintenir et développer les compétences armées des forces de
+          sécurité et collectivités.
         </p>
 
         <p className="text-sm md:text-base text-primary/80 italic font-medium mb-10 tracking-wide">
-          « La sueur épargne le sang. » — Sun Tzu
+          « La compétence au tir est périssable. »
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
