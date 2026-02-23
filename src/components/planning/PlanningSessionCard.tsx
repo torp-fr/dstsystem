@@ -32,14 +32,25 @@ interface PlanningSessionCardProps {
     staffing: SessionStaffing;
   };
   showQuickActions?: boolean;
+  onSessionClick?: (session: any) => void;
 }
 
-export default function PlanningSessionCard({ session, showQuickActions }: PlanningSessionCardProps) {
+export default function PlanningSessionCard({
+  session,
+  showQuickActions,
+  onSessionClick
+}: PlanningSessionCardProps) {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
     if (!session?.id) return;
-    navigate(`/dashboard/sessions/${session.id}`);
+    // If callback provided, use it (modal mode)
+    if (onSessionClick) {
+      onSessionClick(session);
+    } else {
+      // Otherwise navigate (backward compatibility, though route no longer exists)
+      navigate(`/dashboard/sessions/${session.id}`);
+    }
   };
 
   // ============================================================
@@ -175,7 +186,11 @@ export default function PlanningSessionCard({ session, showQuickActions }: Plann
             variant="secondary"
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/dashboard/sessions/${session.id}`);
+              if (onSessionClick) {
+                onSessionClick(session);
+              } else {
+                navigate(`/dashboard/sessions/${session.id}`);
+              }
             }}
           >
             Ouvrir
