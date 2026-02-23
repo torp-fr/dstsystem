@@ -79,8 +79,8 @@ export async function loadInitialState() {
     // Direct query to shooting_sessions table
     const { data, error } = await supabaseAdapter
       .from('shooting_sessions')
-      .select('*')
-      .order('session_date', { ascending: true });
+      .select('id, client_id, region, date, status, setup_ids, marketplace_visible, min_operators, accepted_operators, pending_operators, is_operational')
+      .order('date', { ascending: true });
 
     if (error) {
       console.warn('[PlanningState] No sessions returned from adapter', error);
@@ -89,7 +89,7 @@ export async function loadInitialState() {
       // Transform response to match interface
       const sessions = (data || []).map((session: any) => ({
         id: session.id,
-        date: session.session_date,
+        date: session.date,
         regionId: session.region || '',
         clientId: session.client_id || '',
         status: session.status,
@@ -150,15 +150,15 @@ export async function getPlanningSessions(filters?: {
 
     let query = supabaseAdapter
       .from('shooting_sessions')
-      .select('*')
-      .order('session_date', { ascending: true });
+      .select('id, client_id, region, date, status, setup_ids, marketplace_visible, min_operators, accepted_operators, pending_operators, is_operational')
+      .order('date', { ascending: true });
 
     // Apply filters if provided
     if (filters?.dateFrom) {
-      query = query.gte('session_date', filters.dateFrom);
+      query = query.gte('date', filters.dateFrom);
     }
     if (filters?.dateTo) {
-      query = query.lte('session_date', filters.dateTo);
+      query = query.lte('date', filters.dateTo);
     }
     if (filters?.region) {
       query = query.eq('region', filters.region);
@@ -177,7 +177,7 @@ export async function getPlanningSessions(filters?: {
     // Transform response to match interface
     const sessions = (data || []).map((session: any) => ({
       id: session.id,
-      date: session.session_date,
+      date: session.date,
       regionId: session.region || '',
       clientId: session.client_id || '',
       status: session.status,
@@ -216,9 +216,9 @@ export async function getClientPlanning(clientId: string) {
 
     const { data, error } = await supabaseAdapter
       .from('shooting_sessions')
-      .select('*')
+      .select('id, client_id, region, date, status, setup_ids, marketplace_visible, min_operators, accepted_operators, pending_operators, is_operational')
       .eq('client_id', clientId)
-      .order('session_date', { ascending: true });
+      .order('date', { ascending: true });
 
     if (error) {
       console.error('[PlanningState] Client query error:', error);
@@ -228,7 +228,7 @@ export async function getClientPlanning(clientId: string) {
     // Transform response to match interface
     const sessions = (data || []).map((session: any) => ({
       id: session.id,
-      date: session.session_date,
+      date: session.date,
       regionId: session.region || '',
       clientId: session.client_id || '',
       status: session.status,
