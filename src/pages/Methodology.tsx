@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import AnimatedSection from "@/components/AnimatedSection";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Target, Users, Zap, CheckCircle, ArrowRight } from "lucide-react";
+import { Target, Users, Zap, CheckCircle, ArrowRight, Layers, TrendingUp } from "lucide-react";
 import SEOHead from "@/components/common/SEOHead";
 
 const Methodology = () => (
@@ -24,11 +24,12 @@ const Methodology = () => (
                   Méthodologie
                 </span>
                 <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                  L'approche DST
+                  La méthodologie d'entraînement opérationnel DST
                 </h1>
                 <p className="text-muted-foreground text-lg leading-relaxed">
-                  Une méthodologie professionnelle d'entraînement opérationnel, fondée sur l'expérience du terrain
-                  et conçue pour être déployée par une équipe d'opérateurs formés. Flexible, adaptable à tous les publics armés.
+                  Une approche pédagogique professionnelle fondée sur l'expérience du terrain.
+                  Conçue pour être déployée par une équipe d'opérateurs formés.
+                  Flexible, scalable, adaptée à tous les services opérationnels.
                 </p>
               </div>
             </AnimatedSection>
@@ -143,6 +144,88 @@ const Methodology = () => (
                 </AnimatedSection>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Progression pédagogique */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <AnimatedSection>
+              <div className="text-center mb-16">
+                <h2 className="text-3xl font-bold mb-4">Progression pédagogique</h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  La méthodologie DST s'adapte à votre parcours d'entraînement, du maintien opérationnel à la tactique avancée.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              {[
+                {
+                  icon: CheckCircle,
+                  level: "Niveau 1",
+                  title: "Maintien opérationnel",
+                  description: "Consolidation des compétences de base et maintien du niveau tactique de l'unité.",
+                },
+                {
+                  icon: TrendingUp,
+                  level: "Niveau 2",
+                  title: "Progression dynamique",
+                  description: "Développement des capacités collectives et perfectionnement des réflexes sous stress.",
+                },
+                {
+                  icon: Layers,
+                  level: "Niveau 3",
+                  title: "Tactique avancée",
+                  description: "Maîtrise de scénarios complexes et prise de décision en environnement dégradé.",
+                },
+              ].map((program, i) => (
+                <AnimatedSection key={program.title} delay={i * 0.1}>
+                  <div className="p-8 rounded-2xl bg-card border-border border-border-border hover:border-primary/30 transition-all">
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 border-border border-primary/20 mb-4">
+                      <program.icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <span className="text-xs font-medium text-primary uppercase tracking-wider">{program.level}</span>
+                    <h3 className="text-lg font-bold mt-2 mb-3">{program.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{program.description}</p>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+
+            <AnimatedSection delay={0.4}>
+              <div className="mt-16 p-8 rounded-2xl bg-primary/5 border-border border-primary/20">
+                <h3 className="text-lg font-bold mb-4">Adaptabilité multi-services</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-semibold mb-3 text-foreground">Déploiement flexible</h4>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                        <span>Adaptation aux protocoles spécifiques de chaque service</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                        <span>Progression pédagogique personnalisée par unité</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-3 text-foreground">Scalabilité opérationnelle</h4>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                        <span>Déploiement mobile dans vos locaux</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                        <span>Suivi mesurable et rapports de progression</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </AnimatedSection>
           </div>
         </section>
 
