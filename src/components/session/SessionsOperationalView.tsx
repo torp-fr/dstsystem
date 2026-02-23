@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import EmptyState from '@/components/common/EmptyState';
 import SkeletonTable from '@/components/common/SkeletonTable';
-import { getPlanningSessionsSafe } from '@/services/planningBridge.service';
+import { getPlanningSessions } from '@/domain/planningState.service';
 import StatusBadge from '@/components/common/StatusBadge';
 
 /**
@@ -55,36 +55,33 @@ export default function SessionsOperationalView({
   // ============================================================
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    const fetchSessions = async () => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      console.log('[SessionsOperational] Fetching sessions from PlanningStateService...');
-      // Call service via bridge (no filters for full view)
-      const result = getPlanningSessionsSafe({});
-      console.log('[SessionsOperational] Result:', result?.sessions?.length || 0, 'sessions');
+      try {
+        console.log('[SessionsOperational] Fetching sessions from PlanningStateService...');
+        // Call service (no filters for full view)
+        const result = await getPlanningSessions({});
+        console.log('[SessionsOperational] Result:', result?.sessions?.length || 0, 'sessions');
 
-      if (!result) {
-        // Service not initialized — graceful fallback
-        console.warn('[SessionsOperational] Bridge returned null');
+        if (result.success) {
+          setSessions(result.sessions || []);
+          console.log('[SessionsOperational] ✓ Sessions loaded');
+        } else {
+          setError(result.error || 'Impossible de charger les sessions');
+          setSessions([]);
+        }
+      } catch (err) {
+        console.error('[SessionsOperational] Error:', err);
+        setError(err instanceof Error ? err.message : 'Une erreur est survenue');
         setSessions([]);
+      } finally {
         setLoading(false);
-        return;
       }
+    };
 
-      if (result.success) {
-        setSessions(result.sessions || []);
-      } else {
-        setError(result.error || 'Impossible de charger les sessions');
-        setSessions([]);
-      }
-    } catch (err) {
-      console.error('[SessionsOperational] Error:', err);
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
-      setSessions([]);
-    } finally {
-      setLoading(false);
-    }
+    fetchSessions();
   }, []);
 
   // ============================================================

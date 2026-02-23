@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Loader2, Users, Calendar, MapPin, DollarSign, X, Trash2 } from 'lucide-react';
 import { useQuotes, type Quote } from '@/hooks/useQuotes';
-import { getSessionPlanningDetailsSafe, deleteSessionSafe } from '@/services/planningBridge.service';
+import { getSessionPlanningDetails, deleteSession } from '@/domain/planningState.service';
 
 /**
  * SessionDetailModal — Modal-based Session Detail View
@@ -57,36 +57,33 @@ export default function SessionDetailModal({
       return;
     }
 
-    setLoading(true);
-    setError(null);
+    const loadSessionDetails = async () => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      console.log('[SessionDetailModal] Loading session:', sessionId);
-      const result = getSessionPlanningDetailsSafe(sessionId);
-      console.log('[SessionDetailModal] Result:', result);
+      try {
+        console.log('[SessionDetailModal] Loading session:', sessionId);
+        const result = await getSessionPlanningDetails(sessionId);
+        console.log('[SessionDetailModal] Result:', result);
 
-      if (!result) {
-        console.warn('[SessionDetailModal] No result from bridge');
-        setError('Impossible de charger les détails de la session');
+        if (result.success && result.session) {
+          console.log('[SessionDetailModal] Session loaded ✓');
+          setSession(result.session);
+        } else {
+          console.warn('[SessionDetailModal] Session not found:', result.error);
+          setError(result.error || 'Session indisponible — recharge nécessaire');
+          setSession(null);
+        }
+      } catch (err) {
+        console.error('[SessionDetailModal] Error:', err);
+        setError(err instanceof Error ? err.message : 'Une erreur est survenue');
         setSession(null);
-        return;
+      } finally {
+        setLoading(false);
       }
+    };
 
-      if (result.success && result.session) {
-        console.log('[SessionDetailModal] Session loaded ✓');
-        setSession(result.session);
-      } else {
-        console.warn('[SessionDetailModal] Session not found:', result.error);
-        setError(result.error || 'Session non trouvée');
-        setSession(null);
-      }
-    } catch (err) {
-      console.error('[SessionDetailModal] Error:', err);
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
-      setSession(null);
-    } finally {
-      setLoading(false);
-    }
+    loadSessionDetails();
   }, [isOpen, sessionId]);
 
   // Find linked quote
@@ -103,7 +100,7 @@ export default function SessionDetailModal({
 
     setDeleting(true);
     try {
-      const result = deleteSessionSafe(session.id);
+      const result = await deleteSession(session.id);
       if (result.success) {
         onDeleteSuccess?.();
         onClose();

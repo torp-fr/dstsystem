@@ -1,16 +1,65 @@
 /**
- * Supabase Adapter — Direct ESM Import
+ * Supabase Adapter — SINGLE SOURCE OF TRUTH
  *
  * Direct instantiation of Supabase client via @supabase/supabase-js.
- * No global scripts. No polling. No bootstrap runtime.
- * Pure ESM architecture: import and use immediately.
+ * ⚠️ CRITICAL: This is the ONLY place where createClient() is called.
+ * No other files may instantiate Supabase.
+ *
+ * Features:
+ * - Network timeout protection (15s)
+ * - Environment validation at load time
+ * - Sync instantiation (no polling)
+ * - Production guard (USE_SUPABASE config)
  *
  * Environment variables (from .env):
  * - VITE_SUPABASE_URL: Supabase project URL
  * - VITE_SUPABASE_ANON_KEY: Public API key
+ * - USE_SUPABASE: Runtime config flag
  */
 
 import { createClient } from '@supabase/supabase-js';
+import { USE_SUPABASE } from '@/config/runtime';
+
+/**
+ * Global Network Timeout Protection
+ * Ensures requests don't hang indefinitely
+ */
+const NETWORK_TIMEOUT_MS = 15000; // 15 seconds
+
+function createTimeoutFetch() {
+  return async (url: string, init?: RequestInit): Promise<Response> => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), NETWORK_TIMEOUT_MS);
+
+    try {
+      const response = await fetch(url, {
+        ...init,
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      return response;
+    } catch (error) {
+      clearTimeout(timeoutId);
+
+      // Handle timeout errors
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        throw new Error(
+          `[NETWORK] Request timeout after ${NETWORK_TIMEOUT_MS}ms: ${url}`
+        );
+      }
+
+      throw error;
+    }
+  };
+}
+
+// PRODUCTION GUARD: Fail fast if Supabase disabled
+if (!USE_SUPABASE) {
+  throw new Error(
+    '[PRODUCTION] Supabase adapter is required but USE_SUPABASE is disabled. ' +
+    'Check src/config/runtime.ts'
+  );
+}
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -22,11 +71,30 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 /**
- * Supabase client instance
- * Direct instantiation — available immediately at module load time
- * No async initialization required
+ * ⚠️ SINGLE SOURCE OF TRUTH — ONLY createClient() call in entire codebase
+ * Create the Supabase client with timeout protection
  */
-export const supabaseAdapter = createClient(supabaseUrl, supabaseKey);
+const supabaseClient = createClient(supabaseUrl, supabaseKey, {
+  global: {
+    fetch: createTimeoutFetch(),
+  },
+});
+
+// Validate client initialization
+if (!supabaseClient) {
+  throw new Error('[PRODUCTION] Failed to initialize Supabase client');
+}
+
+/**
+ * Export as supabaseAdapter (infrastructure layer name)
+ */
+export const supabaseAdapter = supabaseClient;
+
+/**
+ * Also export as supabase for compatibility with existing code
+ * (many files import from @/lib/supabase which re-exports this)
+ */
+export const supabase = supabaseClient;
 
 /**
  * Adapter is always ready (sync instantiation)
@@ -45,4 +113,30 @@ export function getAdapter() {
   return supabaseAdapter;
 }
 
+/**
+ * Check if user is authenticated
+ */
+export const checkAuth = async () => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user;
+};
+
+/**
+ * Get current session
+ */
+export const getSession = async () => {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  return session;
+};
+
+// Development info logging
+if (typeof window !== 'undefined' && USE_SUPABASE) {
+  console.info('[DST-SYSTEM] ✅ Supabase production runtime is active');
+}
+
 export default supabaseAdapter;
+
