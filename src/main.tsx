@@ -2,13 +2,17 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 
-// Initialize Supabase runtime BEFORE React rendering
-import { initializeSupabaseRuntime } from "./bootstrap/supabase.runtime";
+// Supabase adapter is initialized directly via ESM import
+import { supabaseAdapter } from "./infra/supabase.adapter";
 
-// Top-level await: wait for SupabaseAdapter before rendering React
-await initializeSupabaseRuntime().catch(error => {
-  console.error('[MAIN] Supabase initialization failed:', error);
-  // Continue anyway - some features may still work
+// Planning domain bootstrap (SYNCHRONOUS)
+import { bootstrapPlanningDomain } from "./domain/planning.bootstrap";
+
+console.log('[MAIN] Supabase adapter loaded ✓');
+
+// Initialize planning domain BEFORE React render
+await bootstrapPlanningDomain().catch(error => {
+  console.error('[MAIN] Domain bootstrap failed:', error);
 });
 
 console.log('[MAIN] React render starting...');
