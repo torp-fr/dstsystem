@@ -4,13 +4,14 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, Users, Calendar, MapPin, DollarSign, X } from 'lucide-react';
+import { Loader2, Users, Calendar, MapPin, DollarSign, X, Trash2 } from 'lucide-react';
 import { useQuotes, type Quote } from '@/hooks/useQuotes';
-import { getSessionPlanningDetailsSafe } from '@/services/planningBridge.service';
+import { getSessionPlanningDetailsSafe, deleteSessionSafe } from '@/services/planningBridge.service';
 
 /**
  * SessionDetailModal — Modal-based Session Detail View
@@ -27,6 +28,7 @@ interface SessionDetailModalProps {
   onClose: () => void;
   onEdit?: (sessionId: string) => void;
   onAssign?: (sessionId: string) => void;
+  onDeleteSuccess?: () => void;
 }
 
 export default function SessionDetailModal({
@@ -35,11 +37,14 @@ export default function SessionDetailModal({
   onClose,
   onEdit,
   onAssign,
+  onDeleteSuccess,
 }: SessionDetailModalProps) {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [businessData, setBusinessData] = useState<Quote | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   // Fetch quotes to find one linked to this session
   const { data: quotes = [] } = useQuotes();
@@ -56,21 +61,27 @@ export default function SessionDetailModal({
     setError(null);
 
     try {
+      console.log('[SessionDetailModal] Loading session:', sessionId);
       const result = getSessionPlanningDetailsSafe(sessionId);
+      console.log('[SessionDetailModal] Result:', result);
 
       if (!result) {
+        console.warn('[SessionDetailModal] No result from bridge');
         setError('Impossible de charger les détails de la session');
         setSession(null);
         return;
       }
 
       if (result.success && result.session) {
+        console.log('[SessionDetailModal] Session loaded ✓');
         setSession(result.session);
       } else {
+        console.warn('[SessionDetailModal] Session not found:', result.error);
         setError(result.error || 'Session non trouvée');
         setSession(null);
       }
     } catch (err) {
+      console.error('[SessionDetailModal] Error:', err);
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setSession(null);
     } finally {
@@ -86,6 +97,27 @@ export default function SessionDetailModal({
     }
   }, [session?.id, quotes]);
 
+  // Handle session deletion
+  const handleDelete = async () => {
+    if (!session?.id) return;
+
+    setDeleting(true);
+    try {
+      const result = deleteSessionSafe(session.id);
+      if (result.success) {
+        onDeleteSuccess?.();
+        onClose();
+      } else {
+        setError(result.error || 'Erreur lors de la suppression');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur inconnue');
+    } finally {
+      setDeleting(false);
+      setConfirmDelete(false);
+    }
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -95,9 +127,15 @@ export default function SessionDetailModal({
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Chargement</DialogTitle>
+            <DialogDescription>
+              Chargement des détails de la session en cours...
+            </DialogDescription>
+          </DialogHeader>
           <div className="flex items-center justify-center py-12 gap-2">
             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            <span className="text-muted-foreground">Chargement des détails...</span>
+            <span className="text-muted-foreground">Patientez...</span>
           </div>
         </DialogContent>
       </Dialog>
@@ -111,6 +149,9 @@ export default function SessionDetailModal({
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Erreur</DialogTitle>
+            <DialogDescription>
+              Impossible de charger les détails de cette session
+            </DialogDescription>
           </DialogHeader>
           <div className="bg-destructive/5 border border-destructive/30 rounded-lg p-4 text-destructive">
             {error || 'Session non trouvée'}
@@ -139,9 +180,9 @@ export default function SessionDetailModal({
           <DialogTitle className="text-2xl">
             Session {session.id}
           </DialogTitle>
-          <p className="text-sm text-muted-foreground mt-2">
+          <DialogDescription className="text-sm mt-2">
             Client: {session.clientId} • Région: {session.regionId}
-          </p>
+          </DialogDescription>
         </DialogHeader>
 
         {/* Content */}
@@ -346,7 +387,46 @@ export default function SessionDetailModal({
             </Button>
           )}
 
-          <Button variant="ghost" onClick={onClose} className="ml-auto">
+          {!confirmDelete && (
+            <Button
+              variant="destructive"
+              onClick={() => setConfirmDelete(true)}
+              disabled={deleting}
+              className="ml-2"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Supprimer
+            </Button>
+          )}
+
+          {confirmDelete && (
+            <div className="flex gap-2 items-center ml-2">
+              <span className="text-sm text-destructive font-medium">Confirmer la suppression?</span>
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={handleDelete}
+                disabled={deleting}
+              >
+                {deleting ? 'Suppression...' : 'Oui, supprimer'}
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setConfirmDelete(false)}
+                disabled={deleting}
+              >
+                Annuler
+              </Button>
+            </div>
+          )}
+
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            className="ml-auto"
+            disabled={deleting}
+          >
             <X className="h-4 w-4 mr-2" />
             Fermer
           </Button>

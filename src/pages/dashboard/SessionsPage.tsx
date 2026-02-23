@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PlanningDashboard } from '@/components/planning';
 import SessionsOperationalView from '@/components/session/SessionsOperationalView';
 import SessionDetailModal from '@/components/session/SessionDetailModal';
 import CalendarPage from './CalendarPage';
 import { Button } from '@/components/ui/button';
-import { LayoutGrid, Calendar, Plus, Table } from 'lucide-react';
+import { Calendar, Plus, Table } from 'lucide-react';
 
 /**
  * SessionsPage — Unified Sessions Management
@@ -17,7 +16,7 @@ import { LayoutGrid, Calendar, Plus, Table } from 'lucide-react';
  * PURE UI LAYER - no business logic modifications.
  */
 
-type ViewMode = 'operational' | 'grid' | 'calendar';
+type ViewMode = 'operational' | 'calendar';
 
 export default function SessionsPage() {
   const [view, setView] = useState<ViewMode>('operational');
@@ -38,6 +37,10 @@ export default function SessionsPage() {
   };
 
   const handleCloseModal = () => {
+    setSelectedSessionId(null);
+  };
+
+  const handleDeleteSuccess = () => {
     setSelectedSessionId(null);
   };
 
@@ -62,7 +65,7 @@ export default function SessionsPage() {
             Nouvelle session
           </Button>
 
-          {/* View Toggle - Operational vs Grid vs Calendar */}
+          {/* View Toggle - Operational vs Calendar */}
           <div className="flex gap-2 bg-muted p-1 rounded-lg">
             <Button
               variant={view === 'operational' ? 'default' : 'ghost'}
@@ -73,16 +76,6 @@ export default function SessionsPage() {
             >
               <Table className="h-4 w-4" />
               Tableau
-            </Button>
-            <Button
-              variant={view === 'grid' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setView('grid')}
-              className="gap-2"
-              title="Vue grille"
-            >
-              <LayoutGrid className="h-4 w-4" />
-              Grille
             </Button>
             <Button
               variant={view === 'calendar' ? 'default' : 'ghost'}
@@ -98,13 +91,6 @@ export default function SessionsPage() {
         </div>
       </div>
 
-      {/* Calendar View Info Banner */}
-      {view === 'calendar' && (
-        <div className="bg-card border border-border rounded-lg p-4 text-sm text-muted-foreground">
-          Visualisez la charge des sessions dans le temps
-        </div>
-      )}
-
       {/* View Content */}
       <div className="flex-1 overflow-auto">
         {view === 'operational' ? (
@@ -113,8 +99,6 @@ export default function SessionsPage() {
             onAssignClick={handleAssignClick}
             onEditClick={handleEditClick}
           />
-        ) : view === 'grid' ? (
-          <PlanningDashboard onSessionClick={handleSessionClick} />
         ) : (
           <CalendarPage onSessionClick={handleSessionClick} />
         )}
@@ -127,6 +111,7 @@ export default function SessionsPage() {
         onClose={handleCloseModal}
         onEdit={handleEditClick}
         onAssign={handleAssignClick}
+        onDeleteSuccess={handleDeleteSuccess}
       />
     </div>
   );

@@ -16,7 +16,8 @@
  */
 
 const PlanningStateService = (function() {
-  'use strict';
+  console.log('[PlanningState] Service initializing...');
+  console.log('[PlanningState] Adapter:', window.SupabaseAdapter ? '✓ READY' : '✗ NOT FOUND');
 
   // ============================================================
   // CONSTANTS
@@ -55,6 +56,16 @@ const PlanningStateService = (function() {
    */
   function getPlanningSessions(filters = {}) {
     try {
+      // GUARD: Adapter must be ready
+      if (!window.SupabaseAdapter) {
+        return {
+          success: false,
+          error: 'SupabaseAdapter not initialized',
+          sessions: [],
+          count: 0
+        };
+      }
+
       // GUARD: User can view sessions
       if (!RoleGuardService.can('*', 'view_planning_sessions')) {
         return {

@@ -22,8 +22,6 @@
    ============================================================ */
 
 const SupabaseAdapter = (function() {
-  'use strict';
-
   // Initialize Supabase client
   // Assumes window.supabase is set from Supabase CDN or SDK
   const supabase = window.supabase;
