@@ -9,9 +9,9 @@ import SEOHead from "@/components/common/SEOHead";
 const Index = () => (
   <>
     <SEOHead
-      title="Entraînement opérationnel mobile | DST-System"
-      description="DST-System propose des programmes d'entraînement opérationnel pour forces de sécurité et collectivités. Solution mobile de simulation sans tir réel. Expertise formateur CNEC."
-      keywords="entraînement opérationnel, maintien compétences, forces de sécurité, simulation laser"
+      title="Entraînement tir professionnel mobile pour forces de sécurité et collectivités | DST System"
+      description="Méthode d'entraînement opérationnel mobile pour professionnels armés : armée, police, gendarmerie, douanes, administration pénitentiaire, sécurité privée, collectivités."
+      keywords="entraînement opérationnel mobile, professionnels armés, services opérationnels"
     />
     <div className="min-h-screen bg-background">
       <Navbar />

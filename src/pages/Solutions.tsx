@@ -29,11 +29,11 @@ const methodPillars = [
     title: "Pédagogie issue du terrain",
     image: pedagogyImg,
     description:
-      "Ancien militaire et formateur au CNEC, l'expertise du fondateur infuse chaque programme. Les méthodes d'entraînement reflètent les réalités opérationnelles, les exigences du commandement et les enjeux concrets des forces de sécurité.",
+      "Les méthodes d'entraînement DST reflètent les réalités opérationnelles, les exigences du commandement et les enjeux concrets des forces de sécurité. Une approche issue de l'expérience terrain, conçue pour évoluer avec une équipe d'opérateurs.",
     benefits: [
-      "Conçu par un ancien militaire formateur",
+      "Approche pédagogique basée sur le terrain",
       "Adaptation aux protocoles opérationnels réels",
-      "Compréhension profonde des besoins terrain",
+      "Compréhension des besoins spécifiques",
       "Progression adaptée aux niveaux individuels",
       "Débriefing opérationnel après chaque session",
       "Rapports pertinents pour le commandement",
@@ -59,7 +59,7 @@ const methodPillars = [
 const Solutions = () => (
   <>
     <SEOHead
-      title="Méthode DST - Entraînement opérationnel | DST-System"
+      title="Méthodologie d'entraînement opérationnel mobile | DST System"
       description="La méthode DST repose sur trois piliers : mobilité opérationnel, pédagogie du terrain, simulation immersive. Pour forces de sécurité et collectivités."
       keywords="méthode entraînement, simulation opérationnelle, forces de sécurité"
     />
@@ -72,7 +72,7 @@ const Solutions = () => (
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
               <span className="text-primary text-sm font-medium tracking-wider uppercase">
-                La méthode DST
+                Notre approche pédagogique
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
                 Trois piliers d'entraînement opérationnel
@@ -82,6 +82,12 @@ const Solutions = () => (
                 déployée de manière mobile et conçue pour l'immersion tactique. Une
                 méthode complète au service des forces de sécurité et collectivités.
               </p>
+              <div className="flex flex-wrap justify-center gap-2 mt-8">
+                <span className="px-3 py-1 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">100% Mobile</span>
+                <span className="px-3 py-1 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">Multi-agences</span>
+                <span className="px-3 py-1 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">Zéro munitions</span>
+                <span className="px-3 py-1 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">Adapté collectivités</span>
+              </div>
             </div>
           </AnimatedSection>
         </div>
@@ -128,6 +134,22 @@ const Solutions = () => (
           </div>
         </section>
       ))}
+
+      {/* Link to Methodology */}
+      <section className="py-12 border-t border-border-border">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center">
+              <p className="text-muted-foreground text-sm">
+                Vous souhaitez comprendre la méthodologie en détail ?{" "}
+                <Link to="/methodologie" className="text-primary hover:underline font-medium">
+                  Découvrir la méthodologie complète →
+                </Link>
+              </p>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
 
       {/* CTA */}
       <section className="py-20 border-t border-border-border">

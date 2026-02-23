@@ -9,29 +9,32 @@ import {
   CheckCircle,
   ArrowRight,
   Building2,
+  Briefcase,
 } from "lucide-react";
 import SEOHead from "@/components/common/SEOHead";
 
 const coreAudiences = [
   {
     icon: Swords,
-    title: "Armées & Forces spéciales",
+    title: "Armée",
+    recommendedProgram: "Progression",
     description:
-      "Entraînement tactique de haut niveau pour les forces armées et unités d'élite, adapté aux conditions de combat modernes et aux exigences opérationnelles les plus strictes.",
+      "Entraînement opérationnel mobile pour les forces armées, adapté aux conditions modernes et aux exigences opérationnelles.",
     needs: [
       "Maintien de la capacité opérationnelle",
       "Entraînement en conditions réalistes",
       "Mécanisation des gestes réflexes",
       "Graduation de la réponse selon la menace",
-      "CQB et travail sur effraction froide",
+      "CQB et manœuvres tactiques",
       "Coordination d'équipe en intervention",
     ],
     response:
-      "DST-System propose des simulations de combat adaptées aux scénarios d'engagement actuels. Notre solution mobile s'installe directement dans vos unités — aucune logistique lourde requise. Des scénarios haute intensité reproduisent les conditions les plus exigeantes : CQB, effraction froide, protection de personnes, neutralisation en milieu confiné.",
+      "DST-System propose des simulations adaptées aux scénarios d'engagement. Solution mobile s'installant directement dans vos unités — aucune logistique lourde requise.",
   },
   {
     icon: Shield,
     title: "Police nationale & Gendarmerie",
+    recommendedProgram: "Progression",
     description:
       "Solutions de formation au tir adaptées aux missions de maintien de l'ordre, d'intervention en milieu urbain et aux exigences de qualification des personnels.",
     needs: [
@@ -48,8 +51,9 @@ const coreAudiences = [
   {
     icon: Lock,
     title: "Sécurité privée & Collectivités",
+    recommendedProgram: "Maintien",
     description:
-      "Formation au tir pour les agents de sécurité privée et les personnels des collectivités locales (police municipale, gardes champêtres, ASVP), conforme aux réglementations en vigueur.",
+      "Entraînement pour agents de sécurité privée armée et personnels des collectivités locales (police municipale, gardes champêtres, ASVP), conforme aux réglementations.",
     needs: [
       "Conformité réglementaire et certification",
       "Qualification et requalification",
@@ -58,7 +62,23 @@ const coreAudiences = [
       "Accès facilité pour les petites structures",
     ],
     response:
-      "Des programmes de formation et de certification adaptés au cadre légal, avec suivi individualisé et rapports pour les responsables. Solution idéale pour les petites collectivités ne disposant pas d'infrastructures de tir — possibilité de mutualiser entre plusieurs communes voisines.",
+      "Programmes de formation et certification adaptés au cadre légal, suivi individualisé et rapports pour les responsables. Solution idéale pour collectivités ne disposant pas d'infrastructures.",
+  },
+  {
+    icon: Briefcase,
+    title: "Douanes & Administration pénitentiaire",
+    recommendedProgram: "Progression",
+    description:
+      "Entraînement opérationnel pour agents des douanes et personnel pénitentiaire en charge de la sécurité.",
+    needs: [
+      "Maintien opérationnel des compétences",
+      "Entraînement régulier accessible",
+      "Conformité aux standards nationaux",
+      "Suivi individualisé",
+      "Rapports pour l'administration",
+    ],
+    response:
+      "DST-System propose des programmes adaptés aux contraintes spécifiques. Solution mobile sans infrastructure lourde, suivi détaillé pour l'encadrement.",
   },
 ];
 
@@ -66,9 +86,9 @@ const coreAudiences = [
 const Audiences = () => (
   <>
     <SEOHead
-      title="Publics cibles : Forces de sécurité et collectivités | DST-System"
-      description="DST-System s'adresse aux forces armées, police, gendarmerie, forces spéciales, sécurité privée armée et collectivités locales. Expertise formateur CNEC."
-      keywords="forces de sécurité, armée, police, gendarmerie, collectivités"
+      title="Entraînement opérationnel pour police, armée, douanes et administration pénitentiaire | DST System"
+      description="DST-System pour professionnels armés et services opérationnels : armée, police, gendarmerie, douanes, administration pénitentiaire, sécurité privée, collectivités."
+      keywords="professionnels armés, services opérationnels, entraînement opérationnel"
     />
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -81,14 +101,14 @@ const Audiences = () => (
                 Publics Cibles
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                Expertise pour les forces de sécurité
+                Une méthode pour les professionnels
                 <br />
-                <span className="text-primary">et collectivités</span>
+                <span className="text-primary">armés et services opérationnels</span>
               </h1>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                DST-System s'adresse aux institutions : armée, police, gendarmerie,
-                forces spéciales, sécurité privée armée et collectivités locales.
-                Une expertise du terrain au service de ceux qui protègent.
+                DST-System s'adresse aux professionnels armés et services opérationnels : armée, police,
+                gendarmerie, douanes, administration pénitentiaire, sécurité privée et collectivités.
+                Une approche pédagogique professionnelle adaptée à chaque contexte.
               </p>
             </div>
           </AnimatedSection>
@@ -122,7 +142,10 @@ const Audiences = () => (
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border-border border-primary/20 mb-4">
                       <aud.icon className="h-8 w-8 text-primary" />
                     </div>
-                    <h2 className="text-2xl font-bold mb-3">{aud.title}</h2>
+                    <h2 className="text-2xl font-bold mb-2">{aud.title}</h2>
+                    <span className="inline-block px-3 py-1 mb-4 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">
+                      Programme recommandé : {aud.recommendedProgram}
+                    </span>
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       {aud.description}
                     </p>

@@ -16,15 +16,14 @@ const AudiencesPreview = () => (
       <AnimatedSection>
         <div className="text-center mb-16">
           <span className="text-primary text-sm font-medium tracking-wider uppercase">
-            Expertise formateur
+            Professionnels armés
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4">
-            Pour les forces de sécurité et collectivités
+            Une méthode pour tous les services opérationnels
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Ancien militaire, formateur au CNEC. DST-System apporte l'expertise
-            du terrain aux institutionnels : armée, police, gendarmerie,
-            collectivités et sécurité privée.
+            DST-System est conçue pour les professionnels armés et services opérationnels :
+            armée, police, gendarmerie, douanes, administration pénitentiaire, sécurité privée et collectivités.
           </p>
         </div>
       </AnimatedSection>
