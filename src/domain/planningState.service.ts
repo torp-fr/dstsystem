@@ -80,7 +80,7 @@ export async function loadInitialState() {
     const { data, error } = await supabaseAdapter
       .from('sessions')
       .select('*')
-      .order('date', { ascending: true });
+      .order('session_date', { ascending: true });
 
     if (error) {
       console.warn('[PlanningState] No sessions returned from adapter', error);
@@ -89,7 +89,7 @@ export async function loadInitialState() {
       // Transform response to match interface
       const sessions = (data || []).map((session: any) => ({
         id: session.id,
-        date: session.date,
+        date: session.session_date,
         regionId: session.region_id,
         clientId: session.client_id,
         status: session.status,
@@ -107,6 +107,7 @@ export async function loadInitialState() {
     }
 
     _hydrated = true;
+    console.log('[PlanningState] Rows returned:', data?.length);
     console.log('[PlanningState] Hydration complete:', _cachedSessions.length);
     return true;
   } catch (error) {
@@ -150,14 +151,14 @@ export async function getPlanningSessions(filters?: {
     let query = supabaseAdapter
       .from('sessions')
       .select('*')
-      .order('date', { ascending: true });
+      .order('session_date', { ascending: true });
 
     // Apply filters if provided
     if (filters?.dateFrom) {
-      query = query.gte('date', filters.dateFrom);
+      query = query.gte('session_date', filters.dateFrom);
     }
     if (filters?.dateTo) {
-      query = query.lte('date', filters.dateTo);
+      query = query.lte('session_date', filters.dateTo);
     }
     if (filters?.region) {
       query = query.eq('region_id', filters.region);
@@ -176,7 +177,7 @@ export async function getPlanningSessions(filters?: {
     // Transform response to match interface
     const sessions = (data || []).map((session: any) => ({
       id: session.id,
-      date: session.date,
+      date: session.session_date,
       regionId: session.region_id,
       clientId: session.client_id,
       status: session.status,
@@ -190,6 +191,7 @@ export async function getPlanningSessions(filters?: {
       },
     }));
 
+    console.log('[PlanningState] Rows returned:', data?.length);
     console.log(`[PlanningState] Retrieved ${sessions.length} sessions`);
     return { success: true, sessions: sessions ?? [], count };
   } catch (error) {
@@ -216,14 +218,32 @@ export async function getClientPlanning(clientId: string) {
       .from('sessions')
       .select('*')
       .eq('client_id', clientId)
-      .order('date', { ascending: true });
+      .order('session_date', { ascending: true });
 
     if (error) {
       console.error('[PlanningState] Client query error:', error);
       return { success: false, sessions: [], error: error.message };
     }
 
-    return { success: true, sessions: data || [] };
+    // Transform response to match interface
+    const sessions = (data || []).map((session: any) => ({
+      id: session.id,
+      date: session.session_date,
+      regionId: session.region_id,
+      clientId: session.client_id,
+      status: session.status,
+      marketplaceVisible: session.marketplace_visible,
+      setupIds: session.setup_ids || [],
+      staffing: {
+        minOperators: session.min_operators || 0,
+        acceptedOperators: session.accepted_operators || 0,
+        pendingApplications: session.pending_applications || 0,
+        isOperational: session.is_operational || false,
+      },
+    }));
+
+    console.log('[PlanningState] Rows returned:', data?.length);
+    return { success: true, sessions: sessions || [] };
   } catch (error) {
     console.error('[PlanningState] Client fetch error:', error);
     return { success: false, sessions: [], error: error instanceof Error ? error.message : 'Unknown error' };
