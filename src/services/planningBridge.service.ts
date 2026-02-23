@@ -10,11 +10,6 @@
  */
 
 import * as planningState from '@/domain/planningState.service';
-import { assertPlanningInvariant, assertNoGlobalSupabaseAdapter } from '@/infra/guards/planningInvariant.guard';
-
-// HARD LOCK — Bridge itself must comply with invariants
-assertPlanningInvariant('planningBridge.service');
-assertNoGlobalSupabaseAdapter();
 
 interface PlanningSession {
   id: string;

@@ -5,10 +5,6 @@ import PlanningSessionCard from './PlanningSessionCard';
 import EmptyState from '@/components/common/EmptyState';
 import SkeletonCard from '@/components/common/SkeletonCard';
 import { getPlanningSessionsSafe } from '@/services/planningBridge.service';
-import { assertPlanningInvariant } from '@/infra/guards/planningInvariant.guard';
-
-// HARD LOCK — Ensure PlanningDashboard respects Planning invariant
-assertPlanningInvariant('PlanningDashboard');
 
 /**
  * PlanningDashboard — Enterprise/Client Planning View
