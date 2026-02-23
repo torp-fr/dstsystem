@@ -14,7 +14,7 @@ import SEOHead from "@/components/common/SEOHead";
 const Programs = () => (
   <>
     <SEOHead
-      title="Trois programmes d'entraînement | Maintien, Progression, Tactique | DST-System"
+      title="Programmes d'entraînement opérationnel pour professionnels armés et collectivités | DST System"
       description="Trois programmes structurés : Maintien opérationnel, Progression dynamique, Tactique avancée. Pour forces de sécurité, armée et collectivités."
       keywords="programmes entraînement, maintien opérationnel, progression dynamique, tactique"
     />
@@ -79,6 +79,12 @@ const Programs = () => (
                     <td className="text-center py-4 px-4 text-muted-foreground">Fixation des acquis</td>
                     <td className="text-center py-4 px-4 text-muted-foreground">Perfectionnement</td>
                     <td className="text-center py-4 px-4 text-muted-foreground">Expertise tactique</td>
+                  </tr>
+                  <tr className="bg-primary/5">
+                    <td className="py-4 px-4 font-medium text-foreground">Programme recommandé pour</td>
+                    <td className="text-center py-4 px-4 text-sm text-muted-foreground">Collectivités<br/>Rotation large</td>
+                    <td className="text-center py-4 px-4 text-sm text-muted-foreground">Services opérationnels</td>
+                    <td className="text-center py-4 px-4 text-sm text-muted-foreground">Groupes spécialisés</td>
                   </tr>
                 </tbody>
               </table>

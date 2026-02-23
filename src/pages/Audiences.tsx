@@ -17,6 +17,7 @@ const coreAudiences = [
   {
     icon: Swords,
     title: "Armée",
+    recommendedProgram: "Progression",
     description:
       "Entraînement opérationnel mobile pour les forces armées, adapté aux conditions modernes et aux exigences opérationnelles.",
     needs: [
@@ -33,6 +34,7 @@ const coreAudiences = [
   {
     icon: Shield,
     title: "Police nationale & Gendarmerie",
+    recommendedProgram: "Progression",
     description:
       "Solutions de formation au tir adaptées aux missions de maintien de l'ordre, d'intervention en milieu urbain et aux exigences de qualification des personnels.",
     needs: [
@@ -49,6 +51,7 @@ const coreAudiences = [
   {
     icon: Lock,
     title: "Sécurité privée & Collectivités",
+    recommendedProgram: "Maintien",
     description:
       "Entraînement pour agents de sécurité privée armée et personnels des collectivités locales (police municipale, gardes champêtres, ASVP), conforme aux réglementations.",
     needs: [
@@ -64,6 +67,7 @@ const coreAudiences = [
   {
     icon: Briefcase,
     title: "Douanes & Administration pénitentiaire",
+    recommendedProgram: "Progression",
     description:
       "Entraînement opérationnel pour agents des douanes et personnel pénitentiaire en charge de la sécurité.",
     needs: [
@@ -82,7 +86,7 @@ const coreAudiences = [
 const Audiences = () => (
   <>
     <SEOHead
-      title="Services opérationnels | Police, Gendarmerie, Armée, Collectivités | DST-System"
+      title="Entraînement opérationnel pour police, armée, douanes et administration pénitentiaire | DST System"
       description="DST-System pour professionnels armés et services opérationnels : armée, police, gendarmerie, douanes, administration pénitentiaire, sécurité privée, collectivités."
       keywords="professionnels armés, services opérationnels, entraînement opérationnel"
     />
@@ -138,7 +142,10 @@ const Audiences = () => (
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border-border border-primary/20 mb-4">
                       <aud.icon className="h-8 w-8 text-primary" />
                     </div>
-                    <h2 className="text-2xl font-bold mb-3">{aud.title}</h2>
+                    <h2 className="text-2xl font-bold mb-2">{aud.title}</h2>
+                    <span className="inline-block px-3 py-1 mb-4 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">
+                      Programme recommandé : {aud.recommendedProgram}
+                    </span>
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       {aud.description}
                     </p>
