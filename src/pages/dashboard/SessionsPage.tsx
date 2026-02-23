@@ -19,32 +19,13 @@ import { LayoutGrid, Calendar, Plus, Table } from 'lucide-react';
 
 type ViewMode = 'operational' | 'grid' | 'calendar';
 
-interface SelectedSession {
-  id: string;
-  date: string;
-  regionId: string;
-  clientId: string;
-  status: string;
-  marketplaceVisible: boolean;
-  setupIds: string[];
-  staffing: {
-    minOperators: number;
-    acceptedOperators: number;
-    pendingApplications: number;
-    isOperational: boolean;
-  };
-  acceptedOperators?: any[];
-  pendingOperators?: any[];
-  rejectedOperators?: any[];
-}
-
 export default function SessionsPage() {
   const [view, setView] = useState<ViewMode>('operational');
-  const [selectedSession, setSelectedSession] = useState<SelectedSession | null>(null);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSessionClick = (session: any) => {
-    setSelectedSession(session);
+    setSelectedSessionId(session.id);
   };
 
   const handleAssignClick = (sessionId: string) => {
@@ -57,7 +38,7 @@ export default function SessionsPage() {
   };
 
   const handleCloseModal = () => {
-    setSelectedSession(null);
+    setSelectedSessionId(null);
   };
 
   return (
@@ -141,8 +122,8 @@ export default function SessionsPage() {
 
       {/* Session Detail Modal */}
       <SessionDetailModal
-        session={selectedSession}
-        isOpen={selectedSession !== null}
+        sessionId={selectedSessionId}
+        isOpen={selectedSessionId !== null}
         onClose={handleCloseModal}
         onEdit={handleEditClick}
         onAssign={handleAssignClick}

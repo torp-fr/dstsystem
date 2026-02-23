@@ -8,45 +8,21 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Users, Calendar, MapPin, DollarSign, X } from 'lucide-react';
+import { Loader2, Users, Calendar, MapPin, DollarSign, X } from 'lucide-react';
 import { useQuotes, type Quote } from '@/hooks/useQuotes';
+import { getSessionPlanningDetailsSafe } from '@/services/planningBridge.service';
 
 /**
  * SessionDetailModal — Modal-based Session Detail View
  *
- * Replaces SessionDetailPageV2 route. Receives full session object
- * from parent component and displays in modal.
+ * Replaces SessionDetailPageV2 route. Loads full session details
+ * from PlanningStateService and displays in modal.
  *
  * PURE UI LAYER - no business logic modifications.
  */
 
-interface SessionStaffing {
-  minOperators: number;
-  acceptedOperators: number;
-  pendingApplications: number;
-  isOperational: boolean;
-}
-
-interface Operator {
-  operatorId: string;
-  name: string;
-  email: string;
-}
-
 interface SessionDetailModalProps {
-  session: {
-    id: string;
-    date: string;
-    clientId: string;
-    regionId: string;
-    status: string;
-    marketplaceVisible: boolean;
-    setupIds: string[];
-    staffing: SessionStaffing;
-    acceptedOperators?: Operator[];
-    pendingOperators?: Operator[];
-    rejectedOperators?: Operator[];
-  } | null;
+  sessionId: string | null;
   isOpen: boolean;
   onClose: () => void;
   onEdit?: (sessionId: string) => void;
@@ -54,17 +30,55 @@ interface SessionDetailModalProps {
 }
 
 export default function SessionDetailModal({
-  session,
+  sessionId,
   isOpen,
   onClose,
   onEdit,
   onAssign,
 }: SessionDetailModalProps) {
+  const [session, setSession] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [businessData, setBusinessData] = useState<Quote | null>(null);
 
   // Fetch quotes to find one linked to this session
   const { data: quotes = [] } = useQuotes();
 
+  // Load session details when modal opens or sessionId changes
+  useEffect(() => {
+    if (!isOpen || !sessionId) {
+      setSession(null);
+      setError(null);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = getSessionPlanningDetailsSafe(sessionId);
+
+      if (!result) {
+        setError('Impossible de charger les détails de la session');
+        setSession(null);
+        return;
+      }
+
+      if (result.success && result.session) {
+        setSession(result.session);
+      } else {
+        setError(result.error || 'Session non trouvée');
+        setSession(null);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+      setSession(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [isOpen, sessionId]);
+
+  // Find linked quote
   useEffect(() => {
     if (session?.id) {
       const linkedQuote = quotes.find((q: Quote) => q.session_id === session.id);
@@ -72,9 +86,51 @@ export default function SessionDetailModal({
     }
   }, [session?.id, quotes]);
 
-  if (!session) {
+  if (!isOpen) {
     return null;
   }
+
+  // Loading state
+  if (loading) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-2xl">
+          <div className="flex items-center justify-center py-12 gap-2">
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            <span className="text-muted-foreground">Chargement des détails...</span>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  // Error state
+  if (error || !session) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Erreur</DialogTitle>
+          </DialogHeader>
+          <div className="bg-destructive/5 border border-destructive/30 rounded-lg p-4 text-destructive">
+            {error || 'Session non trouvée'}
+          </div>
+          <div className="flex gap-3 pt-4">
+            <Button variant="ghost" onClick={onClose} className="ml-auto">
+              Fermer
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  const staffing = session.staffing || {
+    minOperators: 0,
+    acceptedOperators: 0,
+    pendingApplications: 0,
+    isOperational: false,
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -104,7 +160,7 @@ export default function SessionDetailModal({
                   })}
                 </span>
               </div>
-              {session.setupIds.length > 0 && (
+              {session.setupIds && session.setupIds.length > 0 && (
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">{session.setupIds.join(', ')}</span>
@@ -126,10 +182,10 @@ export default function SessionDetailModal({
                   <p className="text-xs text-muted-foreground mb-1">Statut</p>
                   <Badge
                     variant={
-                      session.staffing.isOperational ? 'default' : 'secondary'
+                      staffing.isOperational ? 'default' : 'secondary'
                     }
                   >
-                    {session.staffing.isOperational
+                    {staffing.isOperational
                       ? 'Opérationnelle'
                       : 'Incomplète'}
                   </Badge>
@@ -139,12 +195,12 @@ export default function SessionDetailModal({
                     Affectations
                   </p>
                   <p className="text-sm font-semibold">
-                    {session.staffing.acceptedOperators}/
-                    {session.staffing.minOperators} opérateurs
+                    {staffing.acceptedOperators}/
+                    {staffing.minOperators} opérateurs
                   </p>
-                  {session.staffing.pendingApplications > 0 && (
+                  {staffing.pendingApplications > 0 && (
                     <p className="text-xs text-muted-foreground mt-2">
-                      {session.staffing.pendingApplications} candidatures en
+                      {staffing.pendingApplications} candidatures en
                       attente
                     </p>
                   )}
@@ -202,7 +258,7 @@ export default function SessionDetailModal({
                   Confirmés ({session.acceptedOperators.length})
                 </p>
                 <div className="space-y-2">
-                  {session.acceptedOperators.map((op) => (
+                  {session.acceptedOperators.map((op: any) => (
                     <div
                       key={op.operatorId}
                       className="flex items-center justify-between p-3 bg-card border border-border rounded-lg dark:bg-green-900/20 dark:border-green-800"
@@ -228,7 +284,7 @@ export default function SessionDetailModal({
                   En Attente ({session.pendingOperators.length})
                 </p>
                 <div className="space-y-2">
-                  {session.pendingOperators.map((op) => (
+                  {session.pendingOperators.map((op: any) => (
                     <div
                       key={op.operatorId}
                       className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
@@ -266,7 +322,7 @@ export default function SessionDetailModal({
 
         {/* Actions */}
         <div className="flex gap-3 pt-4 border-t border-border">
-          {!session.staffing.isOperational && onAssign && (
+          {!staffing.isOperational && onAssign && (
             <Button
               variant="default"
               onClick={() => {
