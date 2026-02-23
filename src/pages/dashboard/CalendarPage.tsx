@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useSessionsByMonth } from '@/hooks/useShootingSessions';
+import { getPlanningSessionsSafe } from '@/services/planningBridge.service';
 import { useClients } from '@/hooks/useClients';
 import { Loader2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -42,6 +42,8 @@ export default function CalendarPage({ onSessionClick }: CalendarPageProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
   const [viewMode, setViewMode] = useState<'monthly' | 'weekly' | 'annual'>('monthly');
+  const [sessions, setSessions] = useState<any[]>([]);
+  const [sessionsLoading, setSessionsLoading] = useState(false);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
@@ -55,7 +57,37 @@ export default function CalendarPage({ onSessionClick }: CalendarPageProps) {
     setCurrentWeekStart(monday);
   }, [currentDate]);
 
-  const { data: sessions = [], isLoading: sessionsLoading } = useSessionsByMonth(year, month);
+  // Load sessions from planning service
+  useEffect(() => {
+    const loadSessions = async () => {
+      setSessionsLoading(true);
+      try {
+        const dateFrom = new Date(year, month - 1, 1).toISOString().split('T')[0];
+        const dateTo = new Date(year, month, 0).toISOString().split('T')[0];
+
+        const result = await getPlanningSessionsSafe({
+          dateFrom,
+          dateTo,
+        });
+
+        if (result?.success) {
+          // Transform sessions to match expected format
+          const transformedSessions = (result.sessions || []).map((s: any) => ({
+            ...s,
+            session_date: s.date,
+          }));
+          setSessions(transformedSessions);
+        }
+      } catch (error) {
+        console.error('[CalendarPage] Failed to load sessions:', error);
+      } finally {
+        setSessionsLoading(false);
+      }
+    };
+
+    loadSessions();
+  }, [year, month]);
+
   const { data: clients = [] } = useClients();
 
   const getDaysInMonth = (date: Date) => {

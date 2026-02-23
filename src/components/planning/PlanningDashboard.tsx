@@ -54,33 +54,36 @@ export default function PlanningDashboard({ onSessionClick }: PlanningDashboardP
   // ============================================================
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    const fetchSessions = async () => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      // Call service with filters via bridge
-      const result = getPlanningSessionsSafe(filters);
+      try {
+        // Call service with filters via bridge
+        const result = await getPlanningSessionsSafe(filters);
 
-      if (!result) {
-        // Service not initialized — graceful fallback
-        // Display empty state without error banner
+        if (!result) {
+          // Service not initialized — graceful fallback
+          // Display empty state without error banner
+          setSessions([]);
+          return;
+        }
+
+        if (result.success) {
+          setSessions(result.sessions || []);
+        } else {
+          setError(result.error || 'Impossible de charger les sessions');
+          setSessions([]);
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Une erreur est survenue');
         setSessions([]);
+      } finally {
         setLoading(false);
-        return;
       }
+    };
 
-      if (result.success) {
-        setSessions(result.sessions || []);
-      } else {
-        setError(result.error || 'Impossible de charger les sessions');
-        setSessions([]);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
-      setSessions([]);
-    } finally {
-      setLoading(false);
-    }
+    fetchSessions();
   }, [filters]);
 
   // ============================================================

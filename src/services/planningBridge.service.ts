@@ -51,49 +51,26 @@ interface SessionPlanningDetails {
 }
 
 /**
- * Safe accessor for PlanningStateService
- * Returns null if service not available
+ * Import the TypeScript planning service
  */
-function getPlanningService() {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  const domain = (window as any).Domain;
-  if (!domain) {
-    console.debug('[PlanningBridge] Domain object not found');
-    return null;
-  }
-
-  const service = domain.PlanningStateService;
-  if (!service) {
-    console.debug('[PlanningBridge] PlanningStateService not found');
-    return null;
-  }
-
-  return service;
-}
+import * as planningState from '@/domain/planningState.service';
 
 /**
  * Get planning sessions with safe fallback
+ * Uses the TypeScript planningState service
  *
  * @param filters Optional filters (dateFrom, dateTo, region, status)
  * @returns Sessions array or null if service unavailable
  */
-export function getPlanningSessionsSafe(filters?: {
+export async function getPlanningSessionsSafe(filters?: {
   dateFrom?: string;
   dateTo?: string;
   region?: string;
   status?: string;
-}): PlanningResult | null {
+}): Promise<PlanningResult | null> {
   try {
-    const service = getPlanningService();
-    if (!service) {
-      return null;
-    }
-
-    // Call service method with filters
-    const result = service.getPlanningSessions(filters || {});
+    // Call the TypeScript planning service
+    const result = await planningState.getPlanningSessions(filters || {});
     return result;
   } catch (error) {
     console.warn('[PlanningBridge] Error calling getPlanningSessions:', error);
@@ -107,20 +84,15 @@ export function getPlanningSessionsSafe(filters?: {
  * @param clientId Client identifier
  * @returns Client sessions or null if service unavailable
  */
-export function getClientPlanningSafe(clientId: string): ClientPlanningResult | null {
+export async function getClientPlanningSafe(clientId: string): Promise<ClientPlanningResult | null> {
   try {
     if (!clientId) {
       console.debug('[PlanningBridge] clientId required');
       return null;
     }
 
-    const service = getPlanningService();
-    if (!service) {
-      return null;
-    }
-
-    // Call service method
-    const result = service.getClientPlanning(clientId);
+    // Call the TypeScript planning service
+    const result = await planningState.getClientPlanning(clientId);
     return result;
   } catch (error) {
     console.warn('[PlanningBridge] Error calling getClientPlanning:', error);
@@ -134,20 +106,15 @@ export function getClientPlanningSafe(clientId: string): ClientPlanningResult | 
  * @param sessionId Session identifier
  * @returns Session details or null if service unavailable
  */
-export function getSessionPlanningDetailsSafe(sessionId: string): SessionPlanningDetails | null {
+export async function getSessionPlanningDetailsSafe(sessionId: string): Promise<SessionPlanningDetails | null> {
   try {
     if (!sessionId) {
       console.debug('[PlanningBridge] sessionId required');
       return null;
     }
 
-    const service = getPlanningService();
-    if (!service) {
-      return null;
-    }
-
-    // Call service method
-    const result = service.getSessionPlanningDetails(sessionId);
+    // Call the TypeScript planning service
+    const result = await planningState.getSessionPlanningDetails(sessionId);
     return result;
   } catch (error) {
     console.warn('[PlanningBridge] Error calling getSessionPlanningDetails:', error);
@@ -161,20 +128,15 @@ export function getSessionPlanningDetailsSafe(sessionId: string): SessionPlannin
  * @param sessionId Session identifier
  * @returns { success: boolean, error?: string }
  */
-export function deleteSessionSafe(sessionId: string): { success: boolean; error?: string } {
+export async function deleteSessionSafe(sessionId: string): Promise<{ success: boolean; error?: string }> {
   try {
     if (!sessionId) {
       return { success: false, error: 'sessionId required' };
     }
 
-    const service = getPlanningService();
-    if (!service) {
-      return { success: false, error: 'PlanningStateService not available' };
-    }
-
-    // Call service method - assumes it handles the deletion
-    const result = service.deleteSession?.(sessionId);
-    return result || { success: true };
+    // Call the TypeScript planning service
+    const result = await planningState.deleteSession(sessionId);
+    return result;
   } catch (error) {
     console.warn('[PlanningBridge] Error calling deleteSession:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
@@ -182,12 +144,12 @@ export function deleteSessionSafe(sessionId: string): { success: boolean; error?
 }
 
 /**
- * Check if PlanningStateService is available
+ * Check if PlanningStateService is available and hydrated
  * Useful for conditional rendering or early returns
  */
 export function isPlanningServiceAvailable(): boolean {
   try {
-    return getPlanningService() !== null;
+    return planningState.isPlanningStateReady() && planningState.isHydrated();
   } catch {
     return false;
   }

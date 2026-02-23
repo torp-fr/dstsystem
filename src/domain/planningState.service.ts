@@ -32,6 +32,8 @@ interface PlanningResult {
 }
 
 let _initialized = false;
+let _hydrated = false;
+let _cachedSessions: PlanningSession[] = [];
 
 /**
  * Initialize Planning State Service
@@ -58,6 +60,54 @@ export async function initPlanningStateService() {
     console.error('[PlanningState] Initialization failed:', error);
     return false;
   }
+}
+
+/**
+ * Load initial state — MANDATORY hydration
+ * Called from planning.bootstrap.ts AFTER initPlanningStateService()
+ * Ensures sessions are cached BEFORE any React rendering
+ */
+export async function loadInitialState() {
+  if (_hydrated) {
+    console.debug('[PlanningState] Already hydrated');
+    return true;
+  }
+
+  try {
+    console.log('[PlanningState] Loading initial state...');
+
+    // Load all sessions into cache
+    const result = await getPlanningSessions({});
+
+    if (result.success) {
+      _cachedSessions = result.sessions;
+      _hydrated = true;
+      console.info(`[PlanningState] ✓ Hydrated with ${_cachedSessions.length} sessions`);
+      return true;
+    } else {
+      console.warn('[PlanningState] Initial load failed:', result.error);
+      _hydrated = true; // Mark as hydrated even on error to avoid infinite retry
+      return false;
+    }
+  } catch (error) {
+    console.error('[PlanningState] Hydration error:', error);
+    _hydrated = true; // Mark as hydrated even on error
+    return false;
+  }
+}
+
+/**
+ * Get cached sessions (from initial hydration)
+ */
+export function getCachedSessions(): PlanningSession[] {
+  return _cachedSessions;
+}
+
+/**
+ * Check if state is hydrated
+ */
+export function isHydrated(): boolean {
+  return _hydrated;
 }
 
 /**
@@ -231,9 +281,12 @@ export function isPlanningStateReady(): boolean {
 
 export default {
   initPlanningStateService,
+  loadInitialState,
   getPlanningSessions,
+  getCachedSessions,
   getClientPlanning,
   getSessionPlanningDetails,
   deleteSession,
   isPlanningStateReady,
+  isHydrated,
 };
