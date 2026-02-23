@@ -59,9 +59,9 @@ const values = [
 const About = () => (
   <>
     <SEOHead
-      title="À propos - Ancien militaire, formateur CNEC | DST-System"
-      description="DST-System est fondé par un ancien militaire formateur au Centre National d'Entraînement Commando (CNEC). Expertise du terrain au service des forces de sécurité."
-      keywords="formateur CNEC, ancien militaire, expertise entraînement opérationnel"
+      title="Méthode DST - Approche professionnelle d'entraînement opérationnel | DST-System"
+      description="DST-System apporte une approche pédagogique issue du terrain opérationnel. Entraînement mobile pour tous les publics armés, forces de sécurité et collectivités."
+      keywords="méthode entraînement, expertise opérationnelle, forces de sécurité"
     />
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -71,15 +71,14 @@ const About = () => (
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
               <span className="text-primary text-sm font-medium tracking-wider uppercase">
-                Expertise du terrain
+                Notre approche
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                Ancien militaire, formateur au CNEC
+                Pédagogie issue du terrain opérationnel
               </h1>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                DST-System est fondé par un ancien militaire et formateur au
-                Centre National d'Entraînement Commando (CNEC). L'expertise du
-                terrain infuse chaque programme et méthode pédagogique.
+                DST-System repose sur une approche pédagogique professionnelle née de l'expérience opérationnelle réelle.
+                Conçue pour évoluer avec une équipe d'opérateurs, elle s'adapte à tous les publics armés.
               </p>
             </div>
           </AnimatedSection>
@@ -92,25 +91,23 @@ const About = () => (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection>
               <div>
-                <h2 className="text-3xl font-bold mb-6">Parcours terrain</h2>
+                <h2 className="text-3xl font-bold mb-6">Fondée sur l'expertise opérationnelle</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  Ancien militaire, le fondateur de DST-System connaît les réalités
-                  opérationnelles des forces de sécurité. La compétence au tir est
-                  périssable — sans entraînement régulier, les acquis se dégradent,
-                  les réflexes s'émoussent. Les institutions manquent souvent de
-                  moyens logistiques et de temps pour organiser des séances régulières.
+                  DST-System est une méthodologie d'entraînement conçue à partir des réalités du terrain.
+                  La compétence aux armes est périssable : sans entraînement régulier, les acquis
+                  se dégradent et les réflexes s'émoussent. Les forces de sécurité et collectivités
+                  manquent souvent de moyens logistiques pour organiser des séances régulières.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  C'est cette expertise de terrain qui a inspiré DST-System. Une
-                  solution mobile d'entraînement opérationnel adaptée aux contraintes
-                  réelles des unités. Nous nous déplaçons directement chez nos clients —
-                  il suffit d'une salle. Programmes structurés. Suivi individualisé.
-                  Rapports pertinents pour le commandement.
+                  DST-System apporte une solution mobile adaptée aux contraintes réelles des unités.
+                  Nous nous déplaçons directement chez nos clients — il suffit d'une salle.
+                  Programmes structurés, suivi individualisé, rapports opérationnels pour le
+                  commandement.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  <strong>Objectif :</strong> conserver les compétences armées,
-                  mécaniser les gestes réflexes, améliorer la graduation de la réponse,
-                  et renforcer la confiance opérationnelle des agents.
+                  <strong>Objectif :</strong> maintenir les compétences opérationnelles, mécaniser
+                  les gestes critiques, améliorer la graduation de la réponse, et renforcer la
+                  confiance professionnelle des agents.
                 </p>
               </div>
             </AnimatedSection>

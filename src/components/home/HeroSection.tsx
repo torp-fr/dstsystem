@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Users, Wind, Truck, Shield } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import logo from "@/assets/logo_dst.png";
 
@@ -52,6 +52,46 @@ const HeroSection = () => (
         <p className="text-sm md:text-base text-primary/80 italic font-medium mb-10 tracking-wide">
           « La compétence au tir est périssable. »
         </p>
+
+        {/* 4 Badges de valeur */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <motion.div
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border-border border-primary/20 text-sm font-medium"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <Users className="h-4 w-4 text-primary" />
+            Jusqu'à 20 agents/jour
+          </motion.div>
+          <motion.div
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border-border border-primary/20 text-sm font-medium"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <Wind className="h-4 w-4 text-primary" />
+            Sans munitions
+          </motion.div>
+          <motion.div
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border-border border-primary/20 text-sm font-medium"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <Truck className="h-4 w-4 text-primary" />
+            100% Mobile
+          </motion.div>
+          <motion.div
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border-border border-primary/20 text-sm font-medium"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <Shield className="h-4 w-4 text-primary" />
+            Tous publics armés
+          </motion.div>
+        </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button

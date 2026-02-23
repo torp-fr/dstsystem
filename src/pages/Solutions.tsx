@@ -29,11 +29,11 @@ const methodPillars = [
     title: "Pédagogie issue du terrain",
     image: pedagogyImg,
     description:
-      "Ancien militaire et formateur au CNEC, l'expertise du fondateur infuse chaque programme. Les méthodes d'entraînement reflètent les réalités opérationnelles, les exigences du commandement et les enjeux concrets des forces de sécurité.",
+      "Les méthodes d'entraînement DST reflètent les réalités opérationnelles, les exigences du commandement et les enjeux concrets des forces de sécurité. Une approche issue de l'expérience terrain, conçue pour évoluer avec une équipe d'opérateurs.",
     benefits: [
-      "Conçu par un ancien militaire formateur",
+      "Approche pédagogique basée sur le terrain",
       "Adaptation aux protocoles opérationnels réels",
-      "Compréhension profonde des besoins terrain",
+      "Compréhension des besoins spécifiques",
       "Progression adaptée aux niveaux individuels",
       "Débriefing opérationnel après chaque session",
       "Rapports pertinents pour le commandement",

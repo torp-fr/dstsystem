@@ -3,7 +3,7 @@ import ProgramsHero from "@/components/programs/ProgramsHero";
 import ProgramCards from "@/components/programs/ProgramCards";
 import CapacityInfo from "@/components/programs/CapacityInfo";
 import DecisionMakers from "@/components/programs/DecisionMakers";
-import ServiceOffers from "@/components/programs/ServiceOffers";
+import FlexibilitySection from "@/components/programs/FlexibilitySection";
 import CollateralSupport from "@/components/programs/CollateralSupport";
 import MutualisationCTA from "@/components/programs/MutualisationCTA";
 import ProgramFAQ from "@/components/programs/ProgramFAQ";
@@ -23,9 +23,9 @@ const Programs = () => (
         <ProgramCards />
         <CapacityInfo />
         <DecisionMakers />
-        <ServiceOffers />
-        <CollateralSupport />
+        <FlexibilitySection />
         <ProgramFAQ />
+        <CollateralSupport />
         <MutualisationCTA />
       </main>
     </div>

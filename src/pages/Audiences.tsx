@@ -9,25 +9,26 @@ import {
   CheckCircle,
   ArrowRight,
   Building2,
+  Briefcase,
 } from "lucide-react";
 import SEOHead from "@/components/common/SEOHead";
 
 const coreAudiences = [
   {
     icon: Swords,
-    title: "Armées & Forces spéciales",
+    title: "Armée",
     description:
-      "Entraînement tactique de haut niveau pour les forces armées et unités d'élite, adapté aux conditions de combat modernes et aux exigences opérationnelles les plus strictes.",
+      "Entraînement opérationnel mobile pour les forces armées, adapté aux conditions modernes et aux exigences opérationnelles.",
     needs: [
       "Maintien de la capacité opérationnelle",
       "Entraînement en conditions réalistes",
       "Mécanisation des gestes réflexes",
       "Graduation de la réponse selon la menace",
-      "CQB et travail sur effraction froide",
+      "CQB et manœuvres tactiques",
       "Coordination d'équipe en intervention",
     ],
     response:
-      "DST-System propose des simulations de combat adaptées aux scénarios d'engagement actuels. Notre solution mobile s'installe directement dans vos unités — aucune logistique lourde requise. Des scénarios haute intensité reproduisent les conditions les plus exigeantes : CQB, effraction froide, protection de personnes, neutralisation en milieu confiné.",
+      "DST-System propose des simulations adaptées aux scénarios d'engagement. Solution mobile s'installant directement dans vos unités — aucune logistique lourde requise.",
   },
   {
     icon: Shield,
@@ -49,7 +50,7 @@ const coreAudiences = [
     icon: Lock,
     title: "Sécurité privée & Collectivités",
     description:
-      "Formation au tir pour les agents de sécurité privée et les personnels des collectivités locales (police municipale, gardes champêtres, ASVP), conforme aux réglementations en vigueur.",
+      "Entraînement pour agents de sécurité privée armée et personnels des collectivités locales (police municipale, gardes champêtres, ASVP), conforme aux réglementations.",
     needs: [
       "Conformité réglementaire et certification",
       "Qualification et requalification",
@@ -58,7 +59,22 @@ const coreAudiences = [
       "Accès facilité pour les petites structures",
     ],
     response:
-      "Des programmes de formation et de certification adaptés au cadre légal, avec suivi individualisé et rapports pour les responsables. Solution idéale pour les petites collectivités ne disposant pas d'infrastructures de tir — possibilité de mutualiser entre plusieurs communes voisines.",
+      "Programmes de formation et certification adaptés au cadre légal, suivi individualisé et rapports pour les responsables. Solution idéale pour collectivités ne disposant pas d'infrastructures.",
+  },
+  {
+    icon: Briefcase,
+    title: "Douanes & Administration pénitentiaire",
+    description:
+      "Entraînement opérationnel pour agents des douanes et personnel pénitentiaire en charge de la sécurité.",
+    needs: [
+      "Maintien opérationnel des compétences",
+      "Entraînement régulier accessible",
+      "Conformité aux standards nationaux",
+      "Suivi individualisé",
+      "Rapports pour l'administration",
+    ],
+    response:
+      "DST-System propose des programmes adaptés aux contraintes spécifiques. Solution mobile sans infrastructure lourde, suivi détaillé pour l'encadrement.",
   },
 ];
 
@@ -66,9 +82,9 @@ const coreAudiences = [
 const Audiences = () => (
   <>
     <SEOHead
-      title="Publics cibles : Forces de sécurité et collectivités | DST-System"
-      description="DST-System s'adresse aux forces armées, police, gendarmerie, forces spéciales, sécurité privée armée et collectivités locales. Expertise formateur CNEC."
-      keywords="forces de sécurité, armée, police, gendarmerie, collectivités"
+      title="Tous publics armés - Entraînement opérationnel | DST-System"
+      description="DST-System pour tous les publics armés : armée, police, gendarmerie, douanes, administration pénitentiaire, sécurité privée, collectivités."
+      keywords="tous publics armés, entraînement opérationnel, forces de sécurité"
     />
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -81,14 +97,14 @@ const Audiences = () => (
                 Publics Cibles
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                Expertise pour les forces de sécurité
+                Une méthode pour tous les
                 <br />
-                <span className="text-primary">et collectivités</span>
+                <span className="text-primary">publics armés</span>
               </h1>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                DST-System s'adresse aux institutions : armée, police, gendarmerie,
-                forces spéciales, sécurité privée armée et collectivités locales.
-                Une expertise du terrain au service de ceux qui protègent.
+                DST-System s'adresse à tous les publics armés : armée, police, gendarmerie,
+                douanes, administration pénitentiaire, sécurité privée et collectivités.
+                Une approche pédagogique professionnelle adaptée à chaque contexte.
               </p>
             </div>
           </AnimatedSection>
