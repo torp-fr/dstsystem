@@ -79,7 +79,17 @@ export async function loadInitialState() {
     // Direct query to shooting_sessions table
     const { data, error } = await supabaseAdapter
       .from('shooting_sessions')
-      .select('id, client_id, region, date, status, setup_ids, marketplace_visible, min_operators, accepted_operators, pending_operators, is_operational')
+      .select(`
+        id,
+        client_id,
+        region,
+        date,
+        status,
+        setup_ids,
+        marketplace_visible,
+        created_at,
+        updated_at
+      `)
       .order('date', { ascending: true });
 
     if (error) {
@@ -96,10 +106,10 @@ export async function loadInitialState() {
         marketplaceVisible: session.marketplace_visible || false,
         setupIds: session.setup_ids || [],
         staffing: {
-          minOperators: session.min_operators || 0,
-          acceptedOperators: session.accepted_operators || 0,
-          pendingApplications: session.pending_operators || 0,
-          isOperational: session.is_operational || false,
+          minOperators: 0,
+          acceptedOperators: session.operatorIds?.length || 0,
+          pendingApplications: 0,
+          isOperational: false,
         },
       }));
 
@@ -150,7 +160,17 @@ export async function getPlanningSessions(filters?: {
 
     let query = supabaseAdapter
       .from('shooting_sessions')
-      .select('id, client_id, region, date, status, setup_ids, marketplace_visible, min_operators, accepted_operators, pending_operators, is_operational')
+      .select(`
+        id,
+        client_id,
+        region,
+        date,
+        status,
+        setup_ids,
+        marketplace_visible,
+        created_at,
+        updated_at
+      `)
       .order('date', { ascending: true });
 
     // Apply filters if provided
@@ -184,10 +204,10 @@ export async function getPlanningSessions(filters?: {
       marketplaceVisible: session.marketplace_visible || false,
       setupIds: session.setup_ids || [],
       staffing: {
-        minOperators: session.min_operators || 0,
-        acceptedOperators: session.accepted_operators || 0,
-        pendingApplications: session.pending_operators || 0,
-        isOperational: session.is_operational || false,
+        minOperators: 0,
+        acceptedOperators: session.operatorIds?.length || 0,
+        pendingApplications: 0,
+        isOperational: false,
       },
     }));
 
@@ -216,7 +236,17 @@ export async function getClientPlanning(clientId: string) {
 
     const { data, error } = await supabaseAdapter
       .from('shooting_sessions')
-      .select('id, client_id, region, date, status, setup_ids, marketplace_visible, min_operators, accepted_operators, pending_operators, is_operational')
+      .select(`
+        id,
+        client_id,
+        region,
+        date,
+        status,
+        setup_ids,
+        marketplace_visible,
+        created_at,
+        updated_at
+      `)
       .eq('client_id', clientId)
       .order('date', { ascending: true });
 
@@ -235,10 +265,10 @@ export async function getClientPlanning(clientId: string) {
       marketplaceVisible: session.marketplace_visible || false,
       setupIds: session.setup_ids || [],
       staffing: {
-        minOperators: session.min_operators || 0,
-        acceptedOperators: session.accepted_operators || 0,
-        pendingApplications: session.pending_operators || 0,
-        isOperational: session.is_operational || false,
+        minOperators: 0,
+        acceptedOperators: session.operatorIds?.length || 0,
+        pendingApplications: 0,
+        isOperational: false,
       },
     }));
 
