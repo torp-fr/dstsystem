@@ -5,46 +5,55 @@
  * Must be imported in main.tsx BEFORE React app startup.
  *
  * This ensures:
- * 1. SupabaseAdapter is ready
+ * 1. SupabaseAdapter is ready (loaded via deferred script in index.html)
  * 2. Authentication state is loaded
  * 3. RLS policies are available
  */
 
-declare const SupabaseAdapter: any;
+import { isAdapterReady } from '@/infra/supabase.adapter';
+
+/** Flag indicating Supabase is bootstrapped and ready */
+let supabaseReady = false;
 
 /**
  * Wait until SupabaseAdapter is available globally
- * Uses polling to detect adapter loading
+ * Uses polling to detect when deferred script loads (max 5s)
  */
 async function waitForSupabaseAdapter(maxRetries = 50) {
-  console.log('[BOOT] Waiting for SupabaseAdapter...');
+  console.log('[BOOT] Waiting for SupabaseAdapter (deferred script)...');
 
   let retries = maxRetries;
-  while (!window.SupabaseAdapter && retries-- > 0) {
+  while (!isAdapterReady() && retries-- > 0) {
     await new Promise(r => setTimeout(r, 100));
   }
 
-  if (!window.SupabaseAdapter) {
+  if (!isAdapterReady()) {
     throw new Error('[BOOT] SupabaseAdapter failed to load after 5s');
   }
 
   console.log('[BOOT] SupabaseAdapter loaded ✓');
-  return window.SupabaseAdapter;
+  return true;
 }
 
+/**
+ * Initialize Supabase bootstrap
+ * Called with top-level await in main.tsx
+ */
 export async function initializeSupabaseRuntime() {
   console.log('[BOOT] Supabase runtime executing...');
 
   try {
     // Wait for adapter to load
-    const adapter = await waitForSupabaseAdapter();
+    await waitForSupabaseAdapter();
 
-    // Verify adapter is properly loaded
-    if (!adapter.SessionRepository) {
-      console.warn('[SupabaseAdapter] SessionRepository not found');
-      return false;
+    // Verify adapter is properly initialized
+    const adapter = window.SupabaseAdapter;
+    if (!adapter?.SessionRepository) {
+      console.warn('[BOOT] SessionRepository not found on adapter');
+      throw new Error('SupabaseAdapter incomplete');
     }
 
+    supabaseReady = true;
     console.info('[BOOT] ✓ SupabaseAdapter initialized and ready');
     return true;
   } catch (error) {
@@ -53,7 +62,9 @@ export async function initializeSupabaseRuntime() {
   }
 }
 
-// Auto-initialize on import
-if (typeof window !== 'undefined') {
-  // Don't await here - let main.tsx handle the await
+/**
+ * Check if Supabase is ready
+ */
+export function isSupabaseReady(): boolean {
+  return supabaseReady;
 }
