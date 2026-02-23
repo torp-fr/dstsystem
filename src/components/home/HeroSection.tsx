@@ -93,6 +93,10 @@ const HeroSection = () => (
           </motion.div>
         </div>
 
+        <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto mb-12 font-medium">
+          Une méthodologie d'entraînement opérationnel conçue pour être déployée par une équipe d'opérateurs formés.
+        </p>
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             asChild

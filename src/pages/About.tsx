@@ -209,9 +209,9 @@ const About = () => (
           <AnimatedSection>
             <div className="text-center">
               <p className="text-muted-foreground text-sm">
-                Comprendre la méthode DST en détail{" "}
+                Approfondissez votre compréhension :{" "}
                 <Link to="/methodologie" className="text-primary hover:underline font-medium">
-                  Comprendre la méthode DST →
+                  Découvrir la méthodologie complète →
                 </Link>
               </p>
             </div>
