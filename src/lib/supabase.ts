@@ -73,13 +73,10 @@ if (!supabaseClient) {
 export const supabase = supabaseClient;
 
 // ============================================================
-// EXPOSE SUPABASE TO DOMAIN RUNTIME
+// NO GLOBAL EXPOSURE
 // ============================================================
-// Domain services (/js/domain/*.js) expect window.supabase
-// This makes the client globally available for Domain initialization
-if (typeof window !== 'undefined') {
-  (window as any).supabase = supabase;
-}
+// Supabase client is accessed via ESM imports only
+// No window.supabase dependency — pure module architecture
 
 // Development info logging
 if (typeof window !== 'undefined' && USE_SUPABASE) {

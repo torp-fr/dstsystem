@@ -23,21 +23,8 @@
   <body>
     <div id="root"></div>
 
-    <!-- React Application - MUST LOAD FIRST to initialize window.supabase -->
-    <!-- React initializes Supabase client and exposes it globally (src/lib/supabase.ts) -->
-    <!-- This allows synchronous domain services to access window.supabase -->
+    <!-- React ESM Application - Pure module initialization -->
+    <!-- All dependencies initialized within React, no global scripts needed -->
     <script type="module" src="/src/main.tsx"></script>
-
-    <!-- Domain Services: Load AFTER React initializes Supabase -->
-    <!-- These are static JS files served from /public/js/ - NOT bundled by Vite -->
-    <!-- LOAD ORDER CRITICAL: Services must load in dependency order -->
-    <!-- SUPABASE SDK: Initialized by React above, exposed as window.supabase -->
-    <script defer src="/js/adapters/supabase.adapter.js"></script>
-    <script defer src="/js/domain/setup.repository.js"></script>
-    <script defer src="/js/domain/operatorAvailability.repository.js"></script>
-    <script defer src="/js/domain/roleGuard.service.js"></script>
-    <script defer src="/js/domain/planningRealtime.service.js"></script>
-    <script defer src="/js/domain/planningState.service.js"></script>
-    <script defer src="/js/domain/index.js"></script>
   </body>
 </html>

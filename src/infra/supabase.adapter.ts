@@ -1,46 +1,48 @@
 /**
- * Supabase Adapter Instance
+ * Supabase Adapter — Direct ESM Import
  *
- * Central, typed access to the global SupabaseAdapter.
- * Eliminates direct window.SupabaseAdapter dependencies throughout the codebase.
- * Adapter is loaded via deferred script in index.html and accessed here.
+ * Direct instantiation of Supabase client via @supabase/supabase-js.
+ * No global scripts. No polling. No bootstrap runtime.
+ * Pure ESM architecture: import and use immediately.
+ *
+ * Environment variables (from .env):
+ * - VITE_SUPABASE_URL: Supabase project URL
+ * - VITE_SUPABASE_ANON_KEY: Public API key
  */
 
-declare global {
-  interface Window {
-    SupabaseAdapter: any;
-  }
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error(
+    'Missing Supabase environment variables: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY'
+  );
 }
 
 /**
- * Get the SupabaseAdapter instance
- * @throws Error if adapter is not initialized
+ * Supabase client instance
+ * Direct instantiation — available immediately at module load time
+ * No async initialization required
  */
-export function getAdapter() {
-  if (!window.SupabaseAdapter) {
-    throw new Error('[Adapter] SupabaseAdapter not initialized');
-  }
-  return window.SupabaseAdapter;
-}
+export const supabaseAdapter = createClient(supabaseUrl, supabaseKey);
 
 /**
- * Check if adapter is available
+ * Adapter is always ready (sync instantiation)
  */
 export function isAdapterReady(): boolean {
-  return !!window.SupabaseAdapter;
+  return !!supabaseAdapter;
 }
 
 /**
- * Export typed instance for use throughout the app
- * Use this import instead of accessing window.SupabaseAdapter directly
+ * Get typed adapter instance
  */
-export const supabaseAdapter = {
-  get instance() {
-    return getAdapter();
-  },
-  isReady() {
-    return isAdapterReady();
-  },
-};
+export function getAdapter() {
+  if (!supabaseAdapter) {
+    throw new Error('Supabase adapter not initialized');
+  }
+  return supabaseAdapter;
+}
 
 export default supabaseAdapter;
