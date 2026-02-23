@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import missionImg from "@/assets/about-mission.jpg";
 import mobileImg from "@/assets/about-mobile.jpg";
+import SEOHead from "@/components/common/SEOHead";
 
 const values = [
   {
@@ -56,8 +57,14 @@ const values = [
 ];
 
 const About = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
+  <>
+    <SEOHead
+      title="À propos - Ancien militaire, formateur CNEC | DST-System"
+      description="DST-System est fondé par un ancien militaire formateur au Centre National d'Entraînement Commando (CNEC). Expertise du terrain au service des forces de sécurité."
+      keywords="formateur CNEC, ancien militaire, expertise entraînement opérationnel"
+    />
+    <div className="min-h-screen bg-background">
+      <Navbar />
     <main className="pt-20">
       <section className="py-20 border-b border-border-border">
         <div className="container mx-auto px-4">
@@ -225,7 +232,8 @@ const About = () => (
         </div>
       </section>
     </main>
-  </div>
+    </div>
+  </>
 );
 
 export default About;

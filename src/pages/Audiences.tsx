@@ -10,6 +10,7 @@ import {
   ArrowRight,
   Building2,
 } from "lucide-react";
+import SEOHead from "@/components/common/SEOHead";
 
 const coreAudiences = [
   {
@@ -63,8 +64,14 @@ const coreAudiences = [
 
 
 const Audiences = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
+  <>
+    <SEOHead
+      title="Publics cibles : Forces de sécurité et collectivités | DST-System"
+      description="DST-System s'adresse aux forces armées, police, gendarmerie, forces spéciales, sécurité privée armée et collectivités locales. Expertise formateur CNEC."
+      keywords="forces de sécurité, armée, police, gendarmerie, collectivités"
+    />
+    <div className="min-h-screen bg-background">
+      <Navbar />
     <main className="pt-20">
       <section className="py-20 border-b border-border-border">
         <div className="container mx-auto px-4">
@@ -232,7 +239,8 @@ const Audiences = () => (
         </div>
       </section>
     </main>
-  </div>
+    </div>
+  </>
 );
 
 export default Audiences;

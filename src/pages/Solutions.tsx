@@ -3,6 +3,7 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { Truck, Users, Zap, CheckCircle, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import SEOHead from "@/components/common/SEOHead";
 import mobileImg from "@/assets/solutions-simulator.jpg";
 import pedagogyImg from "@/assets/solutions-stand.jpg";
 import immersionImg from "@/assets/solutions-situation.jpg";
@@ -56,8 +57,14 @@ const methodPillars = [
 ];
 
 const Solutions = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
+  <>
+    <SEOHead
+      title="Méthode DST - Entraînement opérationnel | DST-System"
+      description="La méthode DST repose sur trois piliers : mobilité opérationnel, pédagogie du terrain, simulation immersive. Pour forces de sécurité et collectivités."
+      keywords="méthode entraînement, simulation opérationnelle, forces de sécurité"
+    />
+    <div className="min-h-screen bg-background">
+      <Navbar />
     <main className="pt-20">
       {/* Header */}
       <section className="py-20 border-b border-border-border">
@@ -148,7 +155,8 @@ const Solutions = () => (
         </div>
       </section>
     </main>
-  </div>
+    </div>
+  </>
 );
 
 export default Solutions;

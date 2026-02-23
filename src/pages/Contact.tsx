@@ -15,6 +15,7 @@ import {
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ContactVisual from "@/components/contact/FranceMap";
+import SEOHead from "@/components/common/SEOHead";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -80,8 +81,14 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <>
+      <SEOHead
+        title="Demande d'étude de besoin | DST-System"
+        description="Remplissez notre formulaire pour que nous analysions vos besoins opérationnels et vous proposions un programme d'entraînement adapté."
+        keywords="contact, étude de besoin, entraînement"
+      />
+      <div className="min-h-screen bg-background">
+        <Navbar />
       <main className="pt-20">
         <section className="py-20 border-b border-border-border">
           <div className="container mx-auto px-4">
@@ -298,7 +305,8 @@ const Contact = () => {
           </div>
         </section>
       </main>
-    </div>
+      </div>
+    </>
   );
 };
 
