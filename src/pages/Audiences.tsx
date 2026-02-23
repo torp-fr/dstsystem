@@ -82,7 +82,7 @@ const coreAudiences = [
 const Audiences = () => (
   <>
     <SEOHead
-      title="Professionnels armés et services opérationnels | DST-System"
+      title="Services opérationnels | Police, Gendarmerie, Armée, Collectivités | DST-System"
       description="DST-System pour professionnels armés et services opérationnels : armée, police, gendarmerie, douanes, administration pénitentiaire, sécurité privée, collectivités."
       keywords="professionnels armés, services opérationnels, entraînement opérationnel"
     />

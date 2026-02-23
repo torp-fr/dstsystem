@@ -59,7 +59,7 @@ const methodPillars = [
 const Solutions = () => (
   <>
     <SEOHead
-      title="Méthode DST - Entraînement opérationnel | DST-System"
+      title="Méthode DST - Trois piliers d'entraînement opérationnel | DST-System"
       description="La méthode DST repose sur trois piliers : mobilité opérationnel, pédagogie du terrain, simulation immersive. Pour forces de sécurité et collectivités."
       keywords="méthode entraînement, simulation opérationnelle, forces de sécurité"
     />
@@ -82,6 +82,12 @@ const Solutions = () => (
                 déployée de manière mobile et conçue pour l'immersion tactique. Une
                 méthode complète au service des forces de sécurité et collectivités.
               </p>
+              <div className="flex flex-wrap justify-center gap-2 mt-8">
+                <span className="px-3 py-1 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">100% Mobile</span>
+                <span className="px-3 py-1 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">Multi-agences</span>
+                <span className="px-3 py-1 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">Zéro munitions</span>
+                <span className="px-3 py-1 text-xs font-medium bg-primary/10 border border-primary/20 rounded-full text-primary">Suivi mesurable</span>
+              </div>
             </div>
           </AnimatedSection>
         </div>
