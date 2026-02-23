@@ -6,20 +6,30 @@ import DecisionMakers from "@/components/programs/DecisionMakers";
 import ServiceOffers from "@/components/programs/ServiceOffers";
 import CollateralSupport from "@/components/programs/CollateralSupport";
 import MutualisationCTA from "@/components/programs/MutualisationCTA";
+import ProgramFAQ from "@/components/programs/ProgramFAQ";
+import SEOHead from "@/components/common/SEOHead";
 
 const Programs = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
-    <main className="pt-20">
-      <ProgramsHero />
-      <ProgramCards />
-      <CapacityInfo />
-      <DecisionMakers />
-      <ServiceOffers />
-      <CollateralSupport />
-      <MutualisationCTA />
-    </main>
-  </div>
+  <>
+    <SEOHead
+      title="Programmes d'entraînement opérationnel | DST-System"
+      description="Trois programmes structurés : Maintien opérationnel, Progression dynamique, Tactique avancée. Pour forces de sécurité, armée et collectivités."
+      keywords="programmes entraînement, maintien opérationnel, progression dynamique, tactique"
+    />
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main className="pt-20">
+        <ProgramsHero />
+        <ProgramCards />
+        <CapacityInfo />
+        <DecisionMakers />
+        <ServiceOffers />
+        <CollateralSupport />
+        <ProgramFAQ />
+        <MutualisationCTA />
+      </main>
+    </div>
+  </>
 );
 
 export default Programs;

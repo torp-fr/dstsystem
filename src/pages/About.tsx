@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import missionImg from "@/assets/about-mission.jpg";
 import mobileImg from "@/assets/about-mobile.jpg";
+import SEOHead from "@/components/common/SEOHead";
 
 const values = [
   {
@@ -56,23 +57,29 @@ const values = [
 ];
 
 const About = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
+  <>
+    <SEOHead
+      title="À propos - Ancien militaire, formateur CNEC | DST-System"
+      description="DST-System est fondé par un ancien militaire formateur au Centre National d'Entraînement Commando (CNEC). Expertise du terrain au service des forces de sécurité."
+      keywords="formateur CNEC, ancien militaire, expertise entraînement opérationnel"
+    />
+    <div className="min-h-screen bg-background">
+      <Navbar />
     <main className="pt-20">
       <section className="py-20 border-b border-border-border">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
               <span className="text-primary text-sm font-medium tracking-wider uppercase">
-                À propos
+                Expertise du terrain
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                DST-System
+                Ancien militaire, formateur au CNEC
               </h1>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Drill & Skills Training — Parce que la compétence au tir est
-                périssable, nous apportons la solution pour la maintenir et la
-                développer.
+                DST-System est fondé par un ancien militaire et formateur au
+                Centre National d'Entraînement Commando (CNEC). L'expertise du
+                terrain infuse chaque programme et méthode pédagogique.
               </p>
             </div>
           </AnimatedSection>
@@ -85,27 +92,25 @@ const About = () => (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection>
               <div>
-                <h2 className="text-3xl font-bold mb-6">Notre mission</h2>
+                <h2 className="text-3xl font-bold mb-6">Parcours terrain</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  DST-System est né d'un constat simple : les institutions
-                  (armée, police, gendarmerie) n'ont souvent pas les moyens
-                  logistiques, humains et le temps nécessaires pour entraîner
-                  suffisamment leurs personnels au tir. Or, le tir est une
-                  compétence périssable — sans pratique régulière, les acquis se
-                  dégradent, les réflexes s'émoussent.
+                  Ancien militaire, le fondateur de DST-System connaît les réalités
+                  opérationnelles des forces de sécurité. La compétence au tir est
+                  périssable — sans entraînement régulier, les acquis se dégradent,
+                  les réflexes s'émoussent. Les institutions manquent souvent de
+                  moyens logistiques et de temps pour organiser des séances régulières.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  Notre mission est de combler ce manque en apportant une
-                  solution d'entraînement mobile, accessible et efficace.
-                  Grâce à notre simulateur laser, nous nous déplaçons
-                  directement chez nos clients pour dispenser des séances
-                  d'entraînement dans leurs locaux — il suffit d'une salle.
+                  C'est cette expertise de terrain qui a inspiré DST-System. Une
+                  solution mobile d'entraînement opérationnel adaptée aux contraintes
+                  réelles des unités. Nous nous déplaçons directement chez nos clients —
+                  il suffit d'une salle. Programmes structurés. Suivi individualisé.
+                  Rapports pertinents pour le commandement.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  L'objectif : conserver les acquis, progresser dans le tir,
-                  mécaniser les gestes réflexes, améliorer la graduation de la
-                  réponse à la situation, et renforcer le professionnalisme et
-                  la confiance en soi des pratiquants.
+                  <strong>Objectif :</strong> conserver les compétences armées,
+                  mécaniser les gestes réflexes, améliorer la graduation de la réponse,
+                  et renforcer la confiance opérationnelle des agents.
                 </p>
               </div>
             </AnimatedSection>
@@ -227,7 +232,8 @@ const About = () => (
         </div>
       </section>
     </main>
-  </div>
+    </div>
+  </>
 );
 
 export default About;

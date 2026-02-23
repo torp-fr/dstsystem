@@ -1,26 +1,26 @@
 import { Link } from "react-router-dom";
-import { Crosshair, Target, Users, ArrowRight } from "lucide-react";
+import { Activity, TrendingUp, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const solutions = [
   {
-    icon: Crosshair,
-    title: "Simulateur de tir laser",
+    icon: Activity,
+    title: "Maintien opérationnel",
     description:
-      "Entraînement de précision en conditions contrôlées avec retour instantané sur la performance. Aucune munition réelle nécessaire.",
+      "Préserver les compétences armées et la confiance. Entraînement régulier pour lutter contre la périssabilité des acquis.",
   },
   {
-    icon: Target,
-    title: "Stand de tir virtuel",
+    icon: TrendingUp,
+    title: "Progression dynamique",
     description:
-      "Cibles dynamiques, tir statique et dynamique, de jour comme de nuit. Progression mesurable à chaque session.",
+      "Monter en compétences avec des programmes structurés. Suivi individualisé et rapports d'avancement mesurables.",
   },
   {
-    icon: Users,
-    title: "Mises en situation tactiques",
+    icon: Zap,
+    title: "Tactique avancée",
     description:
-      "CQB, effraction froide, interpellations — des scénarios réalistes pour développer les réflexes et la prise de décision.",
+      "Scénarios immersifs : CQB, effraction froide, interpellations. Développer les réflexes sous stress et la prise de décision.",
   },
 ];
 
@@ -30,15 +30,14 @@ const SolutionsPreview = () => (
       <AnimatedSection>
         <div className="text-center mb-16">
           <span className="text-primary text-sm font-medium tracking-wider uppercase">
-            Nos solutions
+            Nos programmes
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4">
-            Une solution mobile d'entraînement de pointe
+            Trois dimensions d'entraînement opérationnel
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            DST-System se déplace directement dans vos locaux. Il suffit d'une
-            salle pour organiser une séance complète — aucune infrastructure
-            lourde requise.
+            DST-System propose des programmes structurés pour forces de sécurité
+            et collectivités. Mobile, sans infrastructure, suivi personnalisé.
           </p>
         </div>
       </AnimatedSection>
@@ -69,8 +68,8 @@ const SolutionsPreview = () => (
             variant="outline"
             className="border-primary/30 hover:bg-primary/10 text-primary"
           >
-            <Link to="/solutions">
-              Voir toutes nos solutions <ArrowRight className="ml-2 h-4 w-4" />
+            <Link to="/programmes">
+              Nos trois programmes <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         </div>

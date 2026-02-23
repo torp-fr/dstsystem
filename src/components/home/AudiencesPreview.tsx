@@ -1,16 +1,13 @@
 import { Link } from "react-router-dom";
-import { Shield, Star, Swords, Eye, Lock, Briefcase, PartyPopper, ArrowRight } from "lucide-react";
+import { Shield, Swords, Lock, Building2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const audiences = [
-  { icon: Swords, label: "Armée" },
-  { icon: Shield, label: "Police" },
-  { icon: Star, label: "Gendarmerie" },
-  { icon: Eye, label: "Forces spéciales" },
-  { icon: Lock, label: "Sécurité privée" },
-  { icon: Briefcase, label: "Entreprises" },
-  { icon: PartyPopper, label: "Événements" },
+  { icon: Swords, label: "Armée & Forces spéciales" },
+  { icon: Shield, label: "Police & Gendarmerie" },
+  { icon: Building2, label: "Collectivités locales" },
+  { icon: Lock, label: "Sécurité privée armée" },
 ];
 
 const AudiencesPreview = () => (
@@ -19,14 +16,15 @@ const AudiencesPreview = () => (
       <AnimatedSection>
         <div className="text-center mb-16">
           <span className="text-primary text-sm font-medium tracking-wider uppercase">
-            Publics cibles
+            Expertise formateur
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4">
-            Une solution commune, des réponses sur mesure
+            Pour les forces de sécurité et collectivités
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Des forces armées aux entreprises en passant par les événements,
-            notre technologie s'adapte à chaque besoin et chaque public.
+            Ancien militaire, formateur au CNEC. DST-System apporte l'expertise
+            du terrain aux institutionnels : armée, police, gendarmerie,
+            collectivités et sécurité privée.
           </p>
         </div>
       </AnimatedSection>

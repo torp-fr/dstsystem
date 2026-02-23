@@ -6,13 +6,11 @@ import {
   Swords,
   Shield,
   Lock,
-  Briefcase,
-  PartyPopper,
-  Megaphone,
   CheckCircle,
   ArrowRight,
   Building2,
 } from "lucide-react";
+import SEOHead from "@/components/common/SEOHead";
 
 const coreAudiences = [
   {
@@ -64,40 +62,16 @@ const coreAudiences = [
   },
 ];
 
-const additionalAudiences = [
-  {
-    icon: Briefcase,
-    title: "Entreprises",
-    description: "Team building, gestion du stress, événements d'entreprise",
-    details:
-      "Proposez une expérience unique à vos équipes : séances de tir laser en team building, ateliers de gestion du stress, séminaires d'entreprise. Une activité fédératrice et originale qui développe la concentration et la cohésion d'équipe.",
-  },
-  {
-    icon: PartyPopper,
-    title: "Événements B2C",
-    description: "EVG, EVJF, loisirs, anniversaires",
-    details:
-      "Offrez un moment inoubliable : enterrements de vie de garçon ou de jeune fille, anniversaires, sorties entre amis. Une activité ludique et adrénaline dans un cadre sécurisé avec un encadrement professionnel.",
-  },
-  {
-    icon: Megaphone,
-    title: "Salons et sous-traitance",
-    description: "Démonstrations, sensibilisation, partenariats",
-    details:
-      "Nous intervenons en sous-traitance sur des salons, événements et formations. Initiation au tir, sensibilisation à la sécurité, démonstrations de notre technologie — nous nous adaptons à chaque contexte.",
-  },
-  {
-    icon: Building2,
-    title: "Initiations & Découverte",
-    description: "Découverte du tir, sensibilisation, interventions pédagogiques",
-    details:
-      "Séances d'initiation et de découverte du tir pour un public large. Interventions en milieu scolaire, associatif ou institutionnel pour sensibiliser et faire découvrir l'univers du tir dans un cadre 100% sécurisé.",
-  },
-];
 
 const Audiences = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
+  <>
+    <SEOHead
+      title="Publics cibles : Forces de sécurité et collectivités | DST-System"
+      description="DST-System s'adresse aux forces armées, police, gendarmerie, forces spéciales, sécurité privée armée et collectivités locales. Expertise formateur CNEC."
+      keywords="forces de sécurité, armée, police, gendarmerie, collectivités"
+    />
+    <div className="min-h-screen bg-background">
+      <Navbar />
     <main className="pt-20">
       <section className="py-20 border-b border-border-border">
         <div className="container mx-auto px-4">
@@ -107,14 +81,14 @@ const Audiences = () => (
                 Publics Cibles
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                Une solution commune,
+                Expertise pour les forces de sécurité
                 <br />
-                <span className="text-primary">des réponses sur mesure</span>
+                <span className="text-primary">et collectivités</span>
               </h1>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Notre technologie de simulateur laser s'adapte à chaque public.
-                Des forces armées aux entreprises, nous répondons à vos besoins
-                spécifiques avec des programmes personnalisés.
+                DST-System s'adresse aux institutions : armée, police, gendarmerie,
+                forces spéciales, sécurité privée armée et collectivités locales.
+                Une expertise du terrain au service de ceux qui protègent.
               </p>
             </div>
           </AnimatedSection>
@@ -184,58 +158,6 @@ const Audiences = () => (
         ))}
       </section>
 
-      {/* Additional audiences */}
-      <section className="py-20 border-t border-border-border">
-        <div className="container mx-auto px-4">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <span className="text-primary text-sm font-medium tracking-wider uppercase">
-                Et aussi
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4">
-                Au-delà des forces de l'ordre
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Notre solution s'ouvre également aux entreprises, aux événements
-                et aux particuliers pour des expériences uniques.
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {additionalAudiences.map((aud, i) => (
-              <AnimatedSection key={aud.title} delay={i * 0.1}>
-                <div className="p-8 rounded-2xl bg-card border-border border-border-border hover:border-primary/30 transition-all h-full">
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 border-border border-primary/20 mb-4">
-                    <aud.icon className="h-7 w-7 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-1">{aud.title}</h3>
-                  <p className="text-primary text-sm font-medium mb-3">
-                    {aud.description}
-                  </p>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {aud.details}
-                  </p>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-
-          <AnimatedSection delay={0.4}>
-            <div className="text-center mt-12">
-              <Button
-                asChild
-                className="bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
-                <Link to="/contact">
-                  Discutons de votre projet{" "}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
 
       {/* Decision makers */}
       <section className="py-20 bg-card border-t border-border-border">
@@ -317,7 +239,8 @@ const Audiences = () => (
         </div>
       </section>
     </main>
-  </div>
+    </div>
+  </>
 );
 
 export default Audiences;

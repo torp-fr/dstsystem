@@ -25,6 +25,7 @@ import Programs from "./pages/Programs";
 import Audiences from "./pages/Audiences";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Resources from "./pages/Resources";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
@@ -126,6 +127,7 @@ const AppRoutes = () => {
       <Route path="/a-propos" element={<About />} />
       <Route path="/tarifs" element={<Programs />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/ressources" element={<Resources />} />
 
       {/* Auth Routes */}
       <Route path="/login" element={<LoginPage />} />
