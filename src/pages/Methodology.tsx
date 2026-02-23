@@ -8,7 +8,7 @@ import SEOHead from "@/components/common/SEOHead";
 const Methodology = () => (
   <>
     <SEOHead
-      title="Méthodologie DST - Approche pédagogique d'entraînement opérationnel | DST-System"
+      title="Méthodologie d'entraînement opérationnel mobile pour services armés | DST System"
       description="Découvrez la méthodologie DST : une approche pédagogique professionnelle issue du terrain, conçue pour professionnels armés et services opérationnels. Flexible, adaptable, multi-opérateurs."
       keywords="méthodologie DST, entraînement opérationnel, approche pédagogique, pédagogie du terrain"
     />
@@ -29,7 +29,7 @@ const Methodology = () => (
                 <p className="text-muted-foreground text-lg leading-relaxed">
                   Une approche pédagogique professionnelle fondée sur l'expérience du terrain.
                   Conçue pour être déployée par une équipe d'opérateurs formés.
-                  Flexible, scalable, adaptée à tous les services opérationnels.
+                  Flexible, déployable, adaptée à tous les services opérationnels.
                 </p>
               </div>
             </AnimatedSection>
@@ -58,9 +58,9 @@ const Methodology = () => (
                 },
                 {
                   icon: Users,
-                  title: "Professionnelle & Scalable",
+                  title: "Professionnelle & Déployable",
                   description:
-                    "Conçue pour être déployée par une équipe d'opérateurs formés. DST-System est une méthode, pas une personne. Scalable, elle s'adapte à tous les contextes institutionnels.",
+                    "Conçue pour être déployée par une équipe d'opérateurs formés. DST-System est une méthode, pas une personne. Déployable, elle s'adapte à tous les contextes institutionnels.",
                 },
                 {
                   icon: Zap,
@@ -222,6 +222,54 @@ const Methodology = () => (
                         <span>Suivi mesurable et rapports de progression</span>
                       </li>
                     </ul>
+                  </div>
+                </div>
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+
+        {/* Pourquoi cette méthode */}
+        <section className="py-20 bg-card border-t border-border-border">
+          <div className="container mx-auto px-4">
+            <AnimatedSection>
+              <div className="max-w-3xl mx-auto">
+                <h2 className="text-3xl font-bold mb-4">Pourquoi cette méthode d'entraînement</h2>
+                <p className="text-muted-foreground mb-8">
+                  Une approche conçue pour être déployée par plusieurs opérateurs formés.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <div className="flex gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1 text-foreground">Contraintes d'accès aux stands de tir</h3>
+                        <p className="text-sm text-muted-foreground">Manque d'infrastructures dédiées et difficulté de planification pour les unités décentralisées.</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1 text-foreground">Coût des munitions réelles</h3>
+                        <p className="text-sm text-muted-foreground">Budget opérationnel limité pour l'entraînement régulier et les séances de qualification.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1 text-foreground">Besoin de continuité opérationnelle</h3>
+                        <p className="text-sm text-muted-foreground">L'entraînement doit s'adapter aux calendriers opérationnels sans interrompre les missions.</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h3 className="font-semibold mb-1 text-foreground">Mobilité des équipes opérationnelles</h3>
+                        <p className="text-sm text-muted-foreground">Solutions déployables directement sur site, adaptées à la localisation des unités.</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
