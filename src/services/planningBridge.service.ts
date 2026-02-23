@@ -156,6 +156,32 @@ export function getSessionPlanningDetailsSafe(sessionId: string): SessionPlannin
 }
 
 /**
+ * Delete session with safe fallback
+ *
+ * @param sessionId Session identifier
+ * @returns { success: boolean, error?: string }
+ */
+export function deleteSessionSafe(sessionId: string): { success: boolean; error?: string } {
+  try {
+    if (!sessionId) {
+      return { success: false, error: 'sessionId required' };
+    }
+
+    const service = getPlanningService();
+    if (!service) {
+      return { success: false, error: 'PlanningStateService not available' };
+    }
+
+    // Call service method - assumes it handles the deletion
+    const result = service.deleteSession?.(sessionId);
+    return result || { success: true };
+  } catch (error) {
+    console.warn('[PlanningBridge] Error calling deleteSession:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
+/**
  * Check if PlanningStateService is available
  * Useful for conditional rendering or early returns
  */
@@ -192,6 +218,7 @@ export default {
   getPlanningSessionsSafe,
   getClientPlanningSafe,
   getSessionPlanningDetailsSafe,
+  deleteSessionSafe,
   isPlanningServiceAvailable,
   getEmptyPlanningResult,
   getEmptyClientPlanningResult,

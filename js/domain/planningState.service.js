@@ -16,8 +16,6 @@
  */
 
 const PlanningStateService = (function() {
-  'use strict';
-
   // ============================================================
   // CONSTANTS
   // ============================================================
@@ -28,6 +26,24 @@ const PlanningStateService = (function() {
     OPERATIONAL: 'operational',
     COMPLETED: 'completed'
   };
+
+  // ============================================================
+  // ADAPTER READY CHECK
+  // ============================================================
+
+  /**
+   * Wait until SupabaseAdapter is available
+   * Prevents initialization crashes
+   */
+  async function waitUntilAdapterReady(maxRetries = 20) {
+    let retries = maxRetries;
+    while (!window.SupabaseAdapter && retries--) {
+      await new Promise(r => setTimeout(r, 100));
+    }
+    if (!window.SupabaseAdapter) {
+      throw new Error('[PlanningStateService] SupabaseAdapter not initialized after retries');
+    }
+  }
 
   // ============================================================
   // 1. GET PLANNING SESSIONS (Aggregated Planning List)
@@ -55,6 +71,16 @@ const PlanningStateService = (function() {
    */
   function getPlanningSessions(filters = {}) {
     try {
+      // GUARD: Adapter must be ready
+      if (!window.SupabaseAdapter) {
+        return {
+          success: false,
+          error: 'SupabaseAdapter not initialized',
+          sessions: [],
+          count: 0
+        };
+      }
+
       // GUARD: User can view sessions
       if (!RoleGuardService.can('*', 'view_planning_sessions')) {
         return {
