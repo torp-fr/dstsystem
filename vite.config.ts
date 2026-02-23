@@ -70,8 +70,8 @@ export default defineConfig(({ mode }) => ({
       },
     },
 
-    // Target modern browsers
-    target: 'ES2020',
+    // Target modern browsers (ES2022 required for top-level await support)
+    target: 'ES2022',
 
     // Optimize CSS
     cssCodeSplit: true,
