@@ -61,21 +61,27 @@ export default function SessionDetailModal({
     setError(null);
 
     try {
+      console.log('[SessionDetailModal] Loading session:', sessionId);
       const result = getSessionPlanningDetailsSafe(sessionId);
+      console.log('[SessionDetailModal] Result:', result);
 
       if (!result) {
+        console.warn('[SessionDetailModal] No result from bridge');
         setError('Impossible de charger les détails de la session');
         setSession(null);
         return;
       }
 
       if (result.success && result.session) {
+        console.log('[SessionDetailModal] Session loaded ✓');
         setSession(result.session);
       } else {
+        console.warn('[SessionDetailModal] Session not found:', result.error);
         setError(result.error || 'Session non trouvée');
         setSession(null);
       }
     } catch (err) {
+      console.error('[SessionDetailModal] Error:', err);
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setSession(null);
     } finally {

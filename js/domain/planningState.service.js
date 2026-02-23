@@ -16,6 +16,9 @@
  */
 
 const PlanningStateService = (function() {
+  console.log('[PlanningState] Service initializing...');
+  console.log('[PlanningState] Adapter:', window.SupabaseAdapter ? '✓ READY' : '✗ NOT FOUND');
+
   // ============================================================
   // CONSTANTS
   // ============================================================
@@ -26,24 +29,6 @@ const PlanningStateService = (function() {
     OPERATIONAL: 'operational',
     COMPLETED: 'completed'
   };
-
-  // ============================================================
-  // ADAPTER READY CHECK
-  // ============================================================
-
-  /**
-   * Wait until SupabaseAdapter is available
-   * Prevents initialization crashes
-   */
-  async function waitUntilAdapterReady(maxRetries = 20) {
-    let retries = maxRetries;
-    while (!window.SupabaseAdapter && retries--) {
-      await new Promise(r => setTimeout(r, 100));
-    }
-    if (!window.SupabaseAdapter) {
-      throw new Error('[PlanningStateService] SupabaseAdapter not initialized after retries');
-    }
-  }
 
   // ============================================================
   // 1. GET PLANNING SESSIONS (Aggregated Planning List)

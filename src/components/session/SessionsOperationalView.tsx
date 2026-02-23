@@ -59,11 +59,14 @@ export default function SessionsOperationalView({
     setError(null);
 
     try {
+      console.log('[SessionsOperational] Fetching sessions from PlanningStateService...');
       // Call service via bridge (no filters for full view)
       const result = getPlanningSessionsSafe({});
+      console.log('[SessionsOperational] Result:', result?.sessions?.length || 0, 'sessions');
 
       if (!result) {
         // Service not initialized — graceful fallback
+        console.warn('[SessionsOperational] Bridge returned null');
         setSessions([]);
         setLoading(false);
         return;
@@ -76,6 +79,7 @@ export default function SessionsOperationalView({
         setSessions([]);
       }
     } catch (err) {
+      console.error('[SessionsOperational] Error:', err);
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setSessions([]);
     } finally {

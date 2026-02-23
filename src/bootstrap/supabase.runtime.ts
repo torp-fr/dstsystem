@@ -12,26 +12,48 @@
 
 declare const SupabaseAdapter: any;
 
-export function initializeSupabaseRuntime() {
-  // Check if SupabaseAdapter is available globally
-  if (typeof window !== 'undefined' && window.SupabaseAdapter) {
-    const adapter = window.SupabaseAdapter;
+/**
+ * Wait until SupabaseAdapter is available globally
+ * Uses polling to detect adapter loading
+ */
+async function waitForSupabaseAdapter(maxRetries = 50) {
+  console.log('[BOOT] Waiting for SupabaseAdapter...');
+
+  let retries = maxRetries;
+  while (!window.SupabaseAdapter && retries-- > 0) {
+    await new Promise(r => setTimeout(r, 100));
+  }
+
+  if (!window.SupabaseAdapter) {
+    throw new Error('[BOOT] SupabaseAdapter failed to load after 5s');
+  }
+
+  console.log('[BOOT] SupabaseAdapter loaded ✓');
+  return window.SupabaseAdapter;
+}
+
+export async function initializeSupabaseRuntime() {
+  console.log('[BOOT] Supabase runtime executing...');
+
+  try {
+    // Wait for adapter to load
+    const adapter = await waitForSupabaseAdapter();
 
     // Verify adapter is properly loaded
     if (!adapter.SessionRepository) {
-      console.warn('[SupabaseAdapter] SessionRepository not found - adapter may not be fully loaded');
+      console.warn('[SupabaseAdapter] SessionRepository not found');
       return false;
     }
 
-    console.info('[SupabaseRuntime] ✓ SupabaseAdapter initialized and ready');
+    console.info('[BOOT] ✓ SupabaseAdapter initialized and ready');
     return true;
-  } else {
-    console.warn('[SupabaseRuntime] SupabaseAdapter not found - Supabase may not be initialized');
-    return false;
+  } catch (error) {
+    console.error('[BOOT] ✗ Failed to initialize Supabase:', error);
+    throw error;
   }
 }
 
 // Auto-initialize on import
 if (typeof window !== 'undefined') {
-  initializeSupabaseRuntime();
+  // Don't await here - let main.tsx handle the await
 }
