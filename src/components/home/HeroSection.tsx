@@ -117,9 +117,9 @@ const HeroSection = () => (
           </Button>
           <Button
             asChild
-            variant="ghost"
+            variant="outline"
             size="lg"
-            className="text-foreground hover:text-primary hover:bg-primary/10 text-base px-8 py-6"
+            className="border-primary/40 text-primary hover:bg-primary/5 text-base px-8 py-6 font-medium"
           >
             <Link to="/login">Accès entreprise</Link>
           </Button>
