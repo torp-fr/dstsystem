@@ -109,12 +109,6 @@ const LoginPage = () => {
           </p>
         </div>
 
-        {/* Development Note */}
-        <div className="mt-6 p-3 bg-blue-500/10 border-border border-blue-500/20 rounded-lg">
-          <p className="text-xs text-blue-600 dark:text-blue-400">
-            💡 <strong>Pour les tests :</strong> Créez un compte via le formulaire d'inscription ou utilisez les identifiants fournis.
-          </p>
-        </div>
       </div>
     </div>
   );

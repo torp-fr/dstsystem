@@ -6,7 +6,7 @@ import heroBg from "@/assets/hero-bg.jpg";
 import logo from "@/assets/logo_dst.png";
 
 const HeroSection = () => (
-  <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
     {/* Background image */}
     <div
       className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -29,14 +29,14 @@ const HeroSection = () => (
           <motion.img
             src={logo}
             alt="DST-System — Drill & Skills Training"
-            className="w-52 md:w-72 lg:w-96 mb-10 drop-shadow-2xl"
+            className="w-52 md:w-72 lg:w-96 mb-8 drop-shadow-2xl"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           />
         </div>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
           Maintien opérationnel
           <br />
           <span className="text-primary">Entraînement mobile. Compétences durables.</span>
@@ -54,7 +54,7 @@ const HeroSection = () => (
         </p>
 
         {/* 4 Badges de valeur */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
           <motion.div
             className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border-border border-primary/20 text-sm font-medium"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -93,7 +93,7 @@ const HeroSection = () => (
           </motion.div>
         </div>
 
-        <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto mb-12 font-medium">
+        <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto mb-10 font-medium">
           Une méthodologie d'entraînement opérationnel conçue pour être déployée par une équipe d'opérateurs formés.
         </p>
 
@@ -117,9 +117,9 @@ const HeroSection = () => (
           </Button>
           <Button
             asChild
-            variant="ghost"
+            variant="outline"
             size="lg"
-            className="text-foreground hover:text-primary hover:bg-primary/10 text-base px-8 py-6"
+            className="border-primary/40 text-primary hover:bg-primary/5 text-base px-8 py-6 font-medium"
           >
             <Link to="/login">Accès entreprise</Link>
           </Button>
